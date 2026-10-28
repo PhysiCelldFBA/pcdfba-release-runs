@@ -1,5 +1,5 @@
 """Acetate-switch figure from ACE-REF/ACE-SEED (5 mM pulse) and ACE-PULSE (10 mM), dx 4, dt 0.01, 3 seeds: box-mean concentrations and total biomass, after the layout of the
-original main figure. A: 5 mM O2 pulse at 210 min (the original protocol); B: 10 mM pulse, 900 min.  /opt/anaconda3/bin/python"""
+original main figure. A: 5 mM O2 pulse at 210 min (the original protocol); B: 10 mM pulse, 900 min."""
 import sys, os, glob, numpy as np, scipy.io as sio, xml.etree.ElementTree as ET, matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels

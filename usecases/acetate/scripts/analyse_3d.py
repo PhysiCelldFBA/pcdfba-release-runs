@@ -1,4 +1,4 @@
-"""Regime times and spreads for the acetate 3D batch. Usage: analyse_3d.py [run names]; /opt/anaconda3/bin/python."""
+"""Regime times and spreads for the acetate 3D batch. Usage: analyse_3d.py [run names]."""
 import sys, os, glob, numpy as np, pandas as pd, scipy.io as sio, xml.etree.ElementTree as ET
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels
 HERE = os.path.dirname(os.path.abspath(__file__)); R = os.path.join(HERE, "..", "runs"); OUT = os.path.join(HERE, "..", "results")
