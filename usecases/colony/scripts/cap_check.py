@@ -1,5 +1,5 @@
 """Test of the cap rule on a colony run: how often is the recorded uptake bound below the Michaelis-Menten bound, and does the cap number predict it?
-usage: cap_check.py RUNDIR [LABEL]     (RUNDIR holds output*.xml, *_cells.mat, *_microenvironment0.mat, PhysiCell_settings.xml; /opt/anaconda3/bin/python)
+usage: cap_check.py RUNDIR [LABEL]     (RUNDIR holds output*.xml, *_cells.mat, *_microenvironment0.mat, PhysiCell_settings.xml)
 Per snapshot and substrate with Vmax > 0, for each living cell:
   c      concentration of the substrate in the cell's voxel
   lb_MM  = -Vmax*c/(Km+c)   (mmol/gDW/h, the bound before the voxel cap)       lb = recorded R_EX_*_lb (the bound the LP used)

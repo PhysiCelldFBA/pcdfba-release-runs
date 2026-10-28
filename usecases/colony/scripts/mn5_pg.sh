@@ -1,6 +1,6 @@
 #!/bin/bash
 # build the colony binary from the exported pinned code (tree/COMMIT) on the first node, then run the pre-grown runs, one node each
-B=/gpfs/scratch/bsc08/bsc008059/pcdfba_review/colony_pg_mn5
+B=${PCDFBA_MN5_DIR:-${SLURM_SUBMIT_DIR:?submit from the run directory or set PCDFBA_MN5_DIR}}   # holds tree/ and uc/
 module purge >/dev/null 2>&1; module load gcc/13.2.0 >/dev/null 2>&1
 cd $B/tree || exit 1
 make -j112 PHYSICELL_CPP=g++ PROGRAM_NAME=bacterial-colony > $B/build.log 2>&1 || { echo BUILD FAILED; tail -20 $B/build.log; exit 1; }

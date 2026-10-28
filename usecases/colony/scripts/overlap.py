@@ -1,5 +1,5 @@
 """Cell overlap per snapshot: spheres of radius (3V/4pi)^(1/3) at the cell positions; two cells overlap when d < r_i + r_j.
-usage: overlap.py RUNDIR   (run with /opt/anaconda3/bin/python)   writes results/overlap_<run>.csv
+usage: overlap.py RUNDIR   ()   writes results/overlap_<run>.csv
 Reports n, % of cells with >=1 overlap, mean and max relative depth (r_i+r_j-d)/(r_i+r_j) over overlapping pairs, mean neighbours within 2(r_i+r_j)."""
 import sys, glob, os, numpy as np, pandas as pd, scipy.io as sio, xml.etree.ElementTree as ET
 from scipy.spatial import cKDTree

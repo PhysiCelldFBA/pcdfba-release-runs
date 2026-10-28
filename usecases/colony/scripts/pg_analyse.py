@@ -1,5 +1,5 @@
 """Pre-grown colony runs: radial profile per snapshot, necrotic-core radius and acetate-uptake ring.
-usage: pg_analyse.py RUNDIR [RUNDIR ...]   (RUNDIR holds output*.xml / *_cells.mat / *_microenvironment0.mat). Run with /opt/anaconda3/bin/python.
+usage: pg_analyse.py RUNDIR [RUNDIR ...]   (RUNDIR holds output*.xml / *_cells.mat / *_microenvironment0.mat).
 Definitions (annuli of width W=10 um around the origin, alive = not dead):
   dead_frac(r)  = dead / all cells in the annulus
   ac_frac(r)    = alive cells with R_EX_ac_e < -1e-6 / alive cells
