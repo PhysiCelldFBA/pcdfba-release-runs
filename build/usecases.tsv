@@ -1,0 +1,7 @@
+# usecase	sample directory (under code/sample_projects_intracellular/fba)	binary name produced	main settings file in the sample
+unit_test	dfba_unit_test	dfba-unit-test	config/Unit_test_mass_conversion.xml
+colony	bacterial_colony	bacterial-colony	config/PhysiCell_settings.xml
+acetate	ecoli_acetic_switch	ecoli-dfba	config/PhysiCell_settings.xml
+crossfeeding	crossfeeding	crossfeeding	config/PhysiCell_settings.xml
+motility	metabolic_driven_motility	ecoli-dfba-motility	config/PhysiCell_settings_motility.xml
+tumour	cancer_core_metabolism	cancer-core-metabolism	config/PhysiCell_settings_pfba.xml
