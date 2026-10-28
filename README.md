@@ -24,3 +24,7 @@ Definitive experiments for the PhysiCelldFBA revision. The plan and the settled 
     python3 common/make_provenance.py usecases/<uc>
 
 The seed is `<options><random_seed>` only. Run outputs (`runs/`) and binaries (`bin/`) are not tracked; figures, tables and the provenance records are.
+
+**Running on MareNostrum 5.** Each use case is run from a directory that holds `tree/` (the exported pinned code with the sample copied over and the vendored `addons/dFBA/ext` linked in) and `uc/` (a copy of the use-case directory with the generated `config/`, `scripts/` and an empty `runs/`).
+Submit from that directory: `sbatch uc/scripts/<name>.sbatch`. The scripts take that directory from `PCDFBA_MN5_DIR`, or from where the job was submitted. The account `bsc08` is the project group code.
+The Python tools need numpy, scipy, pandas, lxml and matplotlib (and cobra for the model checks); set `PYTHON` where a script uses it.
