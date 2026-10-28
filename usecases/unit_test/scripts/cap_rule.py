@@ -1,5 +1,5 @@
 """Compare the dx/dt runs with their plateau and relate the deviation to a cap number.
-usage: cap_rule.py   (from the use-case directory; /opt/anaconda3/bin/python)   writes results/ut_vs_plateau.csv, results/fig_cap_rule.png
+usage: cap_rule.py   (from the use-case directory; needs numpy, scipy, pandas, matplotlib, lxml)   writes results/ut_vs_plateau.csv, results/fig_cap_rule.png
 
 Plateau = dx 4 um, dt 0.001 min of the same experiment (largest voxel, smallest step: the uptake cap cannot act there).
 Cap number  R = n * q * m_dw * dt / (c * V_vox)  =  q * X * dt / c,

@@ -1,6 +1,6 @@
 #!/bin/bash
 # build the unit-test binary from the exported pinned code (tree/COMMIT), then run every planned run: one-thread runs 96 at a time, then the multi-thread runs one by one
-B=/gpfs/scratch/bsc08/bsc008059/pcdfba_review/unit_test_mn5
+B=${PCDFBA_MN5_DIR:-${SLURM_SUBMIT_DIR:?submit from the run directory or set PCDFBA_MN5_DIR}}   # holds tree/ and uc/
 module purge >/dev/null 2>&1; module load gcc/13.2.0 >/dev/null 2>&1
 cd $B/tree || exit 1
 make -j112 PHYSICELL_CPP=g++ PROGRAM_NAME=dfba-unit-test > $B/build.log 2>&1 || { echo BUILD FAILED; tail -20 $B/build.log; exit 1; }

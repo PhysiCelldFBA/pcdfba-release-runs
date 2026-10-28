@@ -1,7 +1,7 @@
 #!/bin/bash
 # Run the dfba_unit_test checks (from the pinned code) on the runs of this use case. The checks expect the old folder names, so a
 # scratch directory of symlinks maps runs/<run_id> to them. usage: scripts/run_checks.sh   (from the use-case directory; PYTHON=... for cobra)
-PY=${PYTHON:-/opt/anaconda3/bin/python}; UC=$(pwd); CK=$UC/checks; CODE=$UC/../../code/sample_projects_intracellular/fba/dfba_unit_test/scripts
+PY=${PYTHON:-python3}; UC=$(pwd); CK=$UC/checks; CODE=$UC/../../code/sample_projects_intracellular/fba/dfba_unit_test/scripts
 rm -rf $CK; mkdir -p $CK; rc=0
 for r in $UC/runs/UT-DXDT-A_*; do n=$(basename $r); ln -s $r $CK/output_dxdt_inactive_${n#UT-DXDT-A_}; done
 for r in $UC/runs/UT-DXDT-B_*; do n=$(basename $r); ln -s $r $CK/output_dxdt_capped_${n#UT-DXDT-B_}; done
