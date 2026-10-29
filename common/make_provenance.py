@@ -14,7 +14,7 @@ for r in (x for f in sorted(glob.glob(os.path.join(uc, "runs*.csv"))) for x in c
     x = ET.parse(sf).getroot(); f = lambda p: (x.find(p).text or "").strip() if x.find(p) is not None else ""
     log = open(lf, errors="replace").read(); m = re.search(r"start=(\S+) binary=(\S+) host=(\S+)", log); e = re.search(r"end=(\S+) rc=(\d+)", log)
     row.update(binary_sha=m.group(2) if m else "", commit=bt.get(m.group(2) if m else "", ["", "?"])[1], config_sha=hashlib.sha256(open(sf, "rb").read()).hexdigest()[:16],
-        seed=f(".//user_parameters/random_seed"), dx=f(".//domain/dx"), dt_diffusion=f(".//overall/dt_diffusion"), intracellular_dt=f(".//intracellular_dt"),
+        seed=f(".//options/random_seed"), dx=f(".//domain/dx"), dt_diffusion=f(".//overall/dt_diffusion"), intracellular_dt=f(".//intracellular_dt"),
         max_time=f(".//overall/max_time"), threads=f(".//parallel/omp_num_threads"), machine=m.group(3) if m else "", start=m.group(1) if m else "",
         end=e.group(1) if e else "", status=("ok" if e.group(2) == "0" else "failed") if e else "partial")
     rows.append(row)
