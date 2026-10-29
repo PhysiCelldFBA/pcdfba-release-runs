@@ -15,7 +15,7 @@ Vmax = g("//exchange[@substrate='glucose']/Vmax") / 60.0; Km = g("//exchange[@su
 c0 = g("//variable[@name='glucose']/initial_condition"); Vc = g("//cell_definition//phenotype/volume/total"); ff = g("//phenotype/volume/fluid_fraction")
 rho = g("//growth_model/cell_density") * 1e-12                                                              # g/um3
 mdw = Vc * (1 - ff) * rho; q = Vmax * c0 / (Km + c0)
-def R(n, dx, dt, c=c0): return n * q * mdw * dt / (c * dx ** 3 * 1e-15)
+def R(n, dx, dt, c=c0): return n * (Vmax * c / (Km + c)) * mdw * dt / (c * dx ** 3 * 1e-15)   # q at the concentration c
 def snap(d, k=-1):
     xf = sorted(glob.glob(f"{d}/output*[0-9].xml"))[k]; r = ET.parse(xf).getroot()
     lab = {l.text: (int(l.get("index")), int(l.get("size"))) for l in r.findall(".//cell_population/custom/simplified_data/labels/label")}
@@ -27,7 +27,7 @@ for exp, n0, ts in (("UT-DXDT-A", 1, [None]), ("UT-CONV-BOX", 8, [1, 2, 3])):
     for d in sorted(glob.glob(f"runs/{exp}_dx*")):
         dx, dt = map(float, re.findall(r"dx([\d.]+)_dt([\d.]+)", d)[0])
         for k in ts:
-            s = snap(d, -1 if k is None else k); rows.append(dict(exp=exp, dx=dx, dt=dt, R=R(n0, dx, dt), **s))
+            s = snap(d, -1 if k is None else k); cr = float(etree.parse(f"{d}/PhysiCell_settings.xml").xpath("//variable[@name='glucose']/initial_condition")[0].text); rows.append(dict(exp=exp, dx=dx, dt=dt, c_mM=cr, R=R(n0, dx, dt, cr), **s))   # c = the run's own initial glucose
 df = pd.DataFrame(rows); out = []
 for (exp, t), grp in df.groupby(["exp", df.t.round(0)]):
     ref = grp[(grp.dx == 4) & (grp.dt == 0.001)].iloc[0]
