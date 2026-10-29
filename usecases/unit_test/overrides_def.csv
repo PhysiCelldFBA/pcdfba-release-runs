@@ -250,6 +250,7 @@ UT-CONV-BOX,/PhysiCell_settings/save/full_data/interval,30
 UT-CONV-BOX,/PhysiCell_settings/save/SVG/interval,30
 UT-CONV-BOX,/PhysiCell_settings/save/SVG/enable,false
 UT-CONV-BOX,/PhysiCell_settings/user_parameters/number_of_cells,8
+UT-CONV-BOX,/PhysiCell_settings/microenvironment_setup/variable[@name='glucose']/initial_condition,50
 UT-CONV-BOX_dx0.5_dt0.001,/PhysiCell_settings/domain/dx,0.5
 UT-CONV-BOX_dx0.5_dt0.001,/PhysiCell_settings/domain/dy,0.5
 UT-CONV-BOX_dx0.5_dt0.001,/PhysiCell_settings/domain/dz,0.5
@@ -370,6 +371,7 @@ UT-THREADS,/PhysiCell_settings/save/full_data/interval,30
 UT-THREADS,/PhysiCell_settings/save/SVG/interval,30
 UT-THREADS,/PhysiCell_settings/save/SVG/enable,false
 UT-THREADS,/PhysiCell_settings/user_parameters/number_of_cells,8
+UT-THREADS,/PhysiCell_settings/microenvironment_setup/variable[@name='glucose']/initial_condition,50
 UT-THREADS_t1,/PhysiCell_settings/domain/dx,1
 UT-THREADS_t1,/PhysiCell_settings/domain/dy,1
 UT-THREADS_t1,/PhysiCell_settings/domain/dz,1

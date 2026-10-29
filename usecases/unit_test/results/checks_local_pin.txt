@@ -227,20 +227,14 @@ PASS
 glucose drawn: output_voxel_n4 = 0.165008, output_voxel_mixed = 0.165008, relative difference 0
 PASS
 ### update order
-Traceback (most recent call last):
-  File "/home/mponce/projects/devel/pcdfba-review-runs/usecases/unit_test/../../code/sample_projects_intracellular/fba/dfba_unit_test/scripts/check_update_order.py", line 62, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/home/mponce/projects/devel/pcdfba-review-runs/usecases/unit_test/../../code/sample_projects_intracellular/fba/dfba_unit_test/scripts/check_update_order.py", line 41, in main
-    ref = load(ref_dir)
-          ^^^^^^^^^^^^^
-  File "/home/mponce/projects/devel/pcdfba-review-runs/usecases/unit_test/../../code/sample_projects_intracellular/fba/dfba_unit_test/scripts/check_update_order.py", line 30, in load
-    cells = {k: {int(T): np.sort(c[lab[k], typ == T]) for T in np.unique(typ)}
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/mponce/projects/devel/pcdfba-review-runs/usecases/unit_test/../../code/sample_projects_intracellular/fba/dfba_unit_test/scripts/check_update_order.py", line 30, in <dictcomp>
-    cells = {k: {int(T): np.sort(c[lab[k], typ == T]) for T in np.unique(typ)}
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/mponce/projects/devel/pcdfba-review-runs/usecases/unit_test/../../code/sample_projects_intracellular/fba/dfba_unit_test/scripts/check_update_order.py", line 30, in <dictcomp>
-    cells = {k: {int(T): np.sort(c[lab[k], typ == T]) for T in np.unique(typ)}
-                                   ~~~^^^
-KeyError: 'R_EX_o2_e'
+output_order_identity_t1           max difference to identity_t1 0.000e+00   lowest concentration -3.360e-06   ok
+output_order_identity_t4           max difference to identity_t1 6.939e-18   lowest concentration -3.360e-06   ok
+output_order_rand0_t1              max difference to identity_t1 1.110e-15   lowest concentration -3.360e-06   ok
+output_order_rand0_t4              max difference to identity_t1 1.110e-15   lowest concentration -3.360e-06   ok
+output_order_rand1_t1              max difference to identity_t1 1.110e-15   lowest concentration -3.360e-06   ok
+output_order_rand1_t4              max difference to identity_t1 1.110e-15   lowest concentration -3.360e-06   ok
+output_order_rand2_t1              max difference to identity_t1 1.110e-15   lowest concentration -3.360e-06   ok
+output_order_rand2_t4              max difference to identity_t1 1.110e-15   lowest concentration -3.360e-06   ok
+output_order_reversed_t1           max difference to identity_t1 1.110e-15   lowest concentration -3.360e-06   ok
+output_order_reversed_t4           max difference to identity_t1 1.110e-15   lowest concentration -3.360e-06   ok
+PASS

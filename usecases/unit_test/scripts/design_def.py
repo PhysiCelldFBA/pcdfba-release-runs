@@ -29,10 +29,12 @@ for e, tag in (("UT-DXDT-A", "A"), ("UT-DXDT-B", "B")):
         for dt in DT: rid = f"{e}_dx{dx}_dt{dt}"; run(rid, e); point(rid, dx, dt)
 # UT-CONV-BOX: 8 cells (created at the origin, pushed apart by mechanics) in the same box, growth and division, 120 min
 grid("UT-CONV-BOX", 120); put("UT-CONV-BOX", P + "/user_parameters/number_of_cells", 8)
+put("UT-CONV-BOX", GLC + "initial_condition", 50)   # 10 mM (default) is used up by 90 min
 for dx in DX:
     for dt in DT: rid = f"UT-CONV-BOX_dx{dx}_dt{dt}"; run(rid, "UT-CONV-BOX"); point(rid, dx, dt)
 # UT-THREADS: the CONV-BOX reference point (dx 1, dt 0.01) at 1, 4, 16 threads
 grid("UT-THREADS", 120); put("UT-THREADS", P + "/user_parameters/number_of_cells", 8)
+put("UT-THREADS", GLC + "initial_condition", 50)   # same box as UT-CONV-BOX
 for th in (1, 4, 16):
     rid = f"UT-THREADS_t{th}"; run(rid, "UT-THREADS"); point(rid, 1, 0.01); put(rid, P + "/parallel/omp_num_threads", th)
 # UT-VOX-*: the shipped voxel-sharing configs unchanged (0.1 min), only the SBML path
