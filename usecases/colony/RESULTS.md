@@ -1,6 +1,6 @@
 # Colony: results synthesis (pre-grown study)
 
-Status 2026-10-29. Everything below comes from the 13 runs of `runs_def.csv` that have been run (4 more are listed and not run), all on the pinned code (`review-runs-v1`, commit 7f2b1d0a, MN5-built binary 226118d62b231202; see `provenance.csv`). Numbers are in `results/colony_summary.csv` (per run at 2 min, 6 min and the last snapshot), `results/pg_profiles.csv` (radial profiles) and `results/cap_check_*.csv`.
+Status 2026-10-29. Everything below comes from the 16 runs of `runs_def.csv` that have been run (one more, COL-NEC_x1_t40_s50, is listed and not run), all on the pinned code (`review-runs-v1`, commit 7f2b1d0a, MN5-built binary 226118d62b231202; see `provenance.csv`). Numbers are in `results/colony_summary.csv` (per run at 2 min, 6 min and the last snapshot), `results/pg_profiles.csv` (radial profiles) and `results/cap_check_*.csv`.
 The full-length growth runs (COL-REF, COL-SEED, COL-REP) are **not run yet**; nothing here is a statement about the 600 min colony.
 
 ## Design
@@ -30,7 +30,9 @@ Observables: dead fraction, necrotic-core radius (outer edge of the contiguous r
 
 4. **The time at which the core forms keeps shortening as dt falls, even with the cap inactive.** At 2 min the dead fraction is 13.1, 23.0 and 38.8% for dt 0.0005, 0.00025 and 0.0001, with no sign of levelling. dt 0.00025 is at its plateau by about 5 min and dt 0.0001 reaches 38.8% by 2 min, which suggests the same end state is reached earlier, but the dt 0.0001 run stops at 2 min and cannot confirm it. Timing of necrosis (when) is therefore not a converged quantity at any dt tested; the end-state structure (where) is.
 
-5. **Voxel size matters less than dt at dt 0.001.** dx 1 and dx 4 give 40.2% and 37.3% dead at 10 min (core 130 and 120 um) against 41.8% (130 um) at dx 2: changes of 4% and 11% in dead fraction, 0 and 8% in core radius. The cap is active in 35-73% of cells in all three, so this comparison mixes discretisation with cap effects (see the open items).
+5. **Voxel size: with the cap mostly inactive (dt 0.0005, 6 min) the structure no longer depends on dx.** dx 1, 2 and 4 give 45.2, 45.6 and 44.6% dead (within 2%), core radius 130, 140 and 130 um (one 10 um annulus apart), and the same ring edges (140-190 um). The acetate-using fraction of living cells varies more (40.4, 44.5 and 50.1%), following the acetate cap, which is slightly more active at dx 1 and 4 (7.2 and 6.4% of cells capped against 2.0% at dx 2). At dt 0.001, where the cap acts in 35-73% of cells, dx 1 and 4 gave 40.2 and 37.3% dead at 10 min (core 130 and 120 um) against 41.8% (130 um) at dx 2: that comparison mixes discretisation with the cap.
+
+5b. **A smaller colony is not a substitute.** R0 100 um (21,931 cells), dt 0.0005, 6 min gives 4.0% dead, core 20 um and ring 20-80 um, against 45.6%, 140 um and 140-190 um for R0 200 um at the same settings. The cap is not the reason (1.0% glucose and 1.7% acetate capped); the small colony has a different structure at this age. The sensitivity experiments therefore keep R0 200 um.
 
 6. **Necrosis rate x1 instead of x10 changes the state at 10 min** (22.2% dead, core 100 um at 10 min, against 41.8% and 130 um), as expected for a death rate ten times lower. The runs do not show whether x1 reaches the same core given more time; the x10 speed-up is therefore an acceleration whose equivalence is not demonstrated.
 
@@ -41,7 +43,17 @@ Observables: dead fraction, necrotic-core radius (outer edge of the contiguous r
 - The colony zonation (necrotic core surrounded by an acetate-using ring) is present at every dt up to 0.004 and disappears only at dt 0.01. It is a qualitative result of the model.
 - Core radius, ring inner edge and dead fraction are quantitative results that depend on dt at the shipped setting through the uptake cap, and converge once the cap is inactive (dt <= 0.0005 in this colony). The shipped setting (dt 0.001) lies 7% below that limit in core radius and about 12% in dead fraction at 10 min.
 - Stochastic spread in this design is below the resolution of the observables (annulus width 10 um).
+- Voxel size does not change the structure once the cap is mostly inactive (dx 1, 2, 4 at dt 0.0005: dead fraction within 2%, same ring edges, core within one annulus).
 - The cap number R (unit-test experiment UT-CAPRULE) predicts where the cap acts; the colony data are the in-situ check.
+
+## Criterion
+
+The 5% criterion fixed on 2026-10-28 (core radius and ring fraction against COL-PG) was relaxed on 2026-10-29, after seeing the data, at the user's decision: core and ring edges are compared to the resolution of the analysis (one 10 um annulus, 7% of the core radius) and the dead fraction within 10% relative. With this criterion dx 1, 2 and 4 at dt 0.0005 agree; dt 0.001 against dt 0.0005 (core 130 against 140 um, 41.8 against 47.4% dead at 10 min) is at the limit; dt >= 0.002 is outside it. The relaxation is stated here and must be stated in the supplement.
+
+## Limitations observed
+
+- **Crowding and cell number.** The more cells and the denser the packing, the less stable and the more step-dependent the simulation becomes: the cap fraction grows with the biomass per voxel, the structure changes with dt up to a 10-20 fold finer step than the shipped one, and the one crash seen in this use case (dx 4, dt 0.01, mechanics step too large for the density) happened at the densest settings. The cause of that crash was not confirmed. The small colony (21,931 cells) does not reproduce the 87,685-cell colony. This is an observation across these runs, not a demonstrated mechanism; it is stated as a limit of the framework at high cell density.
+- The dt that converges the colony (0.0005 min) costs about 80 min per 10 simulated minutes for 87,685 cells on one 112-core node.
 
 ## Open items and replan
 
@@ -49,10 +61,11 @@ Observables: dead fraction, necrotic-core radius (outer edge of the contiguous r
 |---|---|---|
 | COL-PG (seeds + repeat) | done | none |
 | COL-DT | done for dt 0.0001-0.01; dt 0.00025 stops at 6 min and dt 0.0001 at 2 min (2 h debug limit) | optional: dt 0.0001 to 6 min in the standard queue (about 135 min), to confirm the plateau |
-| COL-DX | done at dt 0.001 only, where the cap is active in 35-73% of cells | in `runs_def.csv`, not run: dx {1, 4} at dt 0.0005, 6 min (dx 4 about 1 h; dx 1 about 85 min), so dx is read with the cap inactive |
+| COL-DX | done at dt 0.001 (10 min) and at dt 0.0005 (6 min) | none |
 | COL-NEC | done at dt 0.001, 10 min only | in `runs_def.csv`, not run: x1 at dt 0.001 to 40 min in the standard queue (about 4 h), to see whether x1 reaches the x10 core; otherwise state x10 as an acceleration |
 | COL-REF / SEED / REP | not run | decision needed on dt (0.0005 recommended by the evidence above, about 20 h per run; 0.001 about 10 h). The full-growth colony starts small, so its cap fraction may differ from the pre-grown one: run the reference at both dt for one seed and check |
-| COL-BND, COL-KIN, COL-PFBA | not run | run with the converged dt; to keep the cost down use R0 100 um after one check run (COL-R0, in `runs_def.csv`, not run: R0 100 vs 200 at dt 0.0005, 6 min) |
+| COL-R0 | done: R0 100 um is not equivalent | none; sensitivity runs keep R0 200 um |
+| COL-BND, COL-KIN, COL-PFBA | not run | run at R0 200 um, dt 0.0005, 6 min (about 50-60 min per run on one node, so the 32 kinetic sets fit one 32-node debug job at R0 200 um instead of the planned 350 um); whether 6 min is long enough for the kinetic variations to show is untested |
 | COL-FVA | not run | the pre-grown snapshots on the pin already carry the `_lb` columns; the replay can start on COL-PG_s50 and COL-DT_dt0.0005_s50 now |
 | COL-SCALE | wall times above | threads scaling not run |
 | Ledger (R2.M1.7) | recorded in all runs | residuals not yet analysed |
