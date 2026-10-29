@@ -19,6 +19,13 @@ for dt in (0.0005, 0.002, 0.004, 0.01):
     put(rid, P + "/overall/dt_diffusion", dt); put(rid, CD + "/settings/intracellular_dt", dt)
     put(rid, P + "/overall/dt_mechanics", mech); put(rid, P + "/overall/dt_phenotype", mech)
     put(rid, P + "/cell_definitions/cell_definition/phenotype/mechanics/cell_cell_repulsion_strength", round(1000 * 0.001 / mech, 6))
+# finer dt, shortened to fit the 2 h debug queue (cost ~ 1/dt): snapshots every minute
+for dt, tmax in ((0.00025, 6), (0.0001, 2)):
+    rid = f"COL-DT_dt{dt}_s50"; run(rid, "COL-DT")
+    put(rid, P + "/overall/max_time", tmax); put(rid, P + "/save/full_data/interval", 1)
+    put(rid, P + "/overall/dt_diffusion", dt); put(rid, CD + "/settings/intracellular_dt", dt)
+    put(rid, P + "/overall/dt_mechanics", 0.001); put(rid, P + "/overall/dt_phenotype", 0.001)
+    put(rid, P + "/cell_definitions/cell_definition/phenotype/mechanics/cell_cell_repulsion_strength", 1000.0)
 for dx in (1, 4):
     rid = f"COL-DX_dx{dx}_s50"; run(rid, "COL-DX"); put(rid, P + "/domain/dx", dx); put(rid, P + "/domain/dy", dx)
 run("COL-NEC_x1_s50", "COL-NEC")
