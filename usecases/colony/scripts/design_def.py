@@ -7,7 +7,7 @@ run = lambda rid, eid, seed=50: runs.append((rid, eid, seed)); put = lambda s, x
 CD = P + "/cell_definitions/cell_definition/phenotype/intracellular"
 SBML = CD + "/settings/sbml_filename"; LEDGER = ("+" + CD + "/settings", "<dfba_conservation_ledger>true</dfba_conservation_ledger>")
 # pre-grown colony: R0 200 um, 10 min, snapshots every 2 min, necrosis x10 (shipped 1.67e-5)
-PG = ["COL-PG", "COL-DT", "COL-DX", "COL-NEC"]
+PG = ["COL-PG", "COL-DT", "COL-DX", "COL-NEC", "COL-R0"]
 for e in PG:
     put(e, SBML, "./config/shipped/Ecoli_core.xml"); put(e, *LEDGER)
     put(e, P + "/overall/max_time", 10); put(e, P + "/save/full_data/interval", 2); put(e, P + "/save/SVG/enable", "false")
@@ -26,6 +26,19 @@ for dt, tmax in ((0.00025, 6), (0.0001, 2)):
     put(rid, P + "/overall/dt_diffusion", dt); put(rid, CD + "/settings/intracellular_dt", dt)
     put(rid, P + "/overall/dt_mechanics", 0.001); put(rid, P + "/overall/dt_phenotype", 0.001)
     put(rid, P + "/cell_definitions/cell_definition/phenotype/mechanics/cell_cell_repulsion_strength", 1000.0)
+# proposed (not yet run): voxel size with the cap inactive, x1 necrosis to 40 min, and the small colony
+for dx in (1, 4):
+    rid = f"COL-DX_dx{dx}_dt0.0005_s50"; run(rid, "COL-DX")
+    put(rid, P + "/overall/max_time", 6); put(rid, P + "/domain/dx", dx); put(rid, P + "/domain/dy", dx)
+    put(rid, P + "/overall/dt_diffusion", 0.0005); put(rid, CD + "/settings/intracellular_dt", 0.0005)
+    put(rid, P + "/overall/dt_mechanics", 0.001); put(rid, P + "/overall/dt_phenotype", 0.001)
+    put(rid, P + "/cell_definitions/cell_definition/phenotype/mechanics/cell_cell_repulsion_strength", 1000.0)
+run("COL-NEC_x1_t40_s50", "COL-NEC"); put("COL-NEC_x1_t40_s50", P + "/overall/max_time", 40); put("COL-NEC_x1_t40_s50", P + "/save/full_data/interval", 5)
+rid = "COL-R0_R100_dt0.0005_s50"; run(rid, "COL-R0")
+put(rid, P + "/user_parameters/colony_radius", 100); put(rid, P + "/overall/max_time", 6)
+put(rid, P + "/overall/dt_diffusion", 0.0005); put(rid, CD + "/settings/intracellular_dt", 0.0005)
+put(rid, P + "/overall/dt_mechanics", 0.001); put(rid, P + "/overall/dt_phenotype", 0.001)
+put(rid, P + "/cell_definitions/cell_definition/phenotype/mechanics/cell_cell_repulsion_strength", 1000.0)
 for dx in (1, 4):
     rid = f"COL-DX_dx{dx}_s50"; run(rid, "COL-DX"); put(rid, P + "/domain/dx", dx); put(rid, P + "/domain/dy", dx)
 run("COL-NEC_x1_s50", "COL-NEC")

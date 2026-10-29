@@ -49,10 +49,10 @@ Observables: dead fraction, necrotic-core radius (outer edge of the contiguous r
 |---|---|---|
 | COL-PG (seeds + repeat) | done | none |
 | COL-DT | done for dt 0.0001-0.01; dt 0.00025 stops at 6 min and dt 0.0001 at 2 min (2 h debug limit) | optional: dt 0.0001 to 6 min in the standard queue (about 135 min), to confirm the plateau |
-| COL-DX | done at dt 0.001 only, where the cap is active in 35-73% of cells | add dx {1, 4} at dt 0.0005, 6 min (dx 4 about 1 h; dx 1 about 85 min), so dx is read with the cap inactive |
-| COL-NEC | done at dt 0.001, 10 min only | x1 at dt 0.001 to 40 min in the standard queue (about 4 h), to see whether x1 reaches the x10 core; otherwise state x10 as an acceleration |
+| COL-DX | done at dt 0.001 only, where the cap is active in 35-73% of cells | in `runs_def.csv`, not run: dx {1, 4} at dt 0.0005, 6 min (dx 4 about 1 h; dx 1 about 85 min), so dx is read with the cap inactive |
+| COL-NEC | done at dt 0.001, 10 min only | in `runs_def.csv`, not run: x1 at dt 0.001 to 40 min in the standard queue (about 4 h), to see whether x1 reaches the x10 core; otherwise state x10 as an acceleration |
 | COL-REF / SEED / REP | not run | decision needed on dt (0.0005 recommended by the evidence above, about 20 h per run; 0.001 about 10 h). The full-growth colony starts small, so its cap fraction may differ from the pre-grown one: run the reference at both dt for one seed and check |
-| COL-BND, COL-KIN, COL-PFBA | not run | run with the converged dt; to keep the cost down use R0 100 um after one check run (new experiment COL-R0: R0 100 vs 200 at the same settings, 6 min) |
+| COL-BND, COL-KIN, COL-PFBA | not run | run with the converged dt; to keep the cost down use R0 100 um after one check run (COL-R0, in `runs_def.csv`, not run: R0 100 vs 200 at dt 0.0005, 6 min) |
 | COL-FVA | not run | the pre-grown snapshots on the pin already carry the `_lb` columns; the replay can start on COL-PG_s50 and COL-DT_dt0.0005_s50 now |
 | COL-SCALE | wall times above | threads scaling not run |
 | Ledger (R2.M1.7) | recorded in all runs | residuals not yet analysed |
