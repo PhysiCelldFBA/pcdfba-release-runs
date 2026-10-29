@@ -1,6 +1,6 @@
 # Colony: results synthesis (pre-grown study)
 
-Status 2026-10-29. Everything below comes from the 13 runs in `runs_def.csv`, all on the pinned code (`review-runs-v1`, commit 7f2b1d0a, MN5-built binary 226118d62b231202; see `provenance.csv`). Numbers are in `results/colony_summary.csv` (per run at 2 min, 6 min and the last snapshot), `results/pg_profiles.csv` (radial profiles) and `results/cap_check_*.csv`.
+Status 2026-10-29. Everything below comes from the 13 runs of `runs_def.csv` that have been run (4 more are listed and not run), all on the pinned code (`review-runs-v1`, commit 7f2b1d0a, MN5-built binary 226118d62b231202; see `provenance.csv`). Numbers are in `results/colony_summary.csv` (per run at 2 min, 6 min and the last snapshot), `results/pg_profiles.csv` (radial profiles) and `results/cap_check_*.csv`.
 The full-length growth runs (COL-REF, COL-SEED, COL-REP) are **not run yet**; nothing here is a statement about the 600 min colony.
 
 ## Design
