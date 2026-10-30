@@ -6,14 +6,14 @@ Tables (all in USECASE_DIR):
   runs*.csv        run_id, experiment_id, seed                                 the planned runs (what was intended)
   overrides*.csv   scope, xpath, value                                         scope = * (all runs) | experiment_id | run_id; applied in this order
                    (files runs_*.csv / overrides_*.csv are written by scripts/design_*.py; all matching files are read)
-Rules: every xpath must match exactly one element (a typo or a changed base fails loudly, never silently).
+Rules: every xpath must match exactly one element (a typo or a changed base fails loudly, never silently); an xpath ending in /@name sets that existing attribute.
   Derived, never listed in overrides.csv:  options/random_seed = the run's seed (and the user parameter of legacy bases);
   save/folder = ./runs/<run_id>;  initial_conditions/cell_positions/filename = cells_<run_id>.csv (only if scripts/make_cells.py exists).
   A key starting with + adds an element (as the first child): xpath = +PARENT_XPATH, value = the XML fragment; it fails if the parent is not unique or the
   element already exists (then the base has caught up and the row must go).
   Keys starting with @ are not XML: they are arguments for USECASE_DIR/scripts/make_cells.py (@cells.n = number of cells).
 Writes <out>/<run_id>.xml and <out>/cells_<run_id>.csv."""
-import sys, os, csv, json, subprocess, glob
+import sys, os, csv, json, subprocess, glob, re
 from lxml import etree
 args = [a for a in sys.argv[1:] if not a.startswith("--")]; uc = args[0]; only = args[1:]
 out = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else os.path.join(uc, "config")
@@ -23,6 +23,11 @@ rdg = lambda stem: [r for f in sorted(glob.glob(os.path.join(uc, stem + "*.csv")
 exps = {e["experiment_id"]: e for e in rd("experiments.csv")}; runs = rdg("runs"); ov = rdg("overrides")
 os.makedirs(out, exist_ok=True)
 def setone(root, xp, val, ctx):
+    a = re.match(r"^(.*)/@([A-Za-z_][\w.-]*)$", xp)   # an xpath ending in /@name sets that attribute of the one element matched by the rest
+    if a:
+        m = root.xpath(a.group(1))
+        if len(m) != 1 or a.group(2) not in m[0].attrib: sys.exit(f"{ctx}: xpath {xp} must match exactly one existing attribute")
+        m[0].set(a.group(2), str(val)); return
     m = root.xpath(xp)
     if len(m) != 1: sys.exit(f"{ctx}: xpath {xp} matches {len(m)} elements (must be exactly 1)")
     m[0].text = str(val)
