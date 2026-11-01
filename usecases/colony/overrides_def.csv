@@ -205,6 +205,41 @@ COL-QTRN_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='lact
 COL-QTRN_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='lactate']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
 COL-QTRN_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='CO2']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
 COL-QTRN_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='CO2']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-QTRB,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/sbml_filename,./config/shipped/Ecoli_core.xml
+COL-QTRB,/PhysiCell_settings/overall/max_time,600
+COL-QTRB,/PhysiCell_settings/save/full_data/interval,20
+COL-QTRB,/PhysiCell_settings/save/SVG/enable,false
+COL-QTRB,/PhysiCell_settings/parallel/omp_num_threads,112
+COL-QTRB,/PhysiCell_settings/domain/x_min,-500
+COL-QTRB,/PhysiCell_settings/domain/y_min,-500
+COL-QTRB,/PhysiCell_settings/domain/x_max,500
+COL-QTRB,/PhysiCell_settings/domain/y_max,500
+COL-QTRB_qtr_s50,+/PhysiCell_settings/user_parameters,"<quarter_colony type=""bool"" units="""" description=""only the quadrant x >= 0, y >= 0 of the initial disc (quarter-domain runs)"">true</quarter_colony>"
+COL-QTRB_qtr_s50,/PhysiCell_settings/domain/x_min,0
+COL-QTRB_qtr_s50,/PhysiCell_settings/domain/y_min,0
+COL-QTRB_qtr_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='oxygen']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-QTRB_qtr_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='oxygen']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-QTRB_qtr_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='glucose']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-QTRB_qtr_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='glucose']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-QTRB_qtr_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='acetate']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-QTRB_qtr_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='acetate']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-QTRB_qtr_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='lactate']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-QTRB_qtr_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='lactate']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-QTRB_qtr_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='CO2']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-QTRB_qtr_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='CO2']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-QTRB_qtr_s51,+/PhysiCell_settings/user_parameters,"<quarter_colony type=""bool"" units="""" description=""only the quadrant x >= 0, y >= 0 of the initial disc (quarter-domain runs)"">true</quarter_colony>"
+COL-QTRB_qtr_s51,/PhysiCell_settings/domain/x_min,0
+COL-QTRB_qtr_s51,/PhysiCell_settings/domain/y_min,0
+COL-QTRB_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='oxygen']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-QTRB_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='oxygen']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-QTRB_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='glucose']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-QTRB_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='glucose']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-QTRB_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='acetate']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-QTRB_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='acetate']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-QTRB_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='lactate']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-QTRB_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='lactate']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-QTRB_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='CO2']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-QTRB_qtr_s51,/PhysiCell_settings/microenvironment_setup/variable[@name='CO2']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
 COL-QTR,+/PhysiCell_settings/user_parameters,"<quarter_colony type=""bool"" units="""" description=""only the quadrant x >= 0, y >= 0 of the initial disc (quarter-domain runs)"">true</quarter_colony>"
 COL-QTR,/PhysiCell_settings/domain/x_min,0
 COL-QTR,/PhysiCell_settings/domain/y_min,0

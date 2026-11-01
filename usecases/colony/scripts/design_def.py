@@ -65,6 +65,13 @@ for a in ("x_min", "y_min"): put("COL-QTRN", P + "/domain/" + a, -250)
 for a in ("x_max", "y_max"): put("COL-QTRN", P + "/domain/" + a, 250)
 for seed in (50, 51):
     run(f"COL-QTRN_qtr_s{seed}", "COL-QTRN", seed); quarter_rows(f"COL-QTRN_qtr_s{seed}")
+# COL-QTRB: as COL-QTRN but in the box of the legacy full run (+-500 um, quarter 0..500) and to 600 min: removes the box as a difference to colony_ref_s51
+put("COL-QTRB", SBML, "./config/shipped/Ecoli_core.xml"); put("COL-QTRB", P + "/overall/max_time", 600); put("COL-QTRB", P + "/save/full_data/interval", 20); put("COL-QTRB", P + "/save/SVG/enable", "false")
+put("COL-QTRB", P + "/parallel/omp_num_threads", 112)
+for a in ("x_min", "y_min"): put("COL-QTRB", P + "/domain/" + a, -500)
+for a in ("x_max", "y_max"): put("COL-QTRB", P + "/domain/" + a, 500)
+for seed in (50, 51):
+    run(f"COL-QTRB_qtr_s{seed}", "COL-QTRB", seed); quarter_rows(f"COL-QTRB_qtr_s{seed}")
 # COL-QTR: the quadrant x >= 0, y >= 0 of the pre-grown colony (symmetry planes at x = 0 and y = 0: no-flux there, Dirichlet on the outer faces only);
 # needs the binary with the quarter_colony option (code branch feature/colony-quarter-disc)
 QTR = "COL-QTR_dt0.0005_s50"; run(QTR, "COL-QTR")
