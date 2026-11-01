@@ -1,2 +1,3 @@
 # binary_sha	commit	note
 226118d62b231202	7f2b1d0a52782918ea4319c2ef94563bf719f253	MN5-built bacterial-colony, pre-grown study
+c846ce998e7f21a8	23947c49408d73f90060a8a31d1f56f12abf2061	MN5-built bacterial-colony from the local branch feature/colony-quarter-disc (pin 7f2b1d0a + quarter_colony option; not pushed, not the pin): COL-QTR, QTRG, QTRL, QTRN, QTRB
