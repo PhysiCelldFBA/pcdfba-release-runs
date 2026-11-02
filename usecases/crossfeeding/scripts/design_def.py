@@ -12,7 +12,7 @@ SB = ("./config/shipped/sbml_models/C_beijerinckii_model_iCB925_trimmed.xml", ".
 put("*", "@cells.scale", "half")
 put("*", P + "/domain/x_min", -60); put("*", P + "/domain/x_max", 60); put("*", P + "/domain/y_min", -60); put("*", P + "/domain/y_max", 60)
 put("*", P + "/overall/max_time", 1800); put("*", P + "/save/SVG/enable", "false"); put("*", P + "/save/full_data/interval", 30)
-put("*", P + "/parallel/omp_num_threads", 28)
+put("*", P + "/parallel/omp_num_threads", 56)
 put("*", P + "/initial_conditions/cell_positions/folder", "./config")
 for c, s in zip(CDS, SB):
     put("*", c + "/sbml_filename", s); put("*", "+" + c, "<dfba_conservation_ledger>true</dfba_conservation_ledger>")

@@ -7,7 +7,7 @@ scope,xpath,value
 *,/PhysiCell_settings/overall/max_time,1800
 *,/PhysiCell_settings/save/SVG/enable,false
 *,/PhysiCell_settings/save/full_data/interval,30
-*,/PhysiCell_settings/parallel/omp_num_threads,28
+*,/PhysiCell_settings/parallel/omp_num_threads,56
 *,/PhysiCell_settings/initial_conditions/cell_positions/folder,./config
 *,/PhysiCell_settings/cell_definitions/cell_definition[@name='c_beijerinckii']/phenotype/intracellular/settings/sbml_filename,./config/shipped/sbml_models/C_beijerinckii_model_iCB925_trimmed.xml
 *,+/PhysiCell_settings/cell_definitions/cell_definition[@name='c_beijerinckii']/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
