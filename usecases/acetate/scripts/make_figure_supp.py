@@ -1,4 +1,4 @@
-"""Supplementary figure of the acetate switch: glucose (top) and acetate (bottom) fields in the z = 0 slice of the closed box at three times, and the living cells (all z, projected); the min-max of the slice is printed in each panel (the box is well mixed).
+"""Supplementary figure of the acetate switch: glucose (top) and acetate (bottom) fields in the z = 0 slice of the closed box at three times, (no cells, no flux arrows: the spatial variation is below 0.3%, so arrows would show numerical noise).
 usage: make_figure_supp.py RUNDIR OUT_PREFIX [T1=30 T2=120 T3=270 (min)]
 Colour scales are shared by the row."""
 import sys, os, numpy as np, scipy.io as sio, xml.etree.ElementTree as ET, matplotlib
@@ -23,14 +23,11 @@ for r, nm in enumerate(("glucose", "acetate")):
     vmax = max(s[2][nm].max() for s in S); gm = 0
     for j, s in enumerate(S):
         a = ax[r, j]; im = a.imshow(s[2][nm], origin="lower", extent=[-h, h, -h, h], cmap=cm[nm], vmin=0, vmax=vmax * 1.0001, interpolation="nearest")
-        f = s[2][nm]; a.text(0.03, 0.04, "min-max %.3f-%.3f mM" % (max(f.min(), 0.0), max(f.max(), 0.0)), transform=a.transAxes, fontsize=8, color="k", bbox=dict(fc="white", ec="none", alpha=0.7, pad=1.5))
-        a.scatter(s[3], s[4], s=9, c="#1f4e79", alpha=0.7, lw=0)
         a.set_xlim(-h, h); a.set_ylim(-h, h)
         if r == 0: a.set_title("T%d  (t = %g h)" % (j + 1, TS[j] / 60))
         if r == 1: a.set_xlabel("X (µm)")
         if j == 0: a.set_ylabel("Y (µm)")
     cb = fig.colorbar(im, ax=ax[r, :], fraction=0.025, pad=0.02); cb.set_label(nm.capitalize() + " (mM)")
-fig.text(0.5, 0.005, "Dots: living cells (all z, projected); field = slice z = 0, voxels 4 µm; colour scale shared along each row.", ha="center", fontsize=8)
 fig.savefig(out + ".png", bbox_inches="tight", facecolor="white"); fig.savefig(out + ".pdf", bbox_inches="tight", facecolor="white")
 for nm in ("glucose", "acetate"): print(nm, [("%.3f-%.3f" % (s[2][nm].min(), s[2][nm].max())) for s in S])
 print("cells", [len(s[3]) for s in S])
