@@ -285,6 +285,34 @@ COL-REP,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracell
 COL-REP,/PhysiCell_settings/overall/dt_mechanics,0.001
 COL-REP,/PhysiCell_settings/overall/dt_phenotype,0.001
 COL-REP,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/mechanics/cell_cell_repulsion_strength,1000.0
+COL-REFDT,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/sbml_filename,./config/shipped/Ecoli_core.xml
+COL-REFDT,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
+COL-REFDT,/PhysiCell_settings/overall/max_time,600
+COL-REFDT,/PhysiCell_settings/save/full_data/interval,20
+COL-REFDT,/PhysiCell_settings/save/SVG/enable,false
+COL-REFDT,/PhysiCell_settings/parallel/omp_num_threads,112
+COL-REFDT,/PhysiCell_settings/domain/x_min,-500
+COL-REFDT,/PhysiCell_settings/domain/y_min,-500
+COL-REFDT,/PhysiCell_settings/domain/x_max,500
+COL-REFDT,/PhysiCell_settings/domain/y_max,500
+COL-REFDT,/PhysiCell_settings/overall/dt_diffusion,0.00025
+COL-REFDT,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/intracellular_dt,0.00025
+COL-REFDT,/PhysiCell_settings/overall/dt_mechanics,0.001
+COL-REFDT,/PhysiCell_settings/overall/dt_phenotype,0.001
+COL-REFDT,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/mechanics/cell_cell_repulsion_strength,1000.0
+COL-REFDT_dt0.00025_s50,+/PhysiCell_settings/user_parameters,"<quarter_colony type=""bool"" units="""" description=""only the quadrant x >= 0, y >= 0 of the initial disc (quarter-domain runs)"">true</quarter_colony>"
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/domain/x_min,0
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/domain/y_min,0
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='oxygen']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='oxygen']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='glucose']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='glucose']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='acetate']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='acetate']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='lactate']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='lactate']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='CO2']/Dirichlet_options/boundary_value[@ID='xmin']/@enabled,False
+COL-REFDT_dt0.00025_s50,/PhysiCell_settings/microenvironment_setup/variable[@name='CO2']/Dirichlet_options/boundary_value[@ID='ymin']/@enabled,False
 COL-REF_s50,+/PhysiCell_settings/user_parameters,"<quarter_colony type=""bool"" units="""" description=""only the quadrant x >= 0, y >= 0 of the initial disc (quarter-domain runs)"">true</quarter_colony>"
 COL-REF_s50,/PhysiCell_settings/domain/x_min,0
 COL-REF_s50,/PhysiCell_settings/domain/y_min,0

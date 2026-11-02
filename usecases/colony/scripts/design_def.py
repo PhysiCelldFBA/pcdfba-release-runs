@@ -74,16 +74,16 @@ for seed in (50, 51):
     run(f"COL-QTRB_qtr_s{seed}", "COL-QTRB", seed); quarter_rows(f"COL-QTRB_qtr_s{seed}")
 # COL-REF / COL-SEED / COL-REP: quarter colony (validated by COL-QTRB), legacy box (quarter 0..500 um), shipped start, 600 min, ledger on,
 # dt 0.0005 (cap inactive in the pre-grown study; at dt 0.001 COL-QTRB has 24-36% of cells capped for glucose and 43-66% for acetate from 360 min)
-for e in ("COL-REF", "COL-SEED", "COL-REP"):
+for e, DT in (("COL-REF", 0.0005), ("COL-SEED", 0.0005), ("COL-REP", 0.0005), ("COL-REFDT", 0.00025)):
     put(e, SBML, "./config/shipped/Ecoli_core.xml"); put(e, *LEDGER)
     put(e, P + "/overall/max_time", 600); put(e, P + "/save/full_data/interval", 20); put(e, P + "/save/SVG/enable", "false")
     put(e, P + "/parallel/omp_num_threads", 112)
     for a in ("x_min", "y_min"): put(e, P + "/domain/" + a, -500)
     for a in ("x_max", "y_max"): put(e, P + "/domain/" + a, 500)
-    put(e, P + "/overall/dt_diffusion", 0.0005); put(e, CD + "/settings/intracellular_dt", 0.0005)
+    put(e, P + "/overall/dt_diffusion", DT); put(e, CD + "/settings/intracellular_dt", DT)
     put(e, P + "/overall/dt_mechanics", 0.001); put(e, P + "/overall/dt_phenotype", 0.001)
     put(e, P + "/cell_definitions/cell_definition/phenotype/mechanics/cell_cell_repulsion_strength", 1000.0)
-for rid, e, seed in (("COL-REF_s50", "COL-REF", 50), ("COL-SEED_s51", "COL-SEED", 51), ("COL-SEED_s52", "COL-SEED", 52), ("COL-REP_s50", "COL-REP", 50)):
+for rid, e, seed in (("COL-REFDT_dt0.00025_s50", "COL-REFDT", 50), ("COL-REF_s50", "COL-REF", 50), ("COL-SEED_s51", "COL-SEED", 51), ("COL-SEED_s52", "COL-SEED", 52), ("COL-REP_s50", "COL-REP", 50)):
     run(rid, e, seed); quarter_rows(rid)
 # COL-QTR: the quadrant x >= 0, y >= 0 of the pre-grown colony (symmetry planes at x = 0 and y = 0: no-flux there, Dirichlet on the outer faces only);
 # needs the binary with the quarter_colony option (code branch feature/colony-quarter-disc)
