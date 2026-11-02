@@ -29,6 +29,8 @@ for dx in (0.8, 1.6): rid = f"CF-DX_dx{dx}_dt0.001_s50"; run(rid, "CF-DX"); setd
 for dt in (0.002, 0.0005): rid = f"CF-DT_dx1.25_dt{dt}_s50"; run(rid, "CF-DT"); setdt(rid, dt)
 # CF-DXDT: finer step with the other voxel sizes
 for dx in (0.8, 1.6): rid = f"CF-DXDT_dx{dx}_dt0.0005_s50"; run(rid, "CF-DXDT"); setdx(rid, dx); setdt(rid, 0.0005)
+# CF-FIG: preview of the manuscript figure from one run (dx 1.6, dt 0.001) on a debug node, 112 threads, own run id (the same setting is CF-DX_dx1.6_dt0.001_s50)
+rid = "CF-FIG_dx1.6_dt0.001_s50"; run(rid, "CF-FIG"); setdx(rid, 1.6); put(rid, P + "/parallel/omp_num_threads", 112)
 with open(f"{UC}/runs_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["run_id", "experiment_id", "seed"]); w.writerows(runs)
 with open(f"{UC}/overrides_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["scope", "xpath", "value"]); w.writerows(ov)
 print(len(runs), "runs,", len(ov), "override rows")

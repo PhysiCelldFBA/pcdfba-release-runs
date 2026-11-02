@@ -33,3 +33,6 @@ CF-DXDT_dx1.6_dt0.0005_s50,/PhysiCell_settings/domain/dy,1.6
 CF-DXDT_dx1.6_dt0.0005_s50,/PhysiCell_settings/overall/dt_diffusion,0.0005
 CF-DXDT_dx1.6_dt0.0005_s50,/PhysiCell_settings/cell_definitions/cell_definition[@name='c_beijerinckii']/phenotype/intracellular/settings/intracellular_dt,0.0005
 CF-DXDT_dx1.6_dt0.0005_s50,/PhysiCell_settings/cell_definitions/cell_definition[@name='m_barkeri']/phenotype/intracellular/settings/intracellular_dt,0.0005
+CF-FIG_dx1.6_dt0.001_s50,/PhysiCell_settings/domain/dx,1.6
+CF-FIG_dx1.6_dt0.001_s50,/PhysiCell_settings/domain/dy,1.6
+CF-FIG_dx1.6_dt0.001_s50,/PhysiCell_settings/parallel/omp_num_threads,112

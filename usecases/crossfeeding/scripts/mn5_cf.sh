@@ -8,5 +8,5 @@ if [ ! -x $B/uc/bin/crossfeeding ]; then
 fi
 cd $B/uc; chmod +x scripts/run_task.sh bin/crossfeeding
 echo "binary $(sha256sum bin/crossfeeding | cut -c1-16) commit $(cat $B/tree/COMMIT)"
-for r in $RUNS; do srun -N1 -n1 -c28 --exact --job-name=$r scripts/run_task.sh $r & done
+for r in $RUNS; do srun -N1 -n1 -c${SLURM_CPUS_PER_TASK:-28} --exact --job-name=$r scripts/run_task.sh $r & done
 wait; echo "all done $(date -Is)"
