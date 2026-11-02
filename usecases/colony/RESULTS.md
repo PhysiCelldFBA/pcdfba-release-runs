@@ -1,7 +1,7 @@
 # Colony: results synthesis (pre-grown study)
 
 Status 2026-10-29. Everything below comes from the 16 runs of `runs_def.csv` that have been run (one more, COL-NEC_x1_t40_s50, is listed and not run), all on the pinned code (`review-runs-v1`, commit 7f2b1d0a, MN5-built binary 226118d62b231202; see `provenance.csv`). Numbers are in `results/colony_summary.csv` (per run at 2 min, 6 min and the last snapshot), `results/pg_profiles.csv` (radial profiles) and `results/cap_check_*.csv`.
-The full-length growth runs (COL-REF, COL-SEED, COL-REP) are **not run yet**; nothing in the pre-grown sections is a statement about the 600 min colony. The quarter-domain validation section below includes 600 min quarter runs (COL-QTRB) that are validation, not COL-REF.
+The full-length growth runs (COL-REF, COL-SEED, COL-REP; quarter colonies, dt 0.0005, 600 min) were run on 2026-11-02 and are reported in the section "Full-growth reference, seeds and repeat" at the end of the quarter-domain section. The pre-grown sections are not statements about the 600 min colony.
 
 ## Design
 
@@ -81,6 +81,32 @@ At 600 min the quarter has 2.6% more cells, 0.8% larger radius, the same ring ou
 
 Limits of the validation: the cell-count offset of +9-10% in the +-150 um box (COL-QTRL) is not seen in the legacy box at 600 min (+2.6%); the two differ in box and in the run used for reference, and cell counts at a single snapshot have a spread of several percent from synchronous division waves (QTRL quarter 5916 vs QTRN 5537 cells at 340 min with the same seed; thread count and box differ), so the offset is not established beyond that scatter. The comparison with the legacy run is indicative only.
 
+## Full-growth reference, seeds and repeat (COL-REF, COL-SEED, COL-REP)
+
+Four quarter-colony runs from the shipped start (colony_radius 10 um) to 600 min: COL-REF_s50, COL-SEED_s51, COL-SEED_s52, COL-REP_s50 (same seed as REF). Legacy box (+-500 um, quarter 0..500 um), dx 2, dt_diffusion = intracellular_dt 0.0005, dt_mechanics = dt_phenotype 0.001, 4 mM glucose / 5 mM O2, ledger on, 112 threads, 4 nodes; 5.0-5.6 h per run (job 48389037), rc 0, 31 snapshots each. Code: the pin (7f2b1d0a) plus the unmerged option `quarter_colony` (branch `feature/colony-quarter-disc`, commit 23947c49, binary c846ce99, MN5-built; the branch is not pushed). Numbers: `results/ref_summary.csv`, `results/ref_zones.csv`, `results/ref_profiles.csv`, `results/cap_check_COL-{REF_s50,SEED_s51,SEED_s52,REP_s50}.csv`. Cell counts are the quarter count x 4. Zone statistics (core, ring) exclude nothing by hand: the alive cells at the symmetry planes (see above) affect only the ring inner edge, which is not measurable (reported 0).
+
+| run | cells x4 at 360 / 480 / 600 min | dead % at 600 | R99 at 600 (um) | core at 360 / 480 / 600 (um) | ring outer edge 360 / 480 / 600 (um) |
+|---|---|---|---|---|---|
+| REF s50 | 24,796 / 50,388 / 98,008 | 46.2 | 215.2 | 30 / 90 / 150 | 80 / 150 / 200 |
+| SEED s51 | 24,784 / 50,380 / 98,020 | 46.2 | 215.3 | 30 / 90 / 150 | 80 / 150 / 200 |
+| SEED s52 | 24,788 / 50,340 / 98,124 | 45.9 | 215.1 | 30 / 90 / 150 | 80 / 150 / 200 |
+| REP s50 | 24,800 / 50,436 / 98,188 | 46.2 | 215.2 | 30 / 90 / 150 | 80 / 150 / 200 |
+
+1. **Seed spread and repeat meet the criterion.** Cell number differs by 0.1% between seeds and 0.2% between REF and REP at 600 min; the dead fraction by at most 0.3 percentage points (0.6% relative); R99 by 0.2 um; core and ring edges are identical at the 10 um annulus resolution at all three times. REF and REP are not bit-identical (98,008 vs 98,188 cells): thread scheduling contributes noise of the same size as the seed spread.
+2. **Cap fraction at dt 0.0005 is small.** Fraction of cells whose recorded bound is below the Michaelis-Menten bound (REF, 360 / 480 / 600 min): glucose 4.3 / 6.4 / 7.4%, acetate 4.1 / 14.2 / 8.4%, oxygen about 0.01%; median R 0.13-0.42 (glucose) and 0.49-0.87 (acetate). In COL-QTRB at dt 0.001 the fractions were 24-36% (glucose) and 43-66% (acetate), median R 0.3-0.9 and 1.0-1.7. The other three runs agree with REF within 1.5 percentage points. Acetate is still partly capped at its median R (0.7-0.9, above the initial threshold of about 0.3 only in part of the cells): the cap acts on a minority.
+3. **Ledger (R2.M1.7).** The cumulative residual of the cell sink / source terms is at most 5e-11 of the gross flux for oxygen and glucose and 2e-14 for acetate and CO2 in all four runs; the largest single-step residual is 4.8e-9 mmol (oxygen) against a cumulative gross flux of 2.4e8 mmol at 600 min. Diffusion-side residuals were not analysed.
+4. **Against COL-QTRB (dt 0.001) and the legacy full run (colony_ref_s51, seed 51, not on the pin).**
+
+   | | cells x4 at 360 / 480 / 600 | dead % at 360 / 480 / 600 | R99 at 600 (um) | core at 360 / 480 / 600 (um) | ring outer edge at 600 (um) |
+   |---|---|---|---|---|---|
+   | legacy full | 23,160 / 47,938 / 93,632 (full count) | 2.4 / 28.5 / 39.7 | 211.9 | 10 / 80 / 130 | 200 |
+   | QTRB s50 (dt 0.001) | 24,636 / 49,812 / 96,048 | 3.1 / 29.3 / 40.0 | 213.6 | 0 / 80 / 140 | 200 |
+   | REF s50 (dt 0.0005) | 24,796 / 50,388 / 98,008 | 6.7 / 36.0 / 46.2 | 215.2 | 30 / 90 / 150 | 200 |
+
+   REF has +4.7% cells and +1.6% radius against the legacy run at 600 min, and the ring outer edge is identical. The dead fraction is 6.5 percentage points higher (16% relative) and the core 20 um (two annuli) larger; the same offset is present at 360 and 480 min (dead 6.7 vs 2.4%, 36.0 vs 28.5%). **Against the legacy run, the relaxed criterion (core and ring edges within one 10 um annulus, dead fraction within 10% relative) is not met for the core and the dead fraction.** QTRB, at the legacy dt, reproduces the legacy run (dead 40.0 vs 39.7%), so the difference is the time step (0.0005 vs 0.001) and not the quarter method. This agrees with the pre-grown finding that structure converges only for dt <= 0.0005: dt 0.001 results, including the legacy colony, understate the necrotic fraction by about 6 percentage points at 600 min.
+
+Limits: dt 0.00025 has not been run for the full-growth colony, so convergence at dt 0.0005 is shown only by the pre-grown study (dt 0.0005 vs 0.00025 and 0.0001 to 2-6 min) and not at 600 min; the ring inner edge is not measurable in the quarter runs; the legacy run is a different code build (not the pin), seed 51, one run; seeds 50-52 are three samples.
+
 ## Open items and replan
 
 | Item | Status | Proposal |
@@ -89,7 +115,7 @@ Limits of the validation: the cell-count offset of +9-10% in the +-150 um box (C
 | COL-DT | done for dt 0.0001-0.01; dt 0.00025 stops at 6 min and dt 0.0001 at 2 min (2 h debug limit) | optional: dt 0.0001 to 6 min in the standard queue (about 135 min), to confirm the plateau |
 | COL-DX | done at dt 0.001 (10 min) and at dt 0.0005 (6 min) | none |
 | COL-NEC | done at dt 0.001, 10 min only | in `runs_def.csv`, not run: x1 at dt 0.001 to 40 min in the standard queue (about 4 h), to see whether x1 reaches the x10 core; otherwise state x10 as an acceleration |
-| COL-REF / SEED / REP | not run | quarter-domain runs (validated above: COL-QTRB) in the legacy box, 600 min, ledger on, about 4 h per run on 2 nodes at dt 0.001; decision still needed on dt (0.0005 recommended by the evidence above, about 20 h per run; 0.001 about 10 h). The full-growth colony starts small, so its cap fraction may differ from the pre-grown one: run the reference at both dt for one seed and check |
+| COL-REF / SEED / REP | done 2026-11-02 (quarter colonies, dt 0.0005, 600 min) | optional: one COL-REF at dt 0.00025 (about 2x the cost, 10-12 h) to show convergence at 600 min; otherwise state that dt 0.0005 is converged only by the pre-grown evidence |
 | COL-R0 | done: R0 100 um is not equivalent | none; sensitivity runs keep R0 200 um |
 | COL-BND, COL-KIN, COL-PFBA | not run | run at R0 200 um, dt 0.0005, 6 min (about 50-60 min per run on one node, so the 32 kinetic sets fit one 32-node debug job at R0 200 um instead of the planned 350 um); whether 6 min is long enough for the kinetic variations to show is untested |
 | COL-FVA | not run | the pre-grown snapshots on the pin already carry the `_lb` columns; the replay can start on COL-PG_s50 and COL-DT_dt0.0005_s50 now |
