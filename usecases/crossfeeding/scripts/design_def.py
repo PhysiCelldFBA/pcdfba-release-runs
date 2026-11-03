@@ -32,15 +32,12 @@ for dx in (0.8, 1.6): rid = f"CF-DXDT_dx{dx}_dt0.0005_s50"; run(rid, "CF-DXDT");
 # CF-FIG: preview of the manuscript figure from one run (dx 1.6, dt 0.001) on a debug node, 112 threads, own run id (the same setting is CF-DX_dx1.6_dt0.001_s50)
 rid = "CF-FIG_dx1.6_dt0.001_s50"; run(rid, "CF-FIG"); setdx(rid, 1.6); put(rid, P + "/parallel/omp_num_threads", 112)
 # CF2: second design after the first series (RESULTS.md): the +-60 um box and the zero boundaries made H2 / acetate leave through the edges.
-# Box +-100 um (the paper box, 200 is a multiple of 1.25, 0.8 and 1.6) with the same 111 cells; H2, acetate and CO2 start at 1 mM (methane 0, mineral nutrients and glucose as shipped);
-# every boundary value is 0 except glucose, NH4, Pi and SO4 (the supplied nutrients): CO2 goes from 1 to 0 at the six faces. CF2-KM also lowers the Km of M. barkeri for H2 from 0.05 to 0.01 mM.
+# Box +-100 um (the paper box, 200 is a multiple of 1.25, 0.8 and 1.6) with the same 111 cells; H2 and acetate start at 1 mM (CO2 already starts at 1 mM and stays held at 1 mM at the boundary as shipped; methane 0, glucose and mineral nutrients as shipped);
+# the H2, acetate and methane boundaries stay 0 as shipped. CF2-KM also lowers the Km of M. barkeri for H2 from 0.05 to 0.01 mM.
 for rid, eid, km in (("CF2-BOX_s50", "CF2-BOX", None), ("CF2-KM_s50", "CF2-KM", 0.01)):
     run(rid, eid)
     for ax in ("x", "y"): put(rid, P + f"/domain/{ax}_min", -100); put(rid, P + f"/domain/{ax}_max", 100)
-    for sub in ("H2", "acetate", "CO2"): put(rid, P + f"/microenvironment_setup/variable[@name='{sub}']/initial_condition", 1)
-    V = P + "/microenvironment_setup/variable[@name='CO2']"
-    put(rid, V + "/Dirichlet_boundary_condition", 0)
-    for f in ("xmin", "xmax", "ymin", "ymax", "zmin", "zmax"): put(rid, V + f"/Dirichlet_options/boundary_value[@ID='{f}']", 0)
+    for sub in ("H2", "acetate"): put(rid, P + f"/microenvironment_setup/variable[@name='{sub}']/initial_condition", 1)
     if km: put(rid, P + "/cell_definitions/cell_definition[@name='m_barkeri']/phenotype/intracellular/transport_model/exchange[@substrate='H2']/Km", km)
 with open(f"{UC}/runs_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["run_id", "experiment_id", "seed"]); w.writerows(runs)
 with open(f"{UC}/overrides_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["scope", "xpath", "value"]); w.writerows(ov)
