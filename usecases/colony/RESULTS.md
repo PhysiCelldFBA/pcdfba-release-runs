@@ -105,7 +105,24 @@ Four quarter-colony runs from the shipped start (colony_radius 10 um) to 600 min
 
    REF has +4.7% cells and +1.6% radius against the legacy run at 600 min, and the ring outer edge is identical. The dead fraction is 6.5 percentage points higher (16% relative) and the core 20 um (two annuli) larger; the same offset is present at 360 and 480 min (dead 6.7 vs 2.4%, 36.0 vs 28.5%). **Against the legacy run, the relaxed criterion (core and ring edges within one 10 um annulus, dead fraction within 10% relative) is not met for the core and the dead fraction.** QTRB, at the legacy dt, reproduces the legacy run (dead 40.0 vs 39.7%), so the difference is the time step (0.0005 vs 0.001) and not the quarter method. This agrees with the pre-grown finding that structure converges only for dt <= 0.0005: dt 0.001 results, including the legacy colony, understate the necrotic fraction by about 6 percentage points at 600 min.
 
-Limits: dt 0.00025 has not been run for the full-growth colony, so convergence at dt 0.0005 is shown only by the pre-grown study (dt 0.0005 vs 0.00025 and 0.0001 to 2-6 min) and not at 600 min; the ring inner edge is not measurable in the quarter runs; the legacy run is a different code build (not the pin), seed 51, one run; seeds 50-52 are three samples.
+Limits: convergence at dt 0.0005 at 600 min is addressed in the next section (COL-REFDT); the ring inner edge is not measurable in the quarter runs; the legacy run is a different code build (not the pin), seed 51, one run; seeds 50-52 are three samples.
+
+## Time-step check at 600 min (COL-REFDT)
+
+COL-REFDT_dt0.00025_s50: COL-REF with dt_diffusion = intracellular_dt 0.00025 (half), everything else identical (seed 50, dt_mechanics = dt_phenotype 0.001, quarter colony, binary c846ce99, 112 threads, one node, job 48410453, 7 h 39 min, rc 0, 31 snapshots). Numbers: `results/refdt_zones.csv`, `results/refdt_profiles.csv`, `results/cap_check_COL-REFDT_dt0.00025_s50.csv`.
+
+| | cells x4 at 360 / 480 / 600 | dead % at 360 / 480 / 600 | R99 at 600 (um) | core at 360 / 480 / 600 (um) | ring outer edge at 360 / 480 / 600 (um) |
+|---|---|---|---|---|---|
+| REF s50 (dt 0.0005) | 24,796 / 50,388 / 98,008 | 6.7 / 36.0 / 46.2 | 215.2 | 30 / 90 / 150 | 80 / 150 / 200 |
+| REFDT s50 (dt 0.00025) | 24,876 / 50,700 / 99,260 | 10.2 / 40.1 / 48.0 | 216.2 | 30 / 100 / 150 | 80 / 150 / 200 |
+
+1. **At 600 min the relaxed criterion is met.** Cells +1.3%, R99 +1 um, core and ring edges identical at 600 min (core 150 um, ring 200 um), dead fraction 48.0 vs 46.2% (+3.9% relative, +1.8 percentage points; the seed spread of REF is 0.3 points, so the difference is real but inside the 10% criterion).
+2. **Earlier times are not converged.** The dead fraction at 480 min is 40.1 vs 36.0% (+11% relative, core 100 vs 90 um, one annulus), and at 360 min 10.2 vs 6.7%: necrosis starts earlier as dt falls, as in the pre-grown study. The structure at 600 min is converged for the criterion; the timing of necrosis is not.
+3. **The dead fraction at 600 min against dt:** 39.7% (legacy, dt 0.001), 46.2% (0.0005), 48.0% (0.00025). The steps are 6.5 and 1.8 points, a ratio of about 3.6, consistent with convergence from below. A Richardson-type extrapolation would put the limit near 48.5-49% (assumes first order; not tested).
+4. **Cap fraction at dt 0.00025 is negligible:** glucose 0.008%, acetate 0.008%, oxygen 0.008% at 600 min (median R 0.09 glucose, 0.38 acetate), against 7.4 / 8.4 / 0.01% at dt 0.0005. The residual difference between dt 0.0005 and 0.00025 is therefore partly the cap acting on a minority of cells at dt 0.0005.
+5. **Ledger:** cumulative residual of the cell terms at 600 min: oxygen 1.3e-6 mmol against 2.4e8 mmol gross (5e-15), as for COL-REF.
+
+Limits: one run, seed 50; REF and REFDT differ by thread scheduling noise too (REF vs REP: 0.2% in cells); dt 0.0001 was not run at 600 min.
 
 ## Open items and replan
 
@@ -115,7 +132,7 @@ Limits: dt 0.00025 has not been run for the full-growth colony, so convergence a
 | COL-DT | done for dt 0.0001-0.01; dt 0.00025 stops at 6 min and dt 0.0001 at 2 min (2 h debug limit) | optional: dt 0.0001 to 6 min in the standard queue (about 135 min), to confirm the plateau |
 | COL-DX | done at dt 0.001 (10 min) and at dt 0.0005 (6 min) | none |
 | COL-NEC | done at dt 0.001, 10 min only | in `runs_def.csv`, not run: x1 at dt 0.001 to 40 min in the standard queue (about 4 h), to see whether x1 reaches the x10 core; otherwise state x10 as an acceleration |
-| COL-REF / SEED / REP | done 2026-11-02 (quarter colonies, dt 0.0005, 600 min) | optional: one COL-REF at dt 0.00025 (about 2x the cost, 10-12 h) to show convergence at 600 min; otherwise state that dt 0.0005 is converged only by the pre-grown evidence |
+| COL-REF / SEED / REP | done 2026-11-02 (quarter colonies, dt 0.0005, 600 min) | COL-REFDT (dt 0.00025) done 2026-11-03: structure at 600 min within the relaxed criterion; timing of necrosis (360-480 min) still shifts earlier with smaller dt |
 | COL-R0 | done: R0 100 um is not equivalent | none; sensitivity runs keep R0 200 um |
 | COL-BND, COL-KIN, COL-PFBA | not run | run at R0 200 um, dt 0.0005, 6 min (about 50-60 min per run on one node, so the 32 kinetic sets fit one 32-node debug job at R0 200 um instead of the planned 350 um); whether 6 min is long enough for the kinetic variations to show is untested |
 | COL-FVA | not run | the pre-grown snapshots on the pin already carry the `_lb` columns; the replay can start on COL-PG_s50 and COL-DT_dt0.0005_s50 now |
