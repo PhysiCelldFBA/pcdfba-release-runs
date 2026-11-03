@@ -52,6 +52,11 @@ Sources: voxel and configured volumes from the shipped configurations. Measured 
 
 The time step and the voxel size do not change the single-cell and shared-voxel results as long as the voxel is large enough for the cells and the initial cap number is below 0.3. The colony's own dependence on dt comes from the cap at its density (`../colony/RESULTS.md`).
 
+
+## Analytical endpoint of the mass-conversion test (UT-BASE)
+
+The endpoint is the initial biomass plus (mu / q_glc) times the glucose in the box, with mu and q_glc from FBA of the run's own model at the glucose (8 mmol/gDW/h) and oxygen (18) Vmax of its configuration (`scripts/make_figure.py`): mu 0.7333 1/h, q_glc 8.0, yield 0.0917 gDW per mmol glucose (0.509 gDW/g), 0.338 pg initial biomass, so 4.093 pg; the run ends at 4.093 pg (8 cells, glucose exhausted), a difference below 0.01%. The shipped `Ecoli_core.xml` has ATPM at 0; with ATPM at 8.39 the same calculation gives 3.874 pg. **The earlier figure and notebook used a hard-coded yield of 0.5197 gDW/g (`dfba_analysis.ipynb`, "matches FBA model"), which this model does not give (0.5092): it overstates the endpoint (4.170 pg) and shows a spurious -1.85% error.** The values in the submitted text and S4 Table 1 (4.08 / 4.09 and 3.87 / 3.88 pg) agree with the FBA-derived 4.093 and 3.874 pg to within 0.02 pg. The with-ATPM variant and the iML1515 repetition are not in the pinned runs (UT-ATPM, UT-IML1515 would have to be added to report them from this repository).
+
 ## Open
 
 1. UT-DOMAIN (needs the addon hotfix), UT-TRIM, UT-ELEM for the four other models.
