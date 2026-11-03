@@ -1,0 +1,80 @@
+diff --git a/sample_projects_intracellular/fba/bacterial_colony/config/PhysiCell_settings.xml b/sample_projects_intracellular/fba/bacterial_colony/config/PhysiCell_settings.xml
+index ec3599fc..85960a71 100644
+--- a/sample_projects_intracellular/fba/bacterial_colony/config/PhysiCell_settings.xml
++++ b/sample_projects_intracellular/fba/bacterial_colony/config/PhysiCell_settings.xml
+@@ -377,5 +377,6 @@
+     <user_parameters>
+         <colony_radius type="double" units="micron" description="">10.0</colony_radius>
+         <number_of_cells type="int" units="" description="">0</number_of_cells>
++        <quarter_colony type="bool" units="" description="only the quadrant x >= 0, y >= 0 of the initial disc (quarter-domain runs)">false</quarter_colony>
+     </user_parameters>
+ </PhysiCell_settings>
+diff --git a/sample_projects_intracellular/fba/bacterial_colony/custom_modules/custom.cpp b/sample_projects_intracellular/fba/bacterial_colony/custom_modules/custom.cpp
+index f0d8257f..b15304da 100644
+--- a/sample_projects_intracellular/fba/bacterial_colony/custom_modules/custom.cpp
++++ b/sample_projects_intracellular/fba/bacterial_colony/custom_modules/custom.cpp
+@@ -148,7 +148,11 @@ void setup_tissue(void)
+ 	
+ 	Cell* pCell = NULL; 
+ 	
+-	std::vector<std::vector<double>> positions = create_cell_disc_positions(cell_radius, colony_radius); 
++	// optional: only the quadrant x >= 0, y >= 0 of the disc, for a quarter-domain run (symmetry planes at x = 0 and y = 0)
++	bool quarter_colony = false;
++	if (PhysiCell::parameters.bools.find_index("quarter_colony") != -1)
++	{ quarter_colony = PhysiCell::parameters.bools("quarter_colony"); }
++	std::vector<std::vector<double>> positions = quarter_colony ? create_cell_quarter_disc_positions(cell_radius, colony_radius) : create_cell_disc_positions(cell_radius, colony_radius); 
+ 	std::cout << "creating " << positions.size() << " closely-packed colony cells ... " << std::endl; 
+ 	
+ 		
+@@ -227,6 +231,39 @@ std::vector<std::vector<double>> create_cell_disc_positions(double cell_radius,
+ }
+ 
+ 
++// the quadrant x >= 0, y >= 0 of the disc built by create_cell_disc_positions (same rows, same spacing, same cells)
++std::vector<std::vector<double>> create_cell_quarter_disc_positions(double cell_radius, double disc_radius)
++{
++	double cell_spacing = 0.95 * 2.0 * cell_radius;
++
++	double x = 0.0;
++	double y = 0.0;
++	double x_outer = 0.0;
++
++	std::vector<std::vector<double>> positions;
++	std::vector<double> tempPoint(3,0.0);
++
++	int n = 0;
++	while( y < disc_radius )
++	{
++		x = 0.0;
++		if( n % 2 == 1 )
++		{ x = 0.5 * cell_spacing; }
++		x_outer = sqrt( disc_radius*disc_radius - y*y );
++
++		while( x < x_outer )
++		{
++			tempPoint[0]= x; tempPoint[1]= y;	tempPoint[2]= 0.0;
++			positions.push_back(tempPoint);
++			x += cell_spacing;
++		}
++		y += cell_spacing * sqrt(3.0)/2.0;
++		n++;
++	}
++	return positions;
++}
++
++
+ std::vector<std::string> my_coloring_function( Cell* pCell )
+ {
+ 	// colors cells according to dfba flux values
+diff --git a/sample_projects_intracellular/fba/bacterial_colony/custom_modules/custom.h b/sample_projects_intracellular/fba/bacterial_colony/custom_modules/custom.h
+index b5cd608f..6e100d66 100644
+--- a/sample_projects_intracellular/fba/bacterial_colony/custom_modules/custom.h
++++ b/sample_projects_intracellular/fba/bacterial_colony/custom_modules/custom.h
+@@ -102,6 +102,7 @@ void post_update_intracellular(PhysiCell::Cell* pCell, PhysiCell::Phenotype& phe
+ 
+ // helper function to create a disc of cells of a given radius
+ std::vector<std::vector<double>> create_cell_disc_positions(double cell_radius, double disc_radius);
++std::vector<std::vector<double>> create_cell_quarter_disc_positions(double cell_radius, double disc_radius);
+ 
+ // custom coloring function for cells
+ std::vector<std::string> my_coloring_function( Cell* );
