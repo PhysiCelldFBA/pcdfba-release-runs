@@ -14,3 +14,4 @@ checks/
 usecases/*/runs_*/
 /local_archive/
 usecases/*/config/shipped/
+usecases/*/models/*.xml

@@ -1,0 +1,4 @@
+file	sha256	origin
+config/shipped/Ecoli_core.xml	a61a61fd3f10d079c3c69eff9db99c537369eec794dc6c8c84105154a44ce5d4	pinned code (code/sample_projects_intracellular/fba/dfba_unit_test/config/Ecoli_core.xml), ATPM lower bound 0
+models/Ecoli_core_ATPM8.39.xml	b4db506aeed0e434c1f5f1fdd35feda0dfe5d82badcfda0e9d1342335ab31116	scripts/make_models.py: as above with the ATPM lower bound 8.39
+models/iML1515.xml	9c772d44ca43350e40dc7ee86c7aa148796856be1eea45e5406c6df8f7dcde28	curated iML1515 (dfba_sbml_models) [[Zenodo record]]; ATPM lower bound 6.86 as supplied

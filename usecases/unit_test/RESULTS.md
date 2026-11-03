@@ -57,6 +57,18 @@ The time step and the voxel size do not change the single-cell and shared-voxel 
 
 The endpoint is the initial biomass plus (mu / q_glc) times the glucose in the box, with mu and q_glc from FBA of the run's own model at the glucose (8 mmol/gDW/h) and oxygen (18) Vmax of its configuration (`scripts/make_figure.py`): mu 0.7333 1/h, q_glc 8.0, yield 0.0917 gDW per mmol glucose (0.509 gDW/g), 0.338 pg initial biomass, so 4.093 pg; the run ends at 4.093 pg (8 cells, glucose exhausted), a difference below 0.01%. The shipped `Ecoli_core.xml` has ATPM at 0; with ATPM at 8.39 the same calculation gives 3.874 pg. **The earlier figure and notebook used a hard-coded yield of 0.5197 gDW/g (`dfba_analysis.ipynb`, "matches FBA model"), which this model does not give (0.5092): it overstates the endpoint (4.170 pg) and shows a spurious -1.85% error.** The values in the submitted text and S4 Table 1 (4.08 / 4.09 and 3.87 / 3.88 pg) agree with the FBA-derived 4.093 and 3.874 pg to within 0.02 pg. The with-ATPM variant and the iML1515 repetition are not in the pinned runs (UT-ATPM, UT-IML1515 would have to be added to report them from this repository).
 
+### Other models (UT-ATPM, UT-IML1515; 2026-11-03)
+
+Same test (8 cells, closed 16 um box, dx 2, dt 0.001, pinned code), analytical endpoint from FBA of each run's own model (`scripts/endpoint.py`, `results/ut_endpoints.csv`):
+
+| run | model | mu (1/h) | yield (gDW/g glc) | simulated (pg) | analytical (pg) | difference |
+|---|---|---|---|---|---|---|
+| UT-BASE | E. coli core (ATPM lb 0) | 0.7333 | 0.5092 | 4.093 | 4.093 | -0.002% |
+| UT-ATPM | E. coli core, ATPM lb 8.39 | 0.6906 | 0.4796 | 3.869 | 3.874 | -0.135% |
+| UT-IML1515 | iML1515 | 0.6964 | 0.4836 | 3.900 | 3.904 | -0.085% |
+
+The endpoint agrees within 0.14% for the three models (expected 3.874 and 3.904 pg were fixed before the runs). With maintenance the yield drops by 6%, as FBA predicts, and the simulation follows it.
+
 ## Open
 
 1. UT-DOMAIN (needs the addon hotfix), UT-TRIM, UT-ELEM for the four other models.

@@ -2,6 +2,13 @@ scope,xpath,value
 UT-BASE,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/sbml_filename,config/shipped/Ecoli_core.xml
 UT-BASE,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
 UT-BASE,/PhysiCell_settings/parallel/omp_num_threads,1
+UT-ATPM,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/sbml_filename,models/Ecoli_core_ATPM8.39.xml
+UT-ATPM,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
+UT-ATPM,/PhysiCell_settings/parallel/omp_num_threads,1
+UT-IML1515,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/sbml_filename,models/iML1515.xml
+UT-IML1515,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
+UT-IML1515,/PhysiCell_settings/parallel/omp_num_threads,1
+UT-IML1515,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/growth_model/objective_reaction,R_BIOMASS_Ec_iML1515_core_75p37M
 UT-DXDT-A,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/sbml_filename,config/shipped/Ecoli_core.xml
 UT-DXDT-A,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
 UT-DXDT-A,/PhysiCell_settings/overall/max_time,120

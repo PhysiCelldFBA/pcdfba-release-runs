@@ -1,0 +1,4 @@
+run,model,mu,q_glc,yield_gdw_per_g,initial_pg,simulated_pg,analytical_pg,diff_pct,cells
+UT-BASE_s50,Ecoli_core.xml,0.7333,8.0,0.5092,0.338,4.093,4.093,-0.002,8
+UT-ATPM_s50,Ecoli_core_ATPM8.39.xml,0.6906,8.0,0.4796,0.338,3.869,3.874,-0.135,8
+UT-IML1515_s50,iML1515.xml,0.6964,8.0,0.4836,0.338,3.9,3.904,-0.085,8

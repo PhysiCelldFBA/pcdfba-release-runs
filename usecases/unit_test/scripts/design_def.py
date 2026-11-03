@@ -21,6 +21,12 @@ def point(rid, dx, dt):
 # UT-BASE: default test (240 min), same config 5 times
 put("UT-BASE", SBML1, "config/shipped/Ecoli_core.xml"); put("UT-BASE", *LEDGER); put("UT-BASE", P + "/parallel/omp_num_threads", 1)
 for k, rid in enumerate(["UT-BASE_s50"] + [f"UT-BASE_s50_rep{i}" for i in range(1, 5)]): run(rid, "UT-BASE")
+# UT-ATPM / UT-IML1515: the default test (UT-BASE settings) with another model: the core model with ATPM at 8.39 (models/, made by scripts/make_models.py) and iML1515
+OBJ = "/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/growth_model/objective_reaction"
+for e, f, o in (("UT-ATPM", "models/Ecoli_core_ATPM8.39.xml", None), ("UT-IML1515", "models/iML1515.xml", "R_BIOMASS_Ec_iML1515_core_75p37M")):
+    put(e, SBML1, f); put(e, *LEDGER); put(e, P + "/parallel/omp_num_threads", 1)
+    if o: put(e, OBJ, o)
+    run(f"{e}_s50", e)
 # UT-DXDT-A / B: one cell, closed 16 um box, 120 min
 grid("UT-DXDT-A", 120); grid("UT-DXDT-B", 120)
 put("UT-DXDT-B", GLC + "physical_parameter_set/diffusion_coefficient", 0); put("UT-DXDT-B", GLC + "initial_condition", 1)
