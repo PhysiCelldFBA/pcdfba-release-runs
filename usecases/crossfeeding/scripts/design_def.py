@@ -39,6 +39,18 @@ for rid, eid, km in (("CF2-BOX_s50", "CF2-BOX", None), ("CF2-KM_s50", "CF2-KM", 
     for ax in ("x", "y"): put(rid, P + f"/domain/{ax}_min", -100); put(rid, P + f"/domain/{ax}_max", 100)
     for sub in ("H2", "acetate"): put(rid, P + f"/microenvironment_setup/variable[@name='{sub}']/initial_condition", 1)
     if km: put(rid, P + "/cell_definitions/cell_definition[@name='m_barkeri']/phenotype/intracellular/transport_model/exchange[@substrate='H2']/Km", km)
+# CF3: convergence series on the CF2-KM design (box +-100 um, H2 / acetate initially 1 mM, Km of M. barkeri for H2 0.01 mM), with voxels not smaller than the largest living cell.
+# Largest living cell volume in CF2-KM: C. beijerinckii 2.26, M. barkeri 2.98 um3 (dz 1.25 um), so the voxel volume dx*dx*1.25 must be >= 2.98: dx >= 1.55 um; dx 1.25 (1.95 um3) is outside, dx 0.8 is not run.
+# Reference dx 1.6 (3.2 um3), dt 0.001; seed 51; dx 2.0 (5.0 um3); dt 0.002 and 0.0005 at dx 1.6. 200 is a multiple of 1.6 and 2.0.
+KM = P + "/cell_definitions/cell_definition[@name='m_barkeri']/phenotype/intracellular/transport_model/exchange[@substrate='H2']/Km"
+def cf3(rid, eid, seed=50, dx=1.6, dt=0.001):
+    run(rid, eid, seed)
+    for ax in ("x", "y"): put(rid, P + f"/domain/{ax}_min", -100); put(rid, P + f"/domain/{ax}_max", 100)
+    for sub in ("H2", "acetate"): put(rid, P + f"/microenvironment_setup/variable[@name='{sub}']/initial_condition", 1)
+    put(rid, KM, 0.01); setdx(rid, dx)
+    if dt != 0.001: setdt(rid, dt)
+cf3("CF3-REF_s50", "CF3-REF"); cf3("CF3-SEED_s51", "CF3-SEED", 51); cf3("CF3-DX_dx2.0_dt0.001_s50", "CF3-DX", dx=2.0)
+for dt in (0.002, 0.0005): cf3(f"CF3-DT_dx1.6_dt{dt}_s50", "CF3-DT", dt=dt)
 with open(f"{UC}/runs_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["run_id", "experiment_id", "seed"]); w.writerows(runs)
 with open(f"{UC}/overrides_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["scope", "xpath", "value"]); w.writerows(ov)
 print(len(runs), "runs,", len(ov), "override rows")
