@@ -30,6 +30,31 @@ C. beijerinckii: 62 to 3,945 cells (first new cell at 210 min), growth rate 0.16
 
 5. **Reduced box against the paper box.** Not compared yet. The reduced box has the edge sink closer (H2 = 0 at +-60 um), so the H2 and acetate levels are lower than in the paper figure; the reduced reference is for pattern and for the dx / dt series, not for the figure values.
 
+## CF2: larger box, Km 0.01, initial H2 / acetate 1 mM (2026-11-03)
+
+CF2-BOX (box +-100 um, H2 and acetate initially 1 mM, boundaries zero except glucose and CO2 as shipped, dx 1.25, dt 0.001, 1800 min, seed 50) and CF2-KM (same, M. barkeri H2 Km 0.01 mM) on the pinned code (binary 1f60748dc4ee2e45, MN5 job 48447730, 5 h 15 min each). Analysis: `results/cf2_series.csv`, `cf2_cap.csv`, `cf2_runs.csv`; figures `results/fig_crossfeeding_CF2-BOX_s50.*`, `fig_crossfeeding_CF2-KM_s50.*` (same layout as the reference figure).
+
+| | CF-REF (box +-60) | CF2-BOX | CF2-KM |
+|---|---|---|---|
+| C.b. cells 1800 min | 3,945 | 3,865 | 3,864 |
+| C.b. growth rate 1800 min (1/h) | 0.134 | 0.127 | 0.127 |
+| M.b. cells 1800 min | 65 | 63 | 63 |
+| M.b. first new cell (min) | 1590 | 1590 | 1650 |
+| M.b. growth rate 600 / 1200 / 1800 min (1/h) | 0.014 / 0.029 / 0.039 | 0.014 / 0.027 / 0.036 | 0.014 / 0.027 / 0.040 |
+| box-mean H2 at 1800 min (mM) | 0.305 | 0.187 | 0.186 |
+| box-mean acetate at 1800 min (mM) | 0.221 | 0.160 | 0.160 |
+| M.b. H2 bound / Michaelis-Menten bound, median, 600 / 1200 / 1800 min | 0.39 / 0.78 / 0.96 | 0.36 / 0.76 / 0.93 | 0.15 / 0.44 / 0.98 |
+| M.b. cells below 0.95 of the H2 bound, 600 min | 100% | 100% | 100% |
+
+Findings:
+
+1. **None of the three changes makes M. barkeri grow faster or changes the shape of the curves.** M. barkeri still does not double in 30 h (63 cells), its first new cell is at 1590-1650 min, and the curves of biomass, concentrations and net exports are smooth and monotonic, without the changes of concavity of the original figure. Lowering Km changes the cap ratio (0.15 against 0.36 at 600 min: the Michaelis-Menten bound is larger, the voxel limits more) but not the growth.
+2. **The initial 1 mM of H2 and acetate does not matter.** The box mean is 1.0 mM at 0 and 0.003 mM at 30 min in both runs: with zero boundaries the 1 mM is removed within the first snapshot interval (diffusion to the edge and uptake) and the concentrations afterwards are set by C. beijerinckii production. The first 30 min are the only time M. barkeri sees mM concentrations.
+3. **The larger box lowers the H2 and acetate levels** (0.19 against 0.31 mM and 0.16 against 0.22 mM at 30 h), because the cluster is the same size and the field is spread over a larger area, and C. beijerinckii grows 2% less. The cap acts on M. barkeri during the first 20 h as before (cap ratio 0.36 at 600 min, 81% of cells below 0.95 of the bound at 1800 min against 46% in CF-REF).
+4. Ledger residuals are at most 2.4e-13 of the gross flux for every substrate in the three runs (largest: SO4 in CF2-BOX; glucose, H2, acetate and methane 1e-16 to 1e-18).
+
+Conclusion: the slow, smooth M. barkeri growth is not explained by the box size, the Km or the initial concentrations. The remaining differences from the original figure are the old code (dead cap, dt 0.01 with unequal steps) and the sink at the boundary; whether a larger system or a no-flux H2 boundary reproduces the original behaviour is not tested.
+
 ## Limits and open items
 
 - No finest step: the dx 0.8 (dt 0.001), dt 0.0005 (dx 1.25) and dx 0.8 / 1.6 at dt 0.0005 runs are needed to say whether M. barkeri growth converges; dx 0.8 at dt 0.0005 costs about 5 x CF-REF.

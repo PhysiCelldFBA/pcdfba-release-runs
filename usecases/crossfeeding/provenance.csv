@@ -10,3 +10,5 @@ CF-DT_dx1.25_dt0.0005_s50,CF-DT,,,,,,,,,,,,,not run,usecases/crossfeeding/runs/C
 CF-DXDT_dx0.8_dt0.0005_s50,CF-DXDT,,,,,,,,,,,,,not run,usecases/crossfeeding/runs/CF-DXDT_dx0.8_dt0.0005_s50
 CF-DXDT_dx1.6_dt0.0005_s50,CF-DXDT,,,,,,,,,,,,,not run,usecases/crossfeeding/runs/CF-DXDT_dx1.6_dt0.0005_s50
 CF-FIG_dx1.6_dt0.001_s50,CF-FIG,7f2b1d0a52782918ea4319c2ef94563bf719f253,7f4412de56929182,05b6f906e489dcda,50,1.6,0.001,0.001,1800,112,gs09r1b69,2026-11-02T16:20:44+01:00,,partial,usecases/crossfeeding/runs/CF-FIG_dx1.6_dt0.001_s50
+CF2-BOX_s50,CF2-BOX,7f2b1d0a52782918ea4319c2ef94563bf719f253,1f60748dc4ee2e45,69f4a708a99b1f70,50,1.25,0.001,0.001,1800,56,gs26r1b70,2026-11-03T11:43:51+01:00,2026-11-03T16:58:43+01:00,ok,usecases/crossfeeding/runs/CF2-BOX_s50
+CF2-KM_s50,CF2-KM,7f2b1d0a52782918ea4319c2ef94563bf719f253,1f60748dc4ee2e45,7d90e57d604e9ff2,50,1.25,0.001,0.001,1800,56,gs26r1b70,2026-11-03T11:43:51+01:00,2026-11-03T16:59:12+01:00,ok,usecases/crossfeeding/runs/CF2-KM_s50
