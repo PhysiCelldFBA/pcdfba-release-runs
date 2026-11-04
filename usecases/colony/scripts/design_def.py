@@ -85,6 +85,21 @@ for e, DT in (("COL-REF", 0.0005), ("COL-SEED", 0.0005), ("COL-REP", 0.0005), ("
     put(e, P + "/cell_definitions/cell_definition/phenotype/mechanics/cell_cell_repulsion_strength", 1000.0)
 for rid, e, seed in (("COL-REFDT_dt0.00025_s50", "COL-REFDT", 50), ("COL-REF_s50", "COL-REF", 50), ("COL-SEED_s51", "COL-SEED", 51), ("COL-SEED_s52", "COL-SEED", 52), ("COL-REP_s50", "COL-REP", 50)):
     run(rid, e, seed); quarter_rows(rid)
+# COL-NECS (2026-11-04): the necrosis rate of a cell whose LP is infeasible grows by death_rate_increase at each dFBA update (addons/dFBA/src/dfba_intracellular.cpp), i.e. by increase/dt per min,
+# so the hazard depends on dt. COL-NECS holds the ramp constant at the value of the shipped dt 0.001 (1.67e-5 per update, 0.0167 /min2): increase = 1.67e-5 x dt / 0.001.
+# Same settings as COL-REF otherwise (quarter colony, legacy box, shipped start, 600 min, ledger on, seed 50).
+for DT in (0.001, 0.0005, 0.00025):
+    rid = f"COL-NECS_dt{DT}_s50"; run(rid, "COL-NECS", 50); e = rid
+    put(e, SBML, "./config/shipped/Ecoli_core.xml"); put(e, *LEDGER)
+    put(e, P + "/overall/max_time", 600); put(e, P + "/save/full_data/interval", 20); put(e, P + "/save/SVG/enable", "false")
+    put(e, P + "/parallel/omp_num_threads", 112)
+    for a in ("x_min", "y_min"): put(e, P + "/domain/" + a, -500)
+    for a in ("x_max", "y_max"): put(e, P + "/domain/" + a, 500)
+    put(e, P + "/overall/dt_diffusion", DT); put(e, CD + "/settings/intracellular_dt", DT)
+    put(e, P + "/overall/dt_mechanics", 0.001); put(e, P + "/overall/dt_phenotype", 0.001)
+    put(e, P + "/cell_definitions/cell_definition/phenotype/mechanics/cell_cell_repulsion_strength", 1000.0)
+    put(e, CD + "/death_model/death_rate_increase", float("%.4g" % (1.67e-5 * DT / 0.001)))
+    quarter_rows(rid)
 # COL-QTR: the quadrant x >= 0, y >= 0 of the pre-grown colony (symmetry planes at x = 0 and y = 0: no-flux there, Dirichlet on the outer faces only);
 # needs the binary with the quarter_colony option (code branch feature/colony-quarter-disc)
 QTR = "COL-QTR_dt0.0005_s50"; run(QTR, "COL-QTR")
