@@ -55,6 +55,29 @@ Findings:
 
 Conclusion: the slow, smooth M. barkeri growth is not explained by the box size, the Km or the initial concentrations. The remaining differences from the original figure are the old code (dead cap, dt 0.01 with unequal steps) and the sink at the boundary; whether a larger system or a no-flux H2 boundary reproduces the original behaviour is not tested.
 
+## CF3: convergence series on the CF2-KM design, voxels not smaller than the cell (2026-11-04)
+
+Design: box +-100 um, 111 cells, H2 and acetate initially 1 mM, M. barkeri Km(H2) 0.01 mM, boundaries zero except glucose and CO2 as shipped, 1800 min, 2D slab dz 1.25 um, intracellular_dt = dt_diffusion, 56 threads, pinned code (binary 1f60748dc4ee2e45). The largest living cells reach 2.26 (C. beijerinckii) and 2.98 um3 (M. barkeri), so the voxel volume dx x dx x 1.25 must be at least 2.98 um3: dx 1.6 (3.2 um3) and 2.0 (5.0 um3) are inside, dx 1.25 (1.95 um3) is not and dx 0.8 is not run. Runs (MN5 jobs 48468796-48468798; 2.98-10.5 h each): CF3-REF (dx 1.6, dt 0.001), CF3-SEED_s51 (seed 51), CF3-DX (dx 2.0, dt 0.001), CF3-DT dt 0.002 and dt 0.0005 (dx 1.6; dt 0.0005 is the finest step), plus CF2-KM (dx 1.25, dt 0.001) for reference. Analysis: `results/cf3_series.csv`, `cf3_cap.csv`, `cf3_runs.csv`; figures `results/fig_crossfeeding_CF3-REF_s50.*` and `fig_crossfeeding_CF3-DT_dx1.6_dt0.0005_s50.*` (manuscript Fig. 6 layout). Criterion fixed before the runs: cell number of each species and M. barkeri growth rate at 1800 min within max(10%, 2 x seed spread) of the finest step. Seed spread (CF3-REF against CF3-SEED_s51): C. beijerinckii cells 2.0%, M. barkeri cells 8%, M. barkeri growth rate at 1800 min 1.6%; thresholds 10%, 16% and 10%.
+
+| run | C.b. cells 1800 | vs dt 0.0005 | M.b. cells 1800 | vs dt 0.0005 | M.b. growth 1800 (1/h) | vs dt 0.0005 | M.b. growth 600 (1/h) | vs dt 0.0005 | M.b. H2 bound / MM bound, median, 600 min | M.b. first new cell (min) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| dt 0.0005 (dx 1.6) | 3,932 | - | 74 | - | 0.0412 | - | 0.0199 | - | 0.28 | 1320 |
+| REF (dx 1.6, dt 0.001) | 3,870 | -1.6% | 64 | -13.5% | 0.0400 | -2.8% | 0.0155 | -22% | 0.17 | 1470 |
+| seed 51 (dx 1.6, dt 0.001) | 3,795 | -3.5% | 59 | -20.3% | 0.0394 | -4.4% | 0.0149 | -25% | 0.16 | 1500 |
+| dx 2.0, dt 0.001 | 3,893 | -1.0% | 66 | -10.8% | 0.0402 | -2.3% | 0.0155 | -22% | 0.17 | 1590 |
+| dx 1.6, dt 0.002 | 3,772 | -4.1% | 55 | -25.7% | 0.0363 | -11.8% | 0.0115 | -42% | 0.12 | 1680 |
+| CF2-KM (dx 1.25, dt 0.001) | 3,864 | -1.7% | 63 | -14.9% | 0.0399 | -3.2% | 0.0145 | -27% | 0.15 | 1650 |
+
+Findings:
+
+1. **Voxel size does not matter inside the safe zone.** dx 2.0 and dx 1.6 (and, outside the zone, dx 1.25) agree: C. beijerinckii cells within 1.1%, M. barkeri cells within 3-4% (inside the seed spread of 8%), M. barkeri growth rate at 1800 min within 1%.
+2. **C. beijerinckii is converged in dt** (cells within 4.1% of the finest step at every dt, growth rate within 5%; glucose bound within 1-3% of the Michaelis-Menten bound).
+3. **M. barkeri is not converged in dt, and the dependence is the cap.** Against dt 0.0005, the M. barkeri cell number at dt 0.001 is 13.5% lower (inside the 16% threshold) and at dt 0.002 25.7% lower (outside); the growth rate at 1800 min is 2.8% and 11.8% lower (the second outside the 10% threshold). At 600 min the growth rate is 22% (dt 0.001) and 42% (dt 0.002) lower, and the steps do not shrink with dt (0.0115, 0.0155, 0.0199 1/h at dt 0.002, 0.001, 0.0005), so no limit is reached at dt 0.0005 for the first 10-20 h. The ratio of the H2 bound to the Michaelis-Menten bound rises as dt falls (0.12, 0.17, 0.28 at 600 min) and 100% of the M. barkeri cells are below 0.95 of the bound at 600 min in every run: during the first 20 h M. barkeri is limited by the H2 in its voxel in each step (cap number above 0.3), and what it takes up per step depends on dt. The growth rate at 1800 min converges (differences 3.6e-3 and 1.2e-3 1/h between consecutive steps).
+4. **Cumulative cell numbers:** M. barkeri reaches 55, 64 and 74 cells at 1800 min for dt 0.002, 0.001 and 0.0005 (seed spread of the dt 0.001 setting: 64 and 59). A finer step (dt 0.00025) was not run; it would cost about 21 h per run on 56 threads (more than the 13 h limit used here).
+5. **Qualitative criteria are met in all runs** (both species grow, exchange signs as expected, M. barkeri grows after C. beijerinckii and its growth rate rises with the H2 it receives). The ledger residual is at most 1.8e-15 of the gross flux for H2, acetate, glucose and CO2 in the six runs.
+
+What this means for the figure and the text: the C. beijerinckii results and the qualitative pattern are converged; the M. barkeri growth during the first 20 h and its final cell number depend on dt where the cap acts (the figure from dt 0.0005 shows the highest growth). The reference for the manuscript figure should be the dt 0.0005 run (finest step), and the limitation (M. barkeri growth and cell number are cap-limited and not converged in dt at dt 0.0005; the growth rate at 1800 min is) must be stated. Conclusions about the absolute time of M. barkeri growth should not be drawn from this system.
+
 ## Limits and open items
 
 - No finest step: the dx 0.8 (dt 0.001), dt 0.0005 (dx 1.25) and dx 0.8 / 1.6 at dt 0.0005 runs are needed to say whether M. barkeri growth converges; dx 0.8 at dt 0.0005 costs about 5 x CF-REF.
