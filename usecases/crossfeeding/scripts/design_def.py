@@ -23,12 +23,11 @@ def setdx(rid, dx):
     put(rid, P + "/domain/dx", dx); put(rid, P + "/domain/dy", dx)
 # CF-REF: dx 1.25, dt 0.001 (shipped), seeds 50 51 52 and the same-seed repeat
 for rid, seed in (("CF-REF_s50", 50), ("CF-SEED_s51", 51), ("CF-SEED_s52", 52), ("CF-REP_s50", 50)): run(rid, rid.split("_")[0], seed)
-# CF-DX: voxel size at dt 0.001
-for dx in (0.8, 1.6): rid = f"CF-DX_dx{dx}_dt0.001_s50"; run(rid, "CF-DX"); setdx(rid, dx)
-# CF-DT: time step at dx 1.25
-for dt in (0.002, 0.0005): rid = f"CF-DT_dx1.25_dt{dt}_s50"; run(rid, "CF-DT"); setdt(rid, dt)
-# CF-DXDT: finer step with the other voxel sizes
-for dx in (0.8, 1.6): rid = f"CF-DXDT_dx{dx}_dt0.0005_s50"; run(rid, "CF-DXDT"); setdx(rid, dx); setdt(rid, 0.0005)
+# CF-DX: voxel size at dt 0.001 (dx 1.6 done; dx 0.8, below the cell size, is not run: dropped 2026-11-04, the series continues as CF3)
+for dx in (1.6,): rid = f"CF-DX_dx{dx}_dt0.001_s50"; run(rid, "CF-DX"); setdx(rid, dx)
+# CF-DT: time step at dx 1.25 (dt 0.002 done; dt 0.0005 not run: dropped 2026-11-04, the finest step is run as CF3-DT at dx 1.6)
+for dt in (0.002,): rid = f"CF-DT_dx1.25_dt{dt}_s50"; run(rid, "CF-DT"); setdt(rid, dt)
+# CF-DXDT (dx 0.8 and 1.6 at dt 0.0005) was never run and is dropped 2026-11-04; its role is taken by CF3-DT
 # CF-FIG: preview of the manuscript figure from one run (dx 1.6, dt 0.001) on a debug node, 112 threads, own run id (the same setting is CF-DX_dx1.6_dt0.001_s50)
 rid = "CF-FIG_dx1.6_dt0.001_s50"; run(rid, "CF-FIG"); setdx(rid, 1.6); put(rid, P + "/parallel/omp_num_threads", 112)
 # CF2: second design after the first series (RESULTS.md): the +-60 um box and the zero boundaries made H2 / acetate leave through the edges.
