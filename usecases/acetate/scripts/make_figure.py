@@ -1,5 +1,5 @@
 """Acetate-switch figure from ACE-REF/ACE-SEED (5 mM pulse) and ACE-PULSE (10 mM), dx 4, dt 0.01, 3 seeds: box-mean concentrations and total biomass, after the layout of the
-original main figure. A: 5 mM O2 pulse at 210 min (the original protocol); B: 10 mM pulse, 900 min."""
+original main figure. Two figures: main (5 mM O2 pulse at 210 min, the original protocol, 6 h) and supplementary (10 mM pulse, 7 h)."""
 import sys, os, glob, numpy as np, scipy.io as sio, xml.etree.ElementTree as ET, matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels
@@ -32,11 +32,13 @@ def panel(ax, runs, tmax_h, mark):
     for tt, lab in ((t1, "$t_1$"), (t3, "$t_3$"), (t4, "$t_4$")):
         ax.axvline(tt, color="grey", ls=":", lw=1); ax.text(tt + 0.05 * tmax_h / 6, ax.get_ylim()[1] * 0.96, lab, color="#444", va="top")
     return ax2, dict(t1=t1, t2=t2, t3=t3, t4=t4, x0=B[:, 0].mean(), xmax=B.max(), ac_end=ac[-1])
-fig, axs = plt.subplots(2, 1, figsize=(9, 8.5))
-a2, i1 = panel(axs[0], ["ACE-REF_s50", "ACE-SEED_s51", "ACE-SEED_s52"], 10, "")
-b2, i2 = panel(axs[1], [f"ACE-PULSE_o2_10_s{s}" for s in (50, 51, 52)], 15, "")
-h, l = axs[0].get_legend_handles_labels(); h2, l2 = a2.get_legend_handles_labels()
-fig.legend(h + h2, l + l2, ncol=5, loc="upper center", frameon=False)
-axs[0].set_title("A   5 mM O$_2$ pulse at 3.5 h", loc="left", fontsize=11); axs[1].set_title("B   10 mM O$_2$ pulse at 3.5 h", loc="left", fontsize=11)
-fig.tight_layout(rect=(0, 0, 1, 0.95)); fig.savefig(OUT + "/fig_acetate_switch.png", dpi=200); fig.savefig(OUT + "/fig_acetate_switch.pdf")
-print({k: round(float(v), 3) for k, v in i1.items()}); print({k: round(float(v), 3) for k, v in i2.items()})
+def figure(runs, tmax_h, title, name, size=(9, 4.6)):
+    fig, ax = plt.subplots(1, 1, figsize=size); a2, info = panel(ax, runs, tmax_h, "")
+    h, l = ax.get_legend_handles_labels(); h2, l2 = a2.get_legend_handles_labels()
+    fig.legend(h + h2, l + l2, ncol=5, loc="upper center", frameon=False)
+    if title: ax.set_title(title, loc="left", fontsize=11)
+    fig.tight_layout(rect=(0, 0, 1, 0.93)); fig.savefig(f"{OUT}/{name}.png", dpi=200); fig.savefig(f"{OUT}/{name}.pdf"); plt.close(fig)
+    print(name, {k: round(float(v), 3) for k, v in info.items()})
+# main figure: reference, 5 mM O2 reset at 3.5 h, first 6 h; supplementary figure: 10 mM reset, first 7 h. Lines: mean of three seeds; bands: min-max across seeds.
+figure(["ACE-REF_s50", "ACE-SEED_s51", "ACE-SEED_s52"], 6, "", "fig_acetate_switch")
+figure([f"ACE-PULSE_o2_10_s{s}" for s in (50, 51, 52)], 7, "", "fig_acetate_switch_o2_10mM")
