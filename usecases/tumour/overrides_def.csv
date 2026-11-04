@@ -1,0 +1,19 @@
+scope,xpath,value
+*,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/sbml_filename,config/shipped/MCF7_Zielinski_2017_core_trimmed.sbml
+*,/PhysiCell_settings/initial_conditions/cell_positions/folder,./config/shipped
+*,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
+*,/PhysiCell_settings/save/SVG/enable,false
+*,/PhysiCell_settings/parallel/omp_num_threads,56
+TUM-PFBA,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/growth_model,"<secondary_objective type=""parsimonious"" enabled=""true"" fraction_of_optimum=""1.0""/>"
+TUM-DX_dx20_s50,/PhysiCell_settings/domain/dx,20
+TUM-DX_dx20_s50,/PhysiCell_settings/domain/dy,20
+TUM-DX_dx30_s50,/PhysiCell_settings/domain/dx,30
+TUM-DX_dx30_s50,/PhysiCell_settings/domain/dy,30
+TUM-DT_dt0.005_s50,/PhysiCell_settings/overall/dt_diffusion,0.005
+TUM-DT_dt0.005_s50,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/intracellular_dt,0.005
+TUM-DT_dt0.005_s50,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/death_model/death_rate_increase,8.35e-08
+TUM-DT_dt0.005_s50,/PhysiCell_settings/user_parameters/diffusion_steps,600
+TUM-DT_dt0.02_s50,/PhysiCell_settings/overall/dt_diffusion,0.02
+TUM-DT_dt0.02_s50,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/intracellular_dt,0.02
+TUM-DT_dt0.02_s50,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/death_model/death_rate_increase,3.34e-07
+TUM-DT_dt0.02_s50,/PhysiCell_settings/user_parameters/diffusion_steps,150
