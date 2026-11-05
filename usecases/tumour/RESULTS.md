@@ -19,7 +19,7 @@ Observables (fixed 2026-11-04, except the two marked): living edge = 95th percen
    | 0.005 | 119-127 (122 in TUM5-REF) | 191 | 47.0-47.3 | 368 | 0.08 |
    | 0.0025 | 127 | 185 | 48.0 | 375 | 0.04 |
 
-   dt 0.005 against 0.0025: edges 8 um, dead 1.5% and cells 1.9% relative apart (pass). dt 0.01 against 0.005 is 19-27 um (fail). The cap acts on 0% of the cells in all dt runs, so this is **not** the voxel cap. The mechanism is not tested. The cap number (R = q X dt / c) halves with each halving of dt and the edge stops moving once it is below about 0.1, which is consistent with a splitting error that is controlled by R, but that was not isolated. dt 0.005 is therefore the second reference (TUM5-*); the shipped dt 0.01 is the first (TUM-*).
+   dt 0.005 against 0.0025: edges 8 um, dead 1.5% and cells 1.9% relative apart (pass). dt 0.01 against 0.005 is 19-27 um (fail). The cap acts on 0% of the cells in all dt runs, so this is **not** the voxel cap. **Where it comes from (`scripts/compare_dt_profiles.py`, `results/tum_dt_profiles.csv`):** the dependence is already in the oxygen field at 6 h. O2 at 100 um is 0.168, 0.202, 0.234, 0.257 mM for dt 0.02, 0.01, 0.005, 0.0025 (glucose 0.237-0.241 mM, no dt dependence), and the proliferative edge is 72, 112, 130, 142 um at 6 h; the profiles change little afterwards (the 0.0025 edge falls from 142 to 127 um by 72 h). The differences between successive dt (0.034, 0.032, 0.023 mM) do not halve, so **the oxygen field is not converged at dt 0.0025**, although the 72 h edge agrees with dt 0.005 within the criterion. So it is the O2 uptake-diffusion coupling (splitting), not the cell response and not the cap; a dt 0.00125 run was not made. The cap number (R = q X dt / c) halves with each dt halving. dt 0.005 is therefore the second reference (TUM5-*); the shipped dt 0.01 is the first (TUM-*).
 
 2. **Voxel size (dt 0.005, TUM5-DX).** dx = 10, 15 (ref), 20, 30 um:
 
@@ -59,11 +59,11 @@ Observables (fixed 2026-11-04, except the two marked): living edge = 95th percen
 
 | Item | Status |
 |---|---|
-| Mechanism of the dt dependence of the proliferative edge (not the cap) | not tested |
+| Mechanism of the dt dependence of the proliferative edge | located in the O2 field already at 6 h (finding 1); the O2 field is not converged at dt 0.0025; a dt 0.00125 run would test it |
 | dx not converged as dx -> 0 (about one voxel per 5 um) | stated as a limit; dx 10 and 20 within the criterion, dx 30 fails |
 | Proliferative edge dips at 72 h in the reference, repeat and dt 0.005 runs (122, 125, 119 um against 126-131 um from 6 to 48 h) | not explained |
 | FBA vs pFBA by-product fluxes | compared (finding 3): magnitudes differ beyond the noise, FVA replay to quantify the alternative optima |
 | Vessel O2 of 0.5 mM versus tissue values | literature value not checked; the grid shows the column dies at <= 0.1 mM |
-| Tumour figure (Fig. 5) regenerated from TUM5-REF | done (`scripts/make_figure.py`, `results/fig_tumour_ref.{png,pdf}`); per-cell rates use dry mass = 30% of the volume (fluid fraction 0.70); the submitted figure and Supplementary Figs. S8-S9 used 75% and are 2.5 times higher |
+| Tumour figure (Fig. 5) regenerated from TUM5-REF | done (`scripts/make_figure.py`, `results/fig_tumour_ref.{png,pdf}`); per-cell rates use dry mass = 30% of the volume (fluid fraction 0.70); the submitted figure and Supplementary Fig. S9 used 75% and are 2.5 times higher; S8 and S9 regenerated from TUM5-REF (`scripts/make_supp_figs.py`, `results/supp/`); the submitted O2 row of S9 also lacked the cell volume |
 | Elemental balance (UT-ELEM) of the MCF7 model, FVA replay | not done |
 | Table S5.4 lists glucose at x_max as 0.2 mM; the run has 0 (sink, all substrates) | corrected in `Tumour_edits.tex`; the other rows of the table agree with the run |
