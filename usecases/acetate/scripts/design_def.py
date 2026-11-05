@@ -33,6 +33,9 @@ for name, xp in sens:
         r = f"ACE-SENS_{name}_x{f}_s50"; run(r, "ACE-SENS"); put(r, xp, fmt(b * f))
 for f in (0.5, 2):
     r = f"ACE-SENS_ncells_x{f}_s50"; run(r, "ACE-SENS"); put(r, "@cells.n", int(20 * f))
+# same cell density in a box of different volume (z extent changed, x and y kept at 36 um; dx 4 stays): 40 cells in 36 x 36 x 72 (x2) and 9 cells in 36 x 36 x 16 (x0.44; 18 um is not a multiple of dx 4), density 4.29e-4 and 4.34e-4 per um3 against 4.29e-4 in the reference (20 cells in 36^3)
+for f, n, hz in ((2, 40, 36), (0.44, 9, 8)):
+    r = f"ACE-SENS_vol_x{f}_s50"; run(r, "ACE-SENS"); put(r, "@cells.n", n); put(r, P + "/domain/z_min", -hz); put(r, P + "/domain/z_max", hz)
 put("ACE-PULSE", P + "/overall/max_time", 900)
 for s in (50, 51, 52): r = f"ACE-PULSE_o2_10_s{s}"; run(r, "ACE-PULSE", s); put(r, P + "/user_parameters/o2_concentration", 10)
 for o in (20, 40, 80): r = f"ACE-PULSE_o2_{o}_s50"; run(r, "ACE-PULSE"); put(r, P + "/user_parameters/o2_concentration", o)

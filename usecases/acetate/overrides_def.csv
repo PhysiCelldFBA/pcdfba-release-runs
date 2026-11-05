@@ -46,6 +46,12 @@ ACE-SENS_tpulse_x0.5_s50,/PhysiCell_settings/user_parameters/reinject_oxygen_tim
 ACE-SENS_tpulse_x2_s50,/PhysiCell_settings/user_parameters/reinject_oxygen_time,420
 ACE-SENS_ncells_x0.5_s50,@cells.n,10
 ACE-SENS_ncells_x2_s50,@cells.n,40
+ACE-SENS_vol_x2_s50,@cells.n,40
+ACE-SENS_vol_x2_s50,/PhysiCell_settings/domain/z_min,-36
+ACE-SENS_vol_x2_s50,/PhysiCell_settings/domain/z_max,36
+ACE-SENS_vol_x0.44_s50,@cells.n,9
+ACE-SENS_vol_x0.44_s50,/PhysiCell_settings/domain/z_min,-8
+ACE-SENS_vol_x0.44_s50,/PhysiCell_settings/domain/z_max,8
 ACE-PULSE,/PhysiCell_settings/overall/max_time,900
 ACE-PULSE_o2_10_s50,/PhysiCell_settings/user_parameters/o2_concentration,10
 ACE-PULSE_o2_10_s51,/PhysiCell_settings/user_parameters/o2_concentration,10
