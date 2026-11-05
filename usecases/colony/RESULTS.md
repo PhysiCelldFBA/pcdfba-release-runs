@@ -144,6 +144,18 @@ The necrosis rate of a cell grows by `death_rate_increase` at each dFBA update, 
 
 Limits: one run per dt, seed 50; the cause of the remaining dt dependence (cap number, trigger timing or other) was not tested.
 
+## Reduced sensitivity set (COL-BND, COL-KIN, COL-PFBA; 2026-11-05/06)
+
+Design (`scripts/design_sens.py`, fixed before the runs): the pre-grown colony of COL-DT_dt0.0005_s50 (R0 200 um, 87,685 cells, dx 2, dt 0.0005, necrosis x10, plain pinned binary 226118d6, 112 threads, seed 50), 6 min, snapshots every 2 min; 17 runs in one MN5 debug job (48599517, 17 nodes, 58 min, all rc 0). Reference = COL-DT_dt0.0005_s50 at 6 min (not rerun): dead 45.6%, core radius 140 um, ring 140-190 um, living-rim width (R_colony - R_core) 61.8 um, 44.5% of the living cells take up acetate, capped 2.0% (glucose and acetate) and 0% (O2). **Criterion fixed on 2026-11-05: core radius within one 10 um annulus and dead fraction within 10% relative of the reference.** Analysis `scripts/analyse_sens.py`, figure `scripts/make_figure_sens.py` (`results/fig_colony_sens.png`), tables `results/sens_summary.csv`, `sens_profiles.csv`, `sens_design.csv`, `cap_check_<run>.csv`.
+
+**4 of 17 runs meet the criterion**: BND glucose 4 mM with O2 10 mM (identical to the reference) and with 2.5 mM, KIN set 02, and pFBA.
+
+1. **Boundary grid (glucose {2, 4, 16} mM x O2 {2.5, 5, 10} mM).** Glucose sets the core; oxygen does not between 5 and 10 mM. 16 mM glucose: no core at 6 min (0.05-0.26% dead; at 10 mM O2 a small acetate zone at 0-70 um, 6.7% of the living cells). 2 mM glucose: core 150 um, dead 59.0% (+29% relative), ring 160-210 um, the same at 2.5, 5 and 10 mM O2 (58.9-59.0%). 4 mM glucose: O2 10 mM identical to the reference, 2.5 mM keeps the core and the dead fraction (140 um, -3.2%) but the ring shrinks (120-180 um, acetate-using cells 16.6% against 44.5%). The cap acts on oxygen at 2.5 mM O2 (54.5% of the cells at 4 mM glucose, 68% at 16 mM) and at 5 mM O2 with 16 mM glucose (43%), so the oxygen-poor runs are cap-affected, not a clean kinetic result. Glucose capped at most 2.8%.
+2. **Eight Sobol sets** (Vmax of glucose, O2, acetate, Km of glucose, D of glucose x0.5-2; necrosis threshold x0.75-1.25). Only set 02 meets the criterion. Core radius 40-160 um (-100 to +20 um), dead fraction 3.2-65.1% (-93 to +43%), a ring in 7 of 8 sets (none in set 01), acetate-using fraction 33-77%. Pearson r over the 8 points (log2 factor; the threshold as a factor) with the core radius: Vmax glucose +0.95, D glucose -0.94, necrosis threshold +0.77, Vmax acetate +0.33, Vmax O2 -0.21, Km glucose -0.04; with the dead fraction +0.97, -0.95, +0.78, +0.15, +0.01, -0.04. The glucose uptake capacity relative to its diffusion (Vmax / D) and the necrosis threshold set the core, in line with the boundary grid (glucose supply). The cap acts in the sets with a high glucose uptake: glucose capped 28% (set 02), 18% (04), 51% (06), acetate 17% (04, 05), O2 28% (08); so part of these results is the cap. Eight points are a screen, the correlations are indicative.
+3. **pFBA.** Identical to the reference: dead 45.62% (-0.03% relative), core 140 um, ring 140-190 um, acetate-using cells -0.2 points, same capped fractions.
+
+Limits: 6 min only, and the dead fraction at a fixed time depends on the timing of necrosis (the ramp), so differences in it mix size and timing of the core; one seed (the seed spread of the pre-grown design is negligible, finding 1); the necrosis increase is the unscaled 1.67e-4 of COL-DT (as the reference); the absence of a core at 16 mM glucose may be a delay, not absence (not tested beyond 6 min); R0 200 um instead of the planned 350 um. The old sensitivity numbers in `Response_to_Reviewers_plan.md` (radial surrogate, 3,712 runs, R0 50-350 um, 32 Sobol runs) are from earlier work and are replaced by this set.
+
 ## Open items and replan
 
 | Item | Status | Proposal |
@@ -155,7 +167,7 @@ Limits: one run per dt, seed 50; the cause of the remaining dt dependence (cap n
 | COL-NECS | done 2026-11-04 (dt 0.001, 0.0005, 0.00025 with the increase scaled with dt) | reference unchanged; see the section above |
 | COL-REF / SEED / REP | done 2026-11-02 (quarter colonies, dt 0.0005, 600 min) | COL-REFDT (dt 0.00025) done 2026-11-03: structure at 600 min within the relaxed criterion; timing of necrosis (360-480 min) still shifts earlier with smaller dt |
 | COL-R0 | done: R0 100 um is not equivalent | none; sensitivity runs keep R0 200 um |
-| COL-BND, COL-KIN, COL-PFBA | not run | run at R0 200 um, dt 0.0005, 6 min (about 50-60 min per run on one node, so the 32 kinetic sets fit one 32-node debug job at R0 200 um instead of the planned 350 um); whether 6 min is long enough for the kinetic variations to show is untested |
+| COL-BND, COL-KIN, COL-PFBA | done 2026-11-06 (17 runs, 6 min, R0 200 um; section above) | none; a longer time (16 mM glucose core, timing of necrosis) is untested |
 | COL-FVA | not run | the pre-grown snapshots on the pin already carry the `_lb` columns; the replay can start on COL-PG_s50 and COL-DT_dt0.0005_s50 now |
 | COL-SCALE | wall times above | threads scaling not run |
 | Ledger (R2.M1.7) | recorded in all runs | residuals not yet analysed |
