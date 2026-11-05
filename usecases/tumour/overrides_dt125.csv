@@ -1,0 +1,6 @@
+scope,xpath,value
+TUM-DT125,/PhysiCell_settings/overall/max_time,1440
+TUM-DT125,/PhysiCell_settings/overall/dt_diffusion,0.00125
+TUM-DT125,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/intracellular_dt,0.00125
+TUM-DT125,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/death_model/death_rate_increase,2.087e-08
+TUM-DT125,/PhysiCell_settings/user_parameters/diffusion_steps,2400
