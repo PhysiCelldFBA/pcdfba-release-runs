@@ -124,6 +124,26 @@ COL-REFDT_dt0.00025_s50: COL-REF with dt_diffusion = intracellular_dt 0.00025 (h
 
 Limits: one run, seed 50; REF and REFDT differ by thread scheduling noise too (REF vs REP: 0.2% in cells); dt 0.0001 was not run at 600 min.
 
+## Time-step series with the necrosis increase scaled with dt (COL-NECS)
+
+The necrosis rate of a cell grows by `death_rate_increase` at each dFBA update, so the ramp per minute is increase/dt and the dead fraction can depend on dt through the model. COL-NECS repeats the dt series with increase = 1.67e-5 x dt/0.001 (the ramp is then 1.67e-5 per min2 at every dt): dt 0.001 (increase 1.67e-5), 0.0005 (8.35e-6) and 0.00025 (4.175e-6), otherwise COL-REF (seed 50, quarter colony, 600 min, 112 threads, one node each, jobs 48490287-48490289, 31 snapshots). Numbers: `results/necs_summary.csv` (computed with `pg_analyse.analyse`).
+
+| at 600 min | dt 0.001 | dt 0.0005 | dt 0.00025 |
+|---|---|---|---|
+| dead %, increase scaled with dt | 40.1 | 45.0 | 47.0 |
+| dead %, increase not scaled (COL-QTRB / COL-REF / COL-REFDT) | 39.7 | 46.2 | 48.0 |
+| core radius (um) | 140 | 150 | 150 |
+| ring outer edge (um) | 200 | 200 | 200 |
+| R99 (um) | 214.6 | 215.8 | 217.0 |
+| quarter cells | 23,968 | 24,517 | 24,829 |
+
+1. **The scaling changes the dead fraction by at most 1.2 points** (1.2 at dt 0.0005, 1.0 at 0.00025). The dependence of the dead fraction on dt is therefore in the state of the cells and not in the necrosis ramp.
+2. **Convergence:** the dead fraction changes by 4.9 points (11% relative) from 0.001 to 0.0005 and by 2.0 points (4.4%) from 0.0005 to 0.00025. The relaxed criterion is met at dt 0.0005 (and, unscaled, 3.8%). The steps shrink by a factor of 2.5, so the limit dt -> 0 is about 48-49% on the scaled series (first-order assumption, not tested). Core and ring edges agree within one annulus, cells within 1.3% between 0.0005 and 0.00025.
+3. **Earlier times** are not converged, as before (dead % at 360 min: 3.1 / 5.6 / 8.1 scaled; 6.7 / 10.2 unscaled at 0.0005 / 0.00025).
+4. **Decision:** the reference stays COL-REF_s50 (dt 0.0005, 1.67e-5 per update); Table S4 states the increase per dFBA update; S7.3 gets the paragraph C5 (`Colony_params_edits.tex`).
+
+Limits: one run per dt, seed 50; the cause of the remaining dt dependence (cap number, trigger timing or other) was not tested.
+
 ## Open items and replan
 
 | Item | Status | Proposal |
@@ -132,6 +152,7 @@ Limits: one run, seed 50; REF and REFDT differ by thread scheduling noise too (R
 | COL-DT | done for dt 0.0001-0.01; dt 0.00025 stops at 6 min and dt 0.0001 at 2 min (2 h debug limit) | optional: dt 0.0001 to 6 min in the standard queue (about 135 min), to confirm the plateau |
 | COL-DX | done at dt 0.001 (10 min) and at dt 0.0005 (6 min) | none |
 | COL-NEC | done at dt 0.001, 10 min only | in `runs_def.csv`, not run: x1 at dt 0.001 to 40 min in the standard queue (about 4 h), to see whether x1 reaches the x10 core; otherwise state x10 as an acceleration |
+| COL-NECS | done 2026-11-04 (dt 0.001, 0.0005, 0.00025 with the increase scaled with dt) | reference unchanged; see the section above |
 | COL-REF / SEED / REP | done 2026-11-02 (quarter colonies, dt 0.0005, 600 min) | COL-REFDT (dt 0.00025) done 2026-11-03: structure at 600 min within the relaxed criterion; timing of necrosis (360-480 min) still shifts earlier with smaller dt |
 | COL-R0 | done: R0 100 um is not equivalent | none; sensitivity runs keep R0 200 um |
 | COL-BND, COL-KIN, COL-PFBA | not run | run at R0 200 um, dt 0.0005, 6 min (about 50-60 min per run on one node, so the 32 kinetic sets fit one 32-node debug job at R0 200 um instead of the planned 350 um); whether 6 min is long enough for the kinetic variations to show is untested |
