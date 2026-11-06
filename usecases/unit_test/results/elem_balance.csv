@@ -1,0 +1,7 @@
+model,file,sha256,reactions,metabolites,exchange,internal,checkable,balanced,unbalanced,no_formula,biomass_reactions,metabolites_without_formula
+"e_coli_core (unit test, acetate, colony, motility)",unit_test/config/shipped/Ecoli_core.xml,a61a61fd3f10,95,72,20,74,74,74,0,0,BIOMASS_Ecoli_core_w_GAM,0
+e_coli_core ATPM 8.39,unit_test/models/Ecoli_core_ATPM8.39.xml,b4db506aeed0,95,72,20,74,74,74,0,0,BIOMASS_Ecoli_core_w_GAM,0
+iML1515,unit_test/models/iML1515.xml,9c772d44ca43,2712,1877,337,2373,2373,2372,1,0,"BIOMASS_Ec_iML1515_WT_75p37M,BIOMASS_Ec_iML1515_core_75p37M",0
+C. beijerinckii iCB925 (trimmed),crossfeeding/config/shipped/sbml_models/C_beijerinckii_model_iCB925_trimmed.xml,5b861b9a2330,501,362,16,484,462,462,0,22,biomass,19
+M. barkeri iMG746 (trimmed),crossfeeding/config/shipped/sbml_models/M_barkeri_model_iMG746_trimmed.xml,d219cf19bd06,551,459,33,517,517,517,0,0,Mb_biomass_65,0
+MCF7 Zielinski 2017 core (trimmed),tumour/config/shipped/MCF7_Zielinski_2017_core_trimmed.sbml,49abdc729ba6,374,360,27,346,346,340,6,0,biomass_reaction,0

@@ -1,7 +1,7 @@
 # Unit test: results synthesis
 
 Status 2026-10-29. All 70 runs of `runs_def.csv` were run on the pinned code (`review-runs-v1`, commit 7f2b1d0a; binary f397aa14e87ace45 built from it) and all finished (rc 0); `provenance.csv` has one row per run. They were run **locally** (8-core machine, single-thread runs 6 at a time), not on MN5; the 16-thread run of UT-THREADS was oversubscribed on 8 cores, so its timing means nothing (its result does). The full printout of the checks is `results/checks_local_pin.txt`, the CONV-BOX comparison is `results/ut_convbox.csv`, BASE and THREADS are in `results/ut_base_threads.csv`.
-Not done: UT-DOMAIN (needs the addon hotfix), UT-TRIM, UT-ELEM for the four other models.
+Not done: UT-DOMAIN (needs the addon hotfix), UT-TRIM. UT-ELEM done 2026-11-06 (section at the end).
 
 ## Results
 
@@ -71,6 +71,20 @@ The endpoint agrees within 0.14% for the three models (expected 3.874 and 3.904 
 
 ## Open
 
-1. UT-DOMAIN (needs the addon hotfix), UT-TRIM, UT-ELEM for the four other models.
+1. UT-DOMAIN (needs the addon hotfix), UT-TRIM.
 2. Condition 2 (R) for the other use cases; the cross-feeding setting at dx 1.25 is outside condition 1 and its main-figure setting needs a decision.
 3. Voxel/cell volumes of the acetate, cross-feeding, motility and tumour use cases to be re-read from definitive runs.
+
+## UT-ELEM: elemental balance of the models (2026-11-06; `scripts/elem_balance.py`, `results/elem_balance.csv`, `results/elem_unbalanced.csv`)
+
+cobra 0.32 `check_mass_balance` (elements and charge) on every reaction that is not an exchange and not a biomass reaction ("internal"); a reaction is checkable when all its metabolites have a formula. Files are the ones the runs read (sha256 in the table).
+
+| Model | Internal reactions | Checkable | Balanced | Unbalanced | No formula |
+|---|---|---|---|---|---|
+| e_coli_core (unit test, acetate, colony, motility; also with ATPM 8.39) | 74 | 74 | 74 | 0 | 0 |
+| iML1515 | 2373 | 2373 | 2372 | 1 (PUACGAMS, a generic R group in the formula) | 0 |
+| C. beijerinckii iCB925 (trimmed) | 484 | 462 | 462 | 0 | 22 |
+| M. barkeri iMG746 (trimmed) | 517 | 517 | 517 | 0 | 0 |
+| MCF7 Zielinski 2017 core (trimmed) | 346 | 346 | 340 | 6 | 0 |
+
+C. beijerinckii: 22 reactions involve 19 pseudo-metabolites without formula (DNA, RNA, protein, peptidoglycan, teichoic acid, carbohydrate, phospholipid classes, menaquinones) and cannot be checked. MCF7: ARTFR11, ARTPLM1 and ARTPLM2 carry generic acyl-chain symbols in their formulas (a formula artefact, not a missing atom balance), DHCR242r, PSERT and PSP_L differ by one H (protonation state). Not a check of the biomass reactions (their composition is lumped by construction). Biomass reactions (every reaction with "biomass" in its id) are excluded from the table.

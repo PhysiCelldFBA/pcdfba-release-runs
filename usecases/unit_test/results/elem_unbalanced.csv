@@ -1,0 +1,8 @@
+model,reaction,imbalance,n_metabolites
+iML1515,PUACGAMS,{'R': -1.0},3
+MCF7 Zielinski 2017 core (trimmed),ARTFR11,"{'C': -15.0, 'H': -31.0, 'X': 1.0}",2
+MCF7 Zielinski 2017 core (trimmed),ARTPLM1,"{'C': 15.0, 'F': -1.0, 'U': -1.0, 'L': -2.0, 'R': -1.0, 'H': 31.0}",2
+MCF7 Zielinski 2017 core (trimmed),ARTPLM2,"{'C': 15.0, 'F': -1.0, 'U': -1.0, 'L': -2.0, 'R': -2.0, 'H': 31.0}",2
+MCF7 Zielinski 2017 core (trimmed),DHCR242r,{'H': -1.0},5
+MCF7 Zielinski 2017 core (trimmed),PSERT,{'H': 1.0},5
+MCF7 Zielinski 2017 core (trimmed),PSP_L,{'H': -1.0},5
