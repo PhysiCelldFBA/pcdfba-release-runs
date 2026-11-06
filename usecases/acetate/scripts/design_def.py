@@ -11,7 +11,7 @@ runs, ov = [], []
 def run(rid, eid, seed=50): runs.append((rid, eid, seed))
 def put(scope, xp, val): ov.append((scope, xp, val))
 LEDGER = ("+" + P + "/cell_definitions/cell_definition/phenotype/intracellular/settings", "<dfba_conservation_ledger>true</dfba_conservation_ledger>")
-DEF = ["ACE-REF", "ACE-SEED", "ACE-REP", "ACE-CONV", "ACE-DTM", "ACE-PFBA", "ACE-SENS", "ACE-PULSE", "ACE-FVA1", "ACE-FVA6S"]
+DEF = ["ACE-REF", "ACE-SEED", "ACE-REP", "ACE-CONV", "ACE-DTM", "ACE-PFBA", "ACE-SENS", "ACE-PULSE", "ACE-FVA1", "ACE-FVA6S", "ACE-PFBA6S"]
 for e in DEF: put(e, *LEDGER)
 run("ACE-REF_s50", "ACE-REF"); run("ACE-SEED_s51", "ACE-SEED", 51); run("ACE-SEED_s52", "ACE-SEED", 52); run("ACE-REP_s50", "ACE-REP")
 IC = P + "/cell_definitions/cell_definition/phenotype/intracellular/settings/intracellular_dt"
@@ -41,6 +41,8 @@ for s in (50, 51, 52): r = f"ACE-PULSE_o2_10_s{s}"; run(r, "ACE-PULSE", s); put(
 for o in (20, 40, 80): r = f"ACE-PULSE_o2_{o}_s50"; run(r, "ACE-PULSE"); put(r, P + "/user_parameters/o2_concentration", o)
 run("ACE-FVA1_s50", "ACE-FVA1"); put("ACE-FVA1", P + "/overall/max_time", 150); put("ACE-FVA1", P + "/save/full_data/interval", 1)
 run("ACE-FVA6S_s50", "ACE-FVA6S"); put("ACE-FVA6S", P + "/overall/max_time", 80); put("ACE-FVA6S", P + "/save/full_data/interval", 0.1)
+run("ACE-PFBA6S_s50", "ACE-PFBA6S"); put("ACE-PFBA6S", P + "/overall/max_time", 80); put("ACE-PFBA6S", P + "/save/full_data/interval", 0.1)
+put("ACE-PFBA6S", "+" + P + "/cell_definitions/cell_definition/phenotype/intracellular/growth_model", '<secondary_objective type="parsimonious" enabled="true" fraction_of_optimum="1.0"/>')
 with open(f"{UC}/runs_def.csv", "w", newline="") as f: w = csv.writer(f); w.writerow(["run_id", "experiment_id", "seed"]); w.writerows(runs)
 with open(f"{UC}/overrides_def.csv", "w", newline="") as f: w = csv.writer(f); w.writerow(["scope", "xpath", "value"]); w.writerows(ov)
 print(len(runs), "runs,", len(ov), "override rows")
