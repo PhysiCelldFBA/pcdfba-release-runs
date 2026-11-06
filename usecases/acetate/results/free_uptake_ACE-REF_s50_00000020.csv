@@ -1,0 +1,5 @@
+run,t,cell_type,reaction,lb,median_flux_open,median_fva_min,uptake_used_pct,growth_ratio_closed_open
+ACE-REF_s50,100.0,ecoli,EX_h_e,-1000.0,23.885282858132626,23.883661356489128,0.0,0.0
+ACE-REF_s50,100.0,ecoli,EX_h2o_e,-1000.0,-5.796969430981314,-5.7975316408051185,100.0,0.0
+ACE-REF_s50,100.0,ecoli,EX_nh4_e,-1000.0,-0.8141258428255296,-0.8141627458362554,100.0,0.0
+ACE-REF_s50,100.0,ecoli,EX_pi_e,-1000.0,-0.5492452937944341,-0.549245293794435,100.0,0.0

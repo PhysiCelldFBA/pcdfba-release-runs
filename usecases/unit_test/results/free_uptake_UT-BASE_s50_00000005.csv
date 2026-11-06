@@ -1,0 +1,5 @@
+run,t,cell_type,reaction,lb,median_flux_open,median_fva_min,uptake_used_pct,growth_ratio_closed_open
+UT-BASE_s50,50.0,ecoli1,EX_h_e,-1000.0,14.678581714602672,14.678434928785506,0.0,0.0
+UT-BASE_s50,50.0,ecoli1,EX_h2o_e,-1000.0,22.087253139679255,22.086553304026523,0.0,0.0
+UT-BASE_s50,50.0,ecoli1,EX_nh4_e,-1000.0,-3.989998523099962,-3.9900650593639253,100.0,0.0
+UT-BASE_s50,50.0,ecoli1,EX_pi_e,-1000.0,-2.6918294393573605,-2.6918294393573676,100.0,0.0
