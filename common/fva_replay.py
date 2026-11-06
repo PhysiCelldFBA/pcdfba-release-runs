@@ -1,4 +1,4 @@
-"""FVA replay of recorded cells. usage: fva_replay.py RUNDIR [--snap N|last] [--n 50 (per cell type)] [--seed 1] [--fractions 0.99999,0.9999] [--tol 1e-2] [--solver glpk] [--out PREFIX]
+"""FVA replay of recorded cells. usage: fva_replay.py RUNDIR [--snap N|last] [--n 50 (per cell type)] [--seed 1] [--fractions 0.99999,0.9999] [--tol 1e-2] [--solver gurobi] [--out PREFIX]
 For a sample of living cells of one snapshot, rebuild the linear problem that the cell solved (the SBML model of its cell type with the lower bound of every recorded exchange set to the value in the *_lb column), solve FBA, and run flux variability analysis on the exchanges at fraction_of_optimum of the objective.
 Per cell and fraction: the FBA objective of the replay (compared with the recorded growth_rate column), and for each exchange the recorded flux, the lower bound, the FVA range, whether it is determined (range <= tol mmol/gDW/h; the range at fraction 0.99999 of a unique optimum is itself about 1e-3, and it scales with 1 - fraction, which the summary reports as width_ratio) and whether the recorded flux is inside the range.
 Cells with identical recorded bounds of the same type give the same problem and are solved once (column n_same). Writes PREFIX_cells.csv (one row per sampled cell and exchange) and PREFIX_summary.csv; default PREFIX = RUNDIR/fva_replay_<snapshot>.
@@ -38,7 +38,7 @@ def cell_models(settings, d):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("rundir"); ap.add_argument("--snap", default="last"); ap.add_argument("--n", type=int, default=50); ap.add_argument("--seed", type=int, default=1)
-    ap.add_argument("--fractions", default="0.99999,0.9999"); ap.add_argument("--tol", type=float, default=1e-2); ap.add_argument("--solver", default="glpk"); ap.add_argument("--out", default=None)
+    ap.add_argument("--fractions", default="0.99999,0.9999"); ap.add_argument("--tol", type=float, default=1e-2); ap.add_argument("--solver", default="gurobi"); ap.add_argument("--out", default=None)
     a = ap.parse_args(); d = a.rundir.rstrip("/"); fr = [float(x) for x in a.fractions.split(",")]
     xs = snapshots(d); xf = xs[-1] if a.snap == "last" else f"{d}/output{int(a.snap):08d}.xml"
     root = ET.parse(xf).getroot(); lab = labels(root); t = float(root.find(".//current_time").text)
@@ -50,7 +50,7 @@ def main():
     cache_model = {}
     def load(p):
         if p not in cache_model:
-            mod = cobra.io.read_sbml_model(p); mod.solver = a.solver; cache_model[p] = mod
+            mod = cobra.io.read_sbml_model(p); assert a.solver in ("gurobi", "cplex"), "FVA must use gurobi or cplex, not " + a.solver; mod.solver = a.solver; cache_model[p] = mod
         return cache_model[p]
     cache = {}; rows = []
     for j in idx:
