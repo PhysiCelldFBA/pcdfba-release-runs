@@ -1,0 +1,3 @@
+file,from_trimmed,sha256,reactions,metabolites,internal_bounds_reset,atpm_bounds,objective
+models_full/C_beijerinckii_model_iCB925_trimmed_nocaps.xml,crossfeeding/config/shipped/sbml_models/C_beijerinckii_model_iCB925_trimmed.xml,76c8741fbf4c,501,362,485,"(0.0, 1000.0)",biomass
+models_full/M_barkeri_model_iMG746_trimmed_nocaps.xml,crossfeeding/config/shipped/sbml_models/M_barkeri_model_iMG746_trimmed.xml,ba0af7312b7a,551,459,518,"(0.0, 2.0)",Mb_biomass_65

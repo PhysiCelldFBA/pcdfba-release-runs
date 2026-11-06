@@ -50,6 +50,13 @@ def cf3(rid, eid, seed=50, dx=1.6, dt=0.001):
     if dt != 0.001: setdt(rid, dt)
 cf3("CF3-REF_s50", "CF3-REF"); cf3("CF3-SEED_s51", "CF3-SEED", 51); cf3("CF3-DX_dx2.0_dt0.001_s50", "CF3-DX", dx=2.0)
 for dt in (0.002, 0.0005): cf3(f"CF3-DT_dx1.6_dt{dt}_s50", "CF3-DT", dt=dt)
+# CF-NC / CF3-NC (2026-11-06): the same two designs with the trimmed models without the FVA caps (models/*_trimmed_nocaps.xml, built by unit_test/scripts/make_nocaps_models.py:
+# trimmed topology, internal bounds of the full models, exchange bounds of the medium unchanged, ATPM lower bound 0). Everything else as CF-REF and CF3-REF, seed 50.
+NC = ("./models/C_beijerinckii_model_iCB925_trimmed_nocaps.xml", "./models/M_barkeri_model_iMG746_trimmed_nocaps.xml")
+def nocaps(rid):
+    for c, f in zip(CDS, NC): put(rid, c + "/sbml_filename", f)
+run("CF-NC_s50", "CF-NC"); nocaps("CF-NC_s50")
+cf3("CF3-NC_s50", "CF3-NC"); nocaps("CF3-NC_s50")
 with open(f"{UC}/runs_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["run_id", "experiment_id", "seed"]); w.writerows(runs)
 with open(f"{UC}/overrides_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["scope", "xpath", "value"]); w.writerows(ov)
 print(len(runs), "runs,", len(ov), "override rows")
