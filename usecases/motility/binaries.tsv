@@ -1,0 +1,2 @@
+# binary_sha	commit	note
+847df0a2939f47f1	7f2b1d0a52782918ea4319c2ef94563bf719f253	MN5-built ecoli-dfba-motility from the exported pinned code (motility_pin_mn5/tree, COMMIT 7f2b1d0a), gcc 13.2.0, job 48645327 (gp_debug, 1 node, 8 runs at once, 2 min 43 s with the build); build/build_record.tsv lists the local build (14d66a954d1f952d) of the same commit, which was not used for these runs. The first two local runs (runs_local_partial_20261106_stopped, local binary) were stopped at 43 and 48 of 121 snapshots and are not used.

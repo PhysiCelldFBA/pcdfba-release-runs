@@ -1,0 +1,5 @@
+scope,xpath,value
+*,/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings/sbml_filename,./config/shipped/Ecoli_core.xml
+*,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
+*,/PhysiCell_settings/initial_conditions/cell_positions/folder,./config/shipped
+*,/PhysiCell_settings/save/SVG/enable,false
