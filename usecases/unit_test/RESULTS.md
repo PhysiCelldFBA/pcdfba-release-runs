@@ -1,7 +1,7 @@
 # Unit test: results synthesis
 
 Status 2026-10-29. All 70 runs of `runs_def.csv` were run on the pinned code (`review-runs-v1`, commit 7f2b1d0a; binary f397aa14e87ace45 built from it) and all finished (rc 0); `provenance.csv` has one row per run. They were run **locally** (8-core machine, single-thread runs 6 at a time), not on MN5; the 16-thread run of UT-THREADS was oversubscribed on 8 cores, so its timing means nothing (its result does). The full printout of the checks is `results/checks_local_pin.txt`, the CONV-BOX comparison is `results/ut_convbox.csv`, BASE and THREADS are in `results/ut_base_threads.csv`.
-Not done: UT-DOMAIN (needs the addon hotfix), UT-TRIM. UT-ELEM done 2026-11-06 (section at the end).
+Not done: UT-DOMAIN (needs the addon hotfix). UT-TRIM done 2026-11-06 (section at the end). UT-ELEM done 2026-11-06 (section at the end).
 
 ## Results
 
@@ -71,7 +71,7 @@ The endpoint agrees within 0.14% for the three models (expected 3.874 and 3.904 
 
 ## Open
 
-1. UT-DOMAIN (needs the addon hotfix), UT-TRIM.
+1. UT-DOMAIN (needs the addon hotfix).
 2. Condition 2 (R) for the other use cases; the cross-feeding setting at dx 1.25 is outside condition 1 and its main-figure setting needs a decision.
 3. Voxel/cell volumes of the acetate, cross-feeding, motility and tumour use cases to be re-read from definitive runs.
 
@@ -88,3 +88,15 @@ cobra 0.32 `check_mass_balance` (elements and charge) on every reaction that is 
 | MCF7 Zielinski 2017 core (trimmed) | 346 | 346 | 340 | 6 | 0 |
 
 C. beijerinckii: 22 reactions involve 19 pseudo-metabolites without formula (DNA, RNA, protein, peptidoglycan, teichoic acid, carbohydrate, phospholipid classes, menaquinones) and cannot be checked. MCF7: ARTFR11, ARTPLM1 and ARTPLM2 carry generic acyl-chain symbols in their formulas (a formula artefact, not a missing atom balance), DHCR242r, PSERT and PSP_L differ by one H (protonation state). Not a check of the biomass reactions (their composition is lumped by construction). Biomass reactions (every reaction with "biomass" in its id) are excluded from the table.
+
+## UT-TRIM: trimmed against full models (2026-11-06; `scripts/trim_check.py`, `results/trim_check.csv`, `results/trim_removed.csv`; full models in `models_full/`, origin in `models_full/ORIGIN.md`)
+
+Medium: every exchange of the trimmed model gives its bounds to the same reaction of the full model (case-insensitive id, iCB925 uses `ex_` against `EX_`), all other exchanges of the full model are closed. Gurobi; FBA optimum and FVA (fraction 0.99999) of the exchanges of the trimmed model. Variant "full bounds": the trimmed topology with the internal bounds of the full model, to separate the removal of reactions from the tightening of bounds.
+
+| Model | Reactions full / trimmed | Removed reactions that carry flux in the full model | Internal bounds changed | Optimum full / trimmed (full bounds) / shipped trimmed | Largest difference of an exchange limit: topology only / shipped |
+|---|---|---|---|---|---|
+| C. beijerinckii iCB925 | 938 / 501 | 0 of 437 | 485 | 0.332977 / 0.332977 / 0.332977 | 1e-6 / 1e-6 |
+| M. barkeri iMG746 | 816 / 551 | 0 of 265 | 518 (314 upper bounds from 1000 to below 1) | 0.051696 / 0.051696 / **0.043597 (-15.7%)** | 0 / **20.0** |
+| MCF7 Zielinski 2017 core | 381 / 374 | 0 of 9 | 1 | 0.025915 (biomass_NCI60) / 0.003776 / 0.003776 (biomass_reaction) | 0.28 / 0.28 (not comparable) |
+
+Findings. (1) Removing reactions did not change the behaviour of any model: the reactions removed are all blocked in the medium (range 0), and the trimmed topology with the full bounds gives the full optimum and the full exchange ranges (iCB925, iMG746; 1e-6). (2) The shipped trimmed iCB925 also has different internal bounds (485 reactions) but gives the same optimum and exchange ranges. (3) **The shipped trimmed iMG746 has 518 internal bounds changed, 314 of them capped (upper bound 1000 to below 1), which lowers the optimum in the trimming medium by 15.7% and changes the exchange limits of the species (largest differences: H+ 20.5 against 0.46, H2O -6.5 against 8.2, H2S -10 against -0.03, SO3 10.0 against 0.0, CO2 -13.5 against -5.9, CH4 14.4 against 7.1 mmol/gDW/h)**: a restricted model, not only a trimmed one. The cross-feeding result therefore uses the capped M. barkeri; whether the caps bind in the medium of the runs (acetate and H2 supplied by C. beijerinckii) was not tested. The text of the paper should say "trimmed and with bounds from the preparation notebook" (to confirm with the model's author: the cap values look like flux ranges from an earlier FVA). (4) The MCF7 trimmed file is not a trimmed copy of the full file: it has another biomass reaction (biomass_reaction against biomass_NCI60), an added ATPM, 27 exchanges with other bounds (glucose -0.5 against -5 etc.), so the comparison is not valid and the optimum differs (0.0038 against 0.0259); it is the calibrated tumour model of S5, not a trimming of the full one. (5) The trimmed iMG746 of the repository (sha256 f324fd6c2a40) differs from the one the runs read (d219cf19bd06) but gives the same optimum and ranges; which one the manuscript cites is to be settled. Not done: iML1515 (the runs use the full model), and the effect of the iMG746 caps in the cross-feeding medium.
