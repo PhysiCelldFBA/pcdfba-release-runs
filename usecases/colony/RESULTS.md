@@ -168,6 +168,12 @@ Limits: 6 min only, and the dead fraction at a fixed time depends on the timing 
 | COL-REF / SEED / REP | done 2026-11-02 (quarter colonies, dt 0.0005, 600 min) | COL-REFDT (dt 0.00025) done 2026-11-03: structure at 600 min within the relaxed criterion; timing of necrosis (360-480 min) still shifts earlier with smaller dt |
 | COL-R0 | done: R0 100 um is not equivalent | none; sensitivity runs keep R0 200 um |
 | COL-BND, COL-KIN, COL-PFBA | done 2026-11-06 (17 runs, 6 min, R0 200 um; section above) | none; a longer time (16 mM glucose core, timing of necrosis) is untested |
-| COL-FVA | not run | the pre-grown snapshots on the pin already carry the `_lb` columns; the replay can start on COL-PG_s50 and COL-DT_dt0.0005_s50 now |
+| COL-FVA | done 2026-11-06 (replay of COL-DT_dt0.0005_s50 and COL-PG_s50; section below) | none |
 | COL-SCALE | wall times above | threads scaling not run |
 | Ledger (R2.M1.7) | recorded in all runs | residuals not yet analysed |
+
+## FVA replay (2026-11-06; `common/fva_replay.py`)
+
+Method: for a sample of living cells of one snapshot the linear problem of the cell is rebuilt (SBML model of its cell type, lower bound of every recorded exchange set to the `_lb` column, objective bound `max_growth_rate` not binding), solved with GLPK (cobra 0.32.1), and flux variability analysis is run on the recorded exchanges at fraction_of_optimum 0.99999 and 0.9999. Checks: the replay objective equals the recorded `growth_rate` (relative median 1.7e-15, max 4.3e-14); infeasible replays are the cells with zero recorded growth; the recorded flux lies inside its FVA range in 100% of the cells. A range is called undetermined when it exceeds 1e-2 mmol/gDW/h; `width_ratio` is the median of range(0.9999) / range(0.99999): 10 for a unique optimum (the range is the tolerance), about 1 for a true degeneracy. The replay is independent of the Clp solver of the run. Tables in `results/fva/` (`*_cells.csv` one row per sampled cell, fraction and exchange; `*_summary.csv`).
+
+**COL-DT_dt0.0005_s50 (10 min, 46,120 living of 87,685; 300 cells) and COL-PG_s50 (10 min, 51,000 living; 300 cells).** Glucose, acetate, lactate, oxygen and CO2 are unique in every sampled cell (100% determined, widest range 1.9e-3 mmol/gDW/h, width_ratio 10). Replay objective against the recorded growth rate: median 1.7e-15, max 4.3e-14 (relative). The 36 (COL-DT) and 61 (COL-PG) infeasible replays out of 300 are exactly the cells with zero recorded growth (starved core). The optimum of the colony is therefore not a tie-break of the solver, as in the earlier replay.

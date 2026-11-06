@@ -1,0 +1,9 @@
+run,t,fraction,exchange,cells,active,determined_pct,median_width,max_width,median_width_rel_pct,rec_in_range_pct,median_rec
+ACE-REF_s50,600.0,0.9999,R_EX_ac_e,0,0,,,,,,
+ACE-REF_s50,600.0,0.9999,R_EX_co2_e,0,0,,,,,,
+ACE-REF_s50,600.0,0.9999,R_EX_glc__D_e,0,0,,,,,,
+ACE-REF_s50,600.0,0.9999,R_EX_o2_e,0,0,,,,,,
+ACE-REF_s50,600.0,0.99999,R_EX_ac_e,0,0,,,,,,
+ACE-REF_s50,600.0,0.99999,R_EX_co2_e,0,0,,,,,,
+ACE-REF_s50,600.0,0.99999,R_EX_glc__D_e,0,0,,,,,,
+ACE-REF_s50,600.0,0.99999,R_EX_o2_e,0,0,,,,,,
