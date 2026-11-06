@@ -8,6 +8,7 @@ ACE-PFBA,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intrace
 ACE-SENS,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
 ACE-PULSE,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
 ACE-FVA1,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
+ACE-FVA6S,+/PhysiCell_settings/cell_definitions/cell_definition/phenotype/intracellular/settings,<dfba_conservation_ledger>true</dfba_conservation_ledger>
 ACE-CONV_dx2_s50,/PhysiCell_settings/domain/dx,2
 ACE-CONV_dx2_s50,/PhysiCell_settings/domain/dy,2
 ACE-CONV_dx2_s50,/PhysiCell_settings/domain/dz,2
@@ -62,3 +63,5 @@ ACE-PULSE_o2_40_s50,/PhysiCell_settings/user_parameters/o2_concentration,40
 ACE-PULSE_o2_80_s50,/PhysiCell_settings/user_parameters/o2_concentration,80
 ACE-FVA1,/PhysiCell_settings/overall/max_time,150
 ACE-FVA1,/PhysiCell_settings/save/full_data/interval,1
+ACE-FVA6S,/PhysiCell_settings/overall/max_time,80
+ACE-FVA6S,/PhysiCell_settings/save/full_data/interval,0.1
