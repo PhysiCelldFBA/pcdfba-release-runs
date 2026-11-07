@@ -73,6 +73,15 @@ for sub in ("H2", "acetate"):
     put("CF3-DB_s50", V + "/initial_condition", 0.001); put("CF3-DB_s50", V + "/Dirichlet_boundary_condition", 0.001)
     for f in ("xmin", "xmax", "ymin", "ymax", "zmin", "zmax"): put("CF3-DB_s50", V + f"/Dirichlet_options/boundary_value[@ID='{f}']", 0.001)
 cf3("CF3-NC50_s50", "CF3-NC50"); nocaps("CF3-NC50_s50"); put("CF3-NC50_s50", P + "/overall/max_time", 3000)
+# CF3-NC-DT (2026-11-07): the dt series of the main scenario (no caps, open at 0 mM): dt 0.002 and 0.0005 min at dx 1.6, seed 50, to measure the dependence on dt where M. barkeri is capped (cap ratio 0.14 at 10 h in CF3-NC and CF3-DB).
+for dt in (0.002, 0.0005): rid = f"CF3-NC-DT_dx1.6_dt{dt}_s50"; cf3(rid, "CF3-NC-DT", dt=dt); nocaps(rid)
+# CF3-BR (2026-11-07): H2 and acetate held on every face and initially at the value one voxel inside the edge of the open box (CF3-NC) when M. barkeri makes its first new cell (1050 min): H2 0.0238 -> 0.024 mM, acetate 0.0129 -> 0.013 mM
+# (CF3-NC, scripts/border_profile.py, results/cf3_border.csv). Above the Km of M. barkeri for H2 (0.01 mM): the surroundings are pre-loaded, a bracketing case and not a test of cross-feeding.
+cf3("CF3-BR_s50", "CF3-BR"); nocaps("CF3-BR_s50")
+for sub, v in (("H2", 0.024), ("acetate", 0.013)):
+    V = P + f"/microenvironment_setup/variable[@name='{sub}']"
+    put("CF3-BR_s50", V + "/initial_condition", v); put("CF3-BR_s50", V + "/Dirichlet_boundary_condition", v)
+    for f in ("xmin", "xmax", "ymin", "ymax", "zmin", "zmax"): put("CF3-BR_s50", V + f"/Dirichlet_options/boundary_value[@ID='{f}']", v)
 with open(f"{UC}/runs_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["run_id", "experiment_id", "seed"]); w.writerows(runs)
 with open(f"{UC}/overrides_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["scope", "xpath", "value"]); w.writerows(ov)
 print(len(runs), "runs,", len(ov), "override rows")
