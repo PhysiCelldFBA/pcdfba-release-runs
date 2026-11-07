@@ -57,6 +57,22 @@ def nocaps(rid):
     for c, f in zip(CDS, NC): put(rid, c + "/sbml_filename", f)
 run("CF-NC_s50", "CF-NC"); nocaps("CF-NC_s50")
 cf3("CF3-NC_s50", "CF3-NC"); nocaps("CF3-NC_s50")
+# CF3-NF (2026-11-06): CF3-NC with no-flux boundaries for H2 and acetate (Dirichlet condition off on every face; glucose, CO2 and methane as shipped) and H2 / acetate initially 0, so the only source of H2 and acetate is C. beijerinckii and nothing leaves the box.
+# CF3-NC50: CF3-NC run for 3000 min (50 h, the duration in the manuscript text) to measure the cost and the late growth of M. barkeri.
+cf3("CF3-NF_s50", "CF3-NF"); nocaps("CF3-NF_s50")
+for sub in ("H2", "acetate"):
+    V = P + f"/microenvironment_setup/variable[@name='{sub}']"
+    put("CF3-NF_s50", V + "/initial_condition", 0)  # with a closed box the initial 1 mM would be an H2 / acetate pool for M. barkeri: start at 0, so C. beijerinckii is the only source
+    put("CF3-NF_s50", V + "/Dirichlet_boundary_condition/@enabled", "False")
+    for f in ("xmin", "xmax", "ymin", "ymax", "zmin", "zmax"): put("CF3-NF_s50", V + f"/Dirichlet_options/boundary_value[@ID='{f}']/@enabled", "False")
+# CF3-DB (2026-11-07): CF3-NC with H2 and acetate held at 0.001 mM on every face (Dirichlet) and initially 0.001 mM, between the open box at 0 (CF3-NC) and the closed box (CF3-NF).
+# 0.001 mM is of the order of the concentration that the open box itself keeps one voxel inside the edge at 0.5 h (H2 0.0017, acetate 0.0008 mM; scripts/border_profile.py) and is a tenth of the Km of M. barkeri for H2.
+cf3("CF3-DB_s50", "CF3-DB"); nocaps("CF3-DB_s50")
+for sub in ("H2", "acetate"):
+    V = P + f"/microenvironment_setup/variable[@name='{sub}']"
+    put("CF3-DB_s50", V + "/initial_condition", 0.001); put("CF3-DB_s50", V + "/Dirichlet_boundary_condition", 0.001)
+    for f in ("xmin", "xmax", "ymin", "ymax", "zmin", "zmax"): put("CF3-DB_s50", V + f"/Dirichlet_options/boundary_value[@ID='{f}']", 0.001)
+cf3("CF3-NC50_s50", "CF3-NC50"); nocaps("CF3-NC50_s50"); put("CF3-NC50_s50", P + "/overall/max_time", 3000)
 with open(f"{UC}/runs_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["run_id", "experiment_id", "seed"]); w.writerows(runs)
 with open(f"{UC}/overrides_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["scope", "xpath", "value"]); w.writerows(ov)
 print(len(runs), "runs,", len(ov), "override rows")

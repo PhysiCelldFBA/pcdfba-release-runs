@@ -1,5 +1,5 @@
 """Cross-feeding figure (manuscript Fig. 6 layout) from one run: A schematic (cropped from the current manuscript figure), B biomass volume per species, C box-mean concentrations,
-D net export of each species (fmol/s), E growth rate and H2 / acetate fields with streamlines of the concentration gradient (+grad c, as in the manuscript: arrows point to higher concentration) at an early and a late time.
+D net export of each species (fmol/s; legends inside the panels), E growth rate and H2 / acetate fields with streamlines of the concentration gradient (+grad c, as in the manuscript: arrows point to higher concentration) at an early and a late time.
 usage: make_figure.py RUNDIR OUT_PREFIX SCHEMATIC.png [T_EARLY_MIN=30] [T_LATE_MIN=last snapshot]
 Net export = sum over living cells of flux (mmol/gDW/h) x dry weight (volume x (1 - fluid fraction) x 1.04e-12 g/um3) x 1e12 fmol/mmol / 3600 s/h; positive = export."""
 import sys, glob, os, numpy as np, scipy.io as sio, xml.etree.ElementTree as ET, matplotlib
@@ -23,9 +23,9 @@ ts, vol = np.array(ts), np.array(vol); TL = float(sys.argv[5]) if len(sys.argv) 
 print("cells CB/MB at the end:", [int(((snaps[max(snaps)][4] == k) & ~snaps[max(snaps)][5]).sum()) for k in (0, 1)], "t_end %.1f h" % ts[-1], "early %g late %g min" % (TE, TL))
 plt.rcParams.update({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
 fig = plt.figure(figsize=(14.5, 8.4), dpi=200); og = fig.add_gridspec(2, 3, height_ratios=[0.95, 1.8], width_ratios=[1, 1, 1.15], left=0.04, right=0.98, top=0.97, bottom=0.07, wspace=0.28, hspace=0.18)
-a = fig.add_subplot(og[0, 0:2]); im = mpimg.imread(schem); H, W = im.shape[:2]; a.imshow(im[: int(0.375 * H), : int(0.56 * W)]); a.axis("off")
+a = fig.add_subplot(og[0, 0:2]); im = mpimg.imread(schem); H, W = im.shape[:2]; a.imshow(im[: int(0.365 * H), : int(0.56 * W)]); a.axis("off")
 lb = og[1, 0].subgridspec(2, 1, hspace=0.5); b = fig.add_subplot(lb[0]); c_ = fig.add_subplot(lb[1])
-b.plot(ts, vol[:, 0], color="#1f77b4", label="C. beijerinckii"); b.plot(ts, vol[:, 1], color="#c0551a", label="M. barkeri"); b.set_ylabel("Biomass volume (µm³)"); b.set_xlabel("Time (h)"); b.legend(frameon=False, loc="upper left", fontsize=8)
+b.plot(ts, vol[:, 0], color="#1f77b4", label="C. beijerinckii"); b.plot(ts, vol[:, 1], color="#c0551a", label="M. barkeri"); b.set_yscale("log"); b.set_ylabel("Biomass volume (µm³)"); b.set_xlabel("Time (h)"); b.legend(frameon=False, loc="upper left", fontsize=8)
 cc = {"glucose": "#f0c030", "methane": "#18a081", "H2": "#3a6ea5", "acetate": "#c00000"}
 for k, col in cc.items(): c_.plot(ts, [d[k] for d in conc], color=col, label={"glucose": "Glucose", "methane": "CH$_4$", "H2": "H$_2$", "acetate": "Acetate"}[k])
 c_.set_ylabel("Concentration (mM)"); c_.set_xlabel("Time (h)"); c_.legend(frameon=False, ncol=4, fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.38))
@@ -34,7 +34,7 @@ dg = og[1, 1].subgridspec(2, 1, hspace=0.45); col = {"Glucose": "#f0c030", "H$_2
 for i, (k, names, nm_) in enumerate(((0, ["Glucose", "H$_2$", "CO$_2$", "Acetate"], "C. beijerinckii"), (1, ["H$_2$", "Acetate", "CO$_2$", "CH$_4$"], "M. barkeri"))):
     d = fig.add_subplot(dg[i])
     for nm in names: d.plot(ts, [e[(k, nm)] for e in exp], color=col[nm], label=nm)
-    d.axhline(0, color="grey", ls="--", lw=0.8); d.set_ylabel("Net export rate (fmol/s)\n" + nm_); d.legend(frameon=False, fontsize=8, loc="center left", bbox_to_anchor=(1.0, 0.5))
+    d.axhline(0, color="grey", ls="--", lw=0.8); d.set_ylabel("Net export rate (fmol/s)\n" + nm_); d.legend(frameon=False, fontsize=8, loc="upper left", ncol=2)
     if i == 1: d.set_xlabel("Time (h)")
     if i == 0: d.text(-0.25, 1.08, "D", transform=d.transAxes, fontsize=20, fontweight="bold")
 eg = og[:, 2].subgridspec(3, 2, hspace=0.12, wspace=0.08); cb_ = plt.cm.Blues; mb_ = LinearSegmentedColormap.from_list("o", ["#fdf1e6", "#8b2d00"])
@@ -54,4 +54,4 @@ for j, T in enumerate((TE, TL)):
         if j == 0: ax.set_ylabel(lab_, fontsize=11)
 for k, (cm, vm, lab_, y0) in enumerate(((cb_, 0.12, "CB (1/h)", 0.85), (mb_, 0.02, "MB (1/h)", 0.71))):
     cax = fig.add_axes([0.985, y0 - 0.02, 0.007, 0.07]); fig.colorbar(plt.cm.ScalarMappable(norm=plt.Normalize(0, vm), cmap=cm), cax=cax, label=lab_)
-fig.savefig(out + ".png", bbox_inches="tight", facecolor="white"); fig.savefig(out + ".pdf", bbox_inches="tight", facecolor="white")
+fig.savefig(out + ".png", bbox_inches="tight", pad_inches=0.2, facecolor="white"); fig.savefig(out + ".pdf", bbox_inches="tight", pad_inches=0.2, facecolor="white")
