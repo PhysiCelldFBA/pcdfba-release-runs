@@ -1,0 +1,9 @@
+item,value
+use case,acetate
+generated,2026-11-08 by common/make_provenance_workbooks.py
+pinned code commit (submodule code/),7f2b1d0a52782918ea4319c2ef94563bf719f253
+runs in provenance.csv,47
+runs with a configuration read,47
+parameters (all / varying between runs),274 / 26
+run folders without a planned run,_failed_ACE-FVA10S_s50_interval_not_on_dt_grid; _failed_launch2_ACE-FVA1_s50_noconfig; _failed_launch_ACE-FVA1_s50_noconfig; final_pulse_dx4_dt0.01_s50; final_pulse_dx4_dt0.01_s51; final_pulse_dx4_dt0.01_s52; final_pulse_o210_dx4_dt0.01_s50; final_pulse_o210_dx4_dt0.01_s51; final_pulse_o210_dx4_dt0.01_s52; final_pulse_o220_dx4_dt0.01_s50; final_pulse_o240_dx4_dt0.01_s50; final_pulse_o280_dx4_dt0.01_s50; t_dbg
+sheets,"experiments: what each experiment asks and its pass criterion; runs: what happened to each run (commit, binary, config hash, machine, times, rc, status); overrides: the changes on top of the base configuration; binaries: binary hash to commit; parameters_varying / parameters_full: the configuration each run used (see the script docstring)"

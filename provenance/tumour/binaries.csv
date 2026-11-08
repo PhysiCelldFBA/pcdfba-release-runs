@@ -1,0 +1,2 @@
+binary_sha,commit,note
+4ff530093806a919,7f2b1d0a52782918ea4319c2ef94563bf719f253,"MN5-built cancer-core-metabolism from the exported pinned code (tumour_pin_mn5/tree, COMMIT 7f2b1d0a), gcc 13.2.0; all 84 tumour runs (dt/dx/seed/pFBA set, 64-run sensitivity block, dt 0.00125) used it. build/build_record.tsv lists the local build (2a5b175dffc7e51d) of the same commit, which was not used for these runs."

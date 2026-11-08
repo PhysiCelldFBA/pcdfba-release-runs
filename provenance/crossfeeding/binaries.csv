@@ -1,0 +1,3 @@
+binary_sha,commit,note
+1f60748dc4ee2e45,7f2b1d0a52782918ea4319c2ef94563bf719f253,"MN5-built crossfeeding on the pin (tree crossfeed_pin_mn5): CF-REF, CF-SEED, CF-REP, CF-DX, CF-DT and later series runs"
+7f4412de56929182,7f2b1d0a52782918ea4319c2ef94563bf719f253,MN5-built crossfeeding on the pin in a separate build directory (crossfeed_dbg_mn5): CF-FIG only (a different sha from the same commit; the build was repeated)
