@@ -1,10 +1,10 @@
 manuscript_file,status,copied_from,sha256,differs_from_manuscript,note
-main_fig_2_biomass_unit_test.png,replace,usecases/unit_test/results/fig_unit_test_biomass.png,1fedc97129649b516ad46683c4787a8b9e6d20af3aaa7bce773f8cd636664bbf,yes,the regenerated figure differs from the submitted one; confirm the run and the panel selection before replacing
+main_fig_2_biomass_unit_test.png,replace,usecases/unit_test/results/fig_unit_test_biomass.png,d760895a11eb510fb5034c72e326c8be5ed962ebebda10be8fb81fddb179de56,yes,"panels side by side (A glucose and CO2, B biomass and cells); confirmed by the author 2026-11-08"
 main_fig_3_acetate_switch.png,identical,usecases/acetate/results/fig_acetate_switch.png,f0d3d5d899c0800dbf9cb67a869802a5f13fe1962f66da89192b620d31e36faf,no,
 main_fig_4_bacterial_colony.png,identical,usecases/colony/results/fig_colony_ref.png,56f1b1c36b15c8383adb39b7c03d2757f0335e6710c1a20e93a0382add0b0449,no,source run to be confirmed (the figure script takes it as an argument)
 main_fig_5_cancer_tissue.png,identical,usecases/tumour/results/fig_tumour_pfba.png,3db0215d9bec906141ac926c98626b7ab8462d067633ccfc7d3928edf45eb2f2,no,
 main_fig_6_crossfeeding.png,replace,usecases/crossfeeding/results/fig_crossfeeding_CF3-NC_s50.png,fa994bc08d34ff265301aa152bb8fbaa3a36e8a7d3253d3fc3f0d1e44482636d,yes,main figure without flux caps; the schematic (panel A) is cropped from assets/schematic_source_main_fig_6_submitted.png (the submitted Fig. 6)
-main_fig_7_motility.png,replace,usecases/motility/results/fig7/fig7.png,7ef847cbdb1ec93c1154ec1719bdd38078a43f4424390fffe7fb4d1b85b3ba8d,yes,new use case (1.0 and 0.325 mM); panels A-F show seed 51 up to the first division
+main_fig_7_motility.png,replace,usecases/motility/results/fig7/fig7.png,cd60d7aaf3ffcaa0ed555cd4449cfff8371c0311cc772b3928b3ba2471a3f101,yes,new use case (1.0 and 0.325 mM); panels A-F show seed 51 up to the first division
 supp_fig_acetate_sensitivity.png,identical,usecases/acetate/results/fig_acetate_sens.png,83fe69dd94f7dbb7121b46801bf835b9b9942ada4567235212cd8e6f3250bf35,no,
 supp_fig_acetate_switch.png,replace,usecases/acetate/results/fig_acetate_switch_o2_10mM.png,e2ae61417f35e900bd9fc3df3114f78e42c4568b82e6b637edfedc5f69bf44fe,yes,the submitted file is older than the split of the switch figure (commit f6a7ca9); confirm that this is the supplementary version
 supp_fig_colony_logscale_biomass.png,identical,usecases/colony/results/fig_colony_logscale_biomass.png,11d9d5dcaf37d60258e3a7f3781d0b053478a3a8cbfd55f4135b8078b33112f9,no,

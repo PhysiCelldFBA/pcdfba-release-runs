@@ -23,12 +23,12 @@ print("FBA at the configured Vmax: mu %.4f 1/h, q_glc %.3f mmol/gDW/h, yield %.4
 ana = bio[0] + (mu / qg) * (10e-3 * 4096e-15 * 1e3) * 1e12
 print("final biomass %.3f pg, analytical %.3f pg (%.2f%%), cells %d, glucose at the end %.2e mM" % (bio[-1], ana, 100 * (bio[-1] / ana - 1), n[-1], glc[-1]))
 plt.rcParams.update({"font.size": 11, "axes.spines.top": False})
-fig, (a, b) = plt.subplots(2, 1, figsize=(4.4, 6.4), sharex=True, dpi=200, gridspec_kw=dict(hspace=0.12))
+fig, (a, b) = plt.subplots(1, 2, figsize=(9.6, 3.9), dpi=200, gridspec_kw=dict(wspace=0.55))   # panels side by side
 a.plot(t[k], glc[k], color="#f1c232", lw=2.2); a.set_ylabel("Glucose (mM)", color="#f1c232"); a.set_ylim(0, 1.12 * glc.max())
 a2 = a.twinx(); a2.plot(t[k], co2[k], color="#8e44ad", lw=2.2); a2.set_ylabel("CO$_2$ (mM)", color="#8e44ad"); a2.set_ylim(0, 1.12 * co2.max()); a2.spines["top"].set_visible(False)
 l1, = b.plot(t[k], bio[k], "k-", lw=2.2, label="Simulated total biomass"); l2 = b.axhline(ana, color="k", ls=":", lw=1.6, label="Analytical total biomass")
-b.set_ylabel("Total biomass (pg DW)"); b.set_ylim(0, 1.08 * max(ana, bio.max())); b.set_xlabel("Time (h)"); b.set_xlim(0, TMAX)
+a.set_xlabel("Time (h)"); a.set_xlim(0, TMAX); b.set_ylabel("Total biomass (pg DW)"); b.set_ylim(0, 1.08 * max(ana, bio.max())); b.set_xlabel("Time (h)"); b.set_xlim(0, TMAX)
 b2 = b.twinx(); l3, = b2.step(t[k], n[k], where="post", color="#1f78b4", ls="--", lw=2.2, label="Simulated cell count"); b2.set_ylabel("Cell count", color="#1f78b4"); b2.set_ylim(0, 1.15 * n.max()); b2.spines["top"].set_visible(False)
-b.legend([l1, l2, l3], [l.get_label() for l in (l1, l2, l3)], loc="upper center", bbox_to_anchor=(0.5, -0.22), frameon=False)
-a.text(-0.2, 1.02, "A", transform=a.transAxes, fontsize=20, fontweight="bold"); b.text(-0.2, 1.02, "B", transform=b.transAxes, fontsize=20, fontweight="bold")
+fig.legend([l1, l2, l3], [l.get_label() for l in (l1, l2, l3)], loc="lower center", bbox_to_anchor=(0.5, -0.1), ncol=3, frameon=False)
+a.text(-0.17, 1.04, "A", transform=a.transAxes, fontsize=20, fontweight="bold"); b.text(-0.17, 1.04, "B", transform=b.transAxes, fontsize=20, fontweight="bold")
 fig.savefig(out + ".png", bbox_inches="tight", facecolor="white"); fig.savefig(out + ".pdf", bbox_inches="tight", facecolor="white")
