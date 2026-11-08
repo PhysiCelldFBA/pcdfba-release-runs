@@ -1,5 +1,5 @@
 """Cross-feeding figure (manuscript Fig. 6 layout) from one run: A schematic (cropped from the current manuscript figure), B biomass volume per species, C box-mean concentrations,
-D net export of each species (fmol/s; legends inside the panels), E growth rate and H2 / acetate fields with streamlines of the concentration gradient (+grad c, as in the manuscript: arrows point to higher concentration) at an early and a late time.
+D net export of each species (fmol/s; legends inside the panels), E growth rate and H2 / acetate fields with streamlines of the concentration gradient (-grad c: the arrows point down the gradient, the direction of the diffusive flux) at an early and a late time.
 usage: make_figure.py RUNDIR OUT_PREFIX SCHEMATIC.png [T_EARLY_MIN=30] [T_LATE_MIN=last snapshot]
 Net export = sum over living cells of flux (mmol/gDW/h) x dry weight (volume x (1 - fluid fraction) x 1.04e-12 g/um3) x 1e12 fmol/mmol / 3600 s/h; positive = export."""
 import sys, glob, os, numpy as np, scipy.io as sio, xml.etree.ElementTree as ET, matplotlib
@@ -27,7 +27,7 @@ a = fig.add_subplot(og[0, 0:2]); im = mpimg.imread(schem); H, W = im.shape[:2]; 
 lb = og[1, 0].subgridspec(2, 1, hspace=0.5); b = fig.add_subplot(lb[0]); c_ = fig.add_subplot(lb[1])
 b.plot(ts, vol[:, 0], color="#1f77b4", label="C. beijerinckii"); b.plot(ts, vol[:, 1], color="#c0551a", label="M. barkeri"); b.set_yscale("log"); b.set_ylabel("Biomass volume (µm³)"); b.set_xlabel("Time (h)"); b.legend(frameon=False, loc="upper left", fontsize=8)
 cc = {"glucose": "#f0c030", "methane": "#18a081", "H2": "#3a6ea5", "acetate": "#c00000"}
-for k, col in cc.items(): c_.plot(ts, [d[k] for d in conc], color=col, label={"glucose": "Glucose", "methane": "CH$_4$", "H2": "H$_2$", "acetate": "Acetate"}[k])
+for k, col in cc.items(): c_.plot(ts[ts >= 1 / 60], np.array([d[k] for d in conc])[ts >= 1 / 60], color=col, label={"glucose": "Glucose", "methane": "CH$_4$", "H2": "H$_2$", "acetate": "Acetate"}[k])
 c_.set_ylabel("Concentration (mM)"); c_.set_xlabel("Time (h)"); c_.legend(frameon=False, ncol=4, fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.38))
 for q, lab_ in ((b, "B"), (c_, "C")): q.text(-0.2, 1.08, lab_, transform=q.transAxes, fontsize=20, fontweight="bold")
 dg = og[1, 1].subgridspec(2, 1, hspace=0.45); col = {"Glucose": "#f0c030", "H$_2$": "#3a6ea5", "CO$_2$": "#8e44ad", "Acetate": "#c00000", "CH$_4$": "#18a081"}
@@ -37,7 +37,7 @@ for i, (k, names, nm_) in enumerate(((0, ["Glucose", "H$_2$", "CO$_2$", "Acetate
     d.axhline(0, color="grey", ls="--", lw=0.8); d.set_ylabel("Net export rate (fmol/s)\n" + nm_); d.legend(frameon=False, fontsize=8, loc="upper left", ncol=2)
     if i == 1: d.set_xlabel("Time (h)")
     if i == 0: d.text(-0.25, 1.08, "D", transform=d.transAxes, fontsize=20, fontweight="bold")
-eg = og[:, 2].subgridspec(3, 2, hspace=0.12, wspace=0.08); cb_ = plt.cm.Blues; mb_ = LinearSegmentedColormap.from_list("o", ["#fdf1e6", "#8b2d00"])
+eg = og[:, 2].subgridspec(3, 2, hspace=0.12, wspace=0.32); cb_ = plt.cm.Blues; mb_ = LinearSegmentedColormap.from_list("o", ["#fdf1e6", "#8b2d00"])
 for j, T in enumerate((TE, TL)):
     me, x, y, gr, ty, dead = snaps[T]; xs, ys = np.unique(me[0]), np.unique(me[1]); ext = [xs[0] - (xs[1] - xs[0]) / 2, xs[-1] + (xs[1] - xs[0]) / 2] * 2
     ax = fig.add_subplot(eg[0, j]); ax.set_title("t = %.1f h" % (T / 60), fontsize=11)
@@ -48,8 +48,9 @@ for j, T in enumerate((TE, TL)):
     if j == 0: ax.set_ylabel("Growth rate", fontsize=11); ax.text(-0.2, 1.1, "E", transform=ax.transAxes, fontsize=20, fontweight="bold")
     for i, (nm, row, cm, lab_) in enumerate((("H2", 7, "Blues", "H$_2$ (mM)"), ("acetate", 11, "Reds", "Acetate (mM)"))):
         ax = fig.add_subplot(eg[1 + i, j]); g = np.zeros((len(ys), len(xs))); g[np.searchsorted(ys, me[1]), np.searchsorted(xs, me[0])] = me[row]
-        ax.imshow(g, origin="lower", extent=ext, cmap=cm, vmin=0, vmax=max(g.max(), 1e-12)); gy, gx = np.gradient(g, ys, xs)
-        ax.streamplot(xs, ys, gx, gy, color="#333333", density=0.9, linewidth=0.7, arrowsize=0.8); ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim); ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([])
+        imh = ax.imshow(g, origin="lower", extent=ext, cmap=cm, vmin=0, vmax=max(g.max(), 1e-12)); gy, gx = np.gradient(g, ys, xs)
+        cbx = fig.colorbar(imh, ax=ax, fraction=0.046, pad=0.03); cbx.ax.tick_params(labelsize=7); cbx.formatter.set_powerlimits((-2, 3)); cbx.update_ticks()
+        ax.streamplot(xs, ys, -gx, -gy, color="#333333", density=0.9, linewidth=0.7, arrowsize=0.8); ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim); ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([])
         for sp in ax.spines.values(): sp.set_visible(True)
         if j == 0: ax.set_ylabel(lab_, fontsize=11)
 for k, (cm, vm, lab_, y0) in enumerate(((cb_, 0.12, "CB (1/h)", 0.85), (mb_, 0.02, "MB (1/h)", 0.71))):
