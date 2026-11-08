@@ -68,6 +68,17 @@ for f in (0.5, 2): rid = f"MOT3-SENS-LOW_D{f:g}_s50"; low(rid, "MOT3-SENS-LOW");
 for km in (0.005, 0.08, 0.16, 0.32, 0.64, 1.28):
     rid = f"MOT3-KM-LOW_Km{km:g}_s50"; low(rid, "MOT3-KM-LOW"); put(rid, KMX, km)
     rid = f"MOT3-KM-HIGH_Km{km:g}_s50"; low(rid, "MOT3-KM-HIGH", b=0.65); put(rid, KMX, km)
+# Block 7 (2026-11-08), MOT4-HIGH: the high supply moved from 0.65 to 1.0 mM. At 0.65 mM the glucose at the wall region is 0.608 mM, 1.4% above the switching threshold (0.6 mM): seed 50 stayed in ATP mode at the wall (recorded mode 1, growth_rate 0) while seeds 51 and 52 switched.
+# At 1.0 mM the wall region is far above the threshold. Same growth-recovery kinetics (Km 0.02 mM, threshold 0.35, cost 66.4), founder at x = -120 um: seeds 50-52 and repeat, dt 0.0005 / 0.002, dx 2.5 / 10, pFBA, and the Km scan (MOT4-KM-HIGH). The low supply (MOT3-LOW) is unchanged.
+HIGHB = 1.0
+def high(rid, eid, seed=50, b=HIGHB): run(rid, eid, seed); put(rid, START, "./config/start/x-120"); put(rid, XMAX, b)
+for sd in (50, 51, 52): high(f"MOT4-HIGH_s{sd}", "MOT4-HIGH", sd)
+high("MOT4-HIGH-REP_s50", "MOT4-HIGH")
+for dt in (0.0005, 0.002): rid = f"MOT4-DT-HIGH_dt{dt}_s50"; high(rid, "MOT4-DT-HIGH"); setdt(rid, dt)
+for dx in (2.5, 10): rid = f"MOT4-DX-HIGH_dx{dx}_s50"; high(rid, "MOT4-DX-HIGH"); setdx(rid, dx)
+rid = "MOT4-PFBA-HIGH_s50"; high(rid, "MOT4-PFBA-HIGH"); put(rid, "+" + INTRA + "/growth_model", '<secondary_objective type="parsimonious" enabled="true" fraction_of_optimum="1.0"/>')
+for km in (0.005, 0.01, 0.04, 0.08, 0.16, 0.32, 0.64, 1.28, 2.56):
+    rid = f"MOT4-KM-HIGH_Km{km:g}_s50"; high(rid, "MOT4-KM-HIGH"); put(rid, KMX, km)
 with open(f"{UC}/runs_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["run_id", "experiment_id", "seed"]); w.writerows(runs)
 with open(f"{UC}/overrides_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["scope", "xpath", "value"]); w.writerows(ov)
 print(len(runs), "runs,", len(ov), "override rows")

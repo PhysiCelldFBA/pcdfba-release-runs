@@ -1,0 +1,3 @@
+output_dir,title,hill,km,glc,param_label,max_migration_speed,max_displacement_toward_glucose,final_growth_rate,max_growth_rate,growth_detected,movement_detected,behavior,boundary_x
+runs/MOT4-HIGH_s51,1.0 mM at the right wall,,,,runs,1.0,157.0321222647867,0.1426161480729614,0.6830328291670194,1,1,motility + growth recovery,150.0
+runs/MOT3-LOW_s50,0.325 mM at the right wall,,,,runs,0.9883727745615482,268.95860564004556,0.0,0.0,0,1,motility / no growth,150.0

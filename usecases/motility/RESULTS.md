@@ -67,3 +67,20 @@ Motility-only variant with Km(glucose) 0.8 mM (the value of the manuscript), fou
 
 ## Block 6, MOT3-* (2026-11-07; MN5 job 48716078): regimes selected by the glucose supply (decision of the author: option 1)
 Low supply (boundary 0.325 mM, below the switching threshold 0.35 mM), growth-recovery kinetics, founder at -120 um: the founder reaches the boundary at 235-240 min in every run (seeds 50-52, repeat, dt 0.0005 / 0.002, dx 2.5 / 10, pFBA), 1 cell, ATP mode 99%, no division. Km scan: arrival 225-255 min for Km 0.005-0.04 mM, 280 / 345 / 560 min at 0.08 / 0.16 / 0.32 mM, no movement at 0.64 and 1.28 mM (low supply); at the high supply 225-235 / 255 / 280 / 345 / 560 min for 0.005-0.04 / 0.08 / 0.16 / 0.32 / 0.64 mM and no movement at 1.28 mM, first division 395-495 min; the limit follows from the basal ATP flux (Km below about 15.7 x the start glucose). Details in `results/mot3_*.csv` and in the paper repo `Review_round_01/Motility_edits_plan.md` section 7.
+
+## Block 7, MOT4-* (2026-11-08; MN5 job 48760763, 18 runs, rc 0, 3 min 44 s): high supply moved from 0.65 to 1.0 mM
+Why: at 0.65 mM the glucose at the stopping position is 0.608 mM, 1.4% above the switching threshold (0.6 mM); the recorded mode of seed 50 stayed 1 (growth_rate 0) at the wall while seeds 51 and 52 switched. Same growth-recovery kinetics (Km 0.02, thresholds 0.35 / 0.6, cost 66.4), founder at -120 um, boundary 1.0 mM; design in `scripts/design_def.py` (block 7), `experiments.csv` (MOT4-*), analysis `results/mot4_{series,summary}.csv`.
+
+| run | founder at 10 h (um) | cells at 10 h | first division (min) |
+|---|---|---|---|
+| MOT4-HIGH s50 (and repeat) / s51 / s52 | 37.6 / 37.9 / 36.7 | 8 / 8 / 8 | 290 / 285 / 295 |
+| dt 0.0005 / 0.002 | 35.2 / 40.0 | 8 / 8 | 290 / 295 |
+| dx 2.5 / 10 | 42.7 / 31.4 | 8 / 8 | 305 / 290 |
+| pFBA | 37.6 (identical to s50) | 8 | 290 |
+
+Km scan (time of the founder to x = 25 um, min): 150 (0.005-0.02 mM), 155, 165, 180, 210, 295 (0.04, 0.08, 0.16, 0.32, 0.64 mM), not reached at 1.28 and 2.56 mM; low supply (MOT3): 150, 155, 160, 175, 195, 250, 450 (0.005, 0.01, 0.02, 0.04, 0.08, 0.16, 0.32 mM), not reached at 0.64 and 1.28 mM. Cells at 10 h in the scan: 8 (Km <= 0.08), 16 (0.16), 10 (0.32), 4 (0.64), 1 (>= 1.28).
+The cell stops at x = 30-31 um (the glucose reaches 0.6 mM at 30 um) at about 150-200 min, grows and divides at 285-295 min. Growth rate at the stop against Km (0.6 mM): 0.55 / 0.44 / 0.31 h-1 at 0.16 / 0.32 / 0.64 mM.
+
+**Open: recorded mode at the threshold.** In MOT4-HIGH_s50 (and MOT2-GR_s50) the cell at 0.60-0.616 mM is recorded in mode 1 (growth_rate 0, speed 1, atp_flux 75) while its volume grows exactly like that of seed 51 (recorded mode 0, growth 0.683); after the first division the daughters are recorded in mode 1 with glucose above 0.6 mM, so population means of speed, growth and ATP flux show steps after the first division. Position, division time and cell number are not affected. Not traced to the code (custom.cpp `metabolic_bound_migration_rule`, inheritance of `metabolic_mode` and of `custom_optimization` by daughters). Consequence for the figure: panels A-F show seed 51 up to 280 min (before the first division).
+
+**Fig. 7** (`results/fig7/`): `fig7_AF.png/svg` (`scripts/fig7_composite.py --scenario runs/MOT4-HIGH_s51::... --scenario runs/MOT3-LOW_s50::... --tmax-min 280`; `PYTHONPATH=<pctk>/src`), `panel_g.png/svg` (`scripts/fig7_panel_g.py`), `fig7_lineage.png` (lineage traces with forks, not used: daughters overlap the parent). The earlier version with 0.65 mM is superseded (MOT2-GR / MOT3-LOW with 0.65 mM kept as record).
