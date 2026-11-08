@@ -1,4 +1,4 @@
-"""Colony figure (manuscript Fig. 4) from a quarter-colony run: A total biomass and cells against time (x4 = full colony) with the end of exponential growth; B fields of O2, glucose, acetate and CO2 over the quadrant at TIME with the boundaries of the zones of the colony; C-E single-cell maps (growth rate, glucose uptake, acetate exchange) in the 80-180 um window, with the same boundaries.
+"""Colony figure (manuscript Fig. 4) from a quarter-colony run: A total biomass and cells against time (x4 = full colony) with the end of exponential growth; B fields of O2, glucose, acetate and CO2 over the quadrant at TIME with the boundaries of the zones of the colony; C-F single-cell maps (growth rate, glucose uptake, acetate exchange, oxygen uptake) in the 80-180 um window, with the same boundaries.
 usage: make_figure.py RUNDIR OUT_PREFIX [TIME_MIN=540]      (run COL-QTRB_qtr_s50; the quadrant x >= 0, y >= 0 is simulated, so the zones are arcs centred on the origin)
 Conventions of the original notebook (bacterial_colony_figures.ipynb): dry weight = volume x 0.75 x 1.04 pg/um3; radius from the volume as a sphere; brown = dead, grey = living cell with a necrosis rate > 0; uptake and exchange in amol/s = flux (mmol/gDW/h) x volume x 0.75 x 1.04 / 3.6.
 Zones (10 um annuli of the distance to the centre, living cells for the fractions of growth and acetate): necrotic core = out to the edge of the inner region where at least 50% of the cells are dead; stalled zone = beyond it, until at least 50% of the living cells grow (rate > 0.05 1/h);
@@ -39,8 +39,8 @@ i_ring = next(i for i in range(i_stall, nb) if fac[i] < 0.5); R_ring = edges[i_r
 R_edge = float(np.percentile(rr, 99)); ZONES = [("Necrotic core", R_core), ("Stalled zone", R_stall), ("Acetate-using ring", R_ring)]
 print("transition at %.1f h; biomass %.4f ug, cells %d at the end; zones: core %g, stalled %g, ring %g, edge %.0f um" % (Tb, bio[-1], cnt[-1], R_core, R_stall, R_ring, R_edge))
 plt.rcParams.update({"font.size": 10, "axes.labelsize": 11, "axes.spines.top": False, "axes.spines.right": False}); glc = LinearSegmentedColormap.from_list("y", ["#ffffff", "#f1c232"])
-fig = plt.figure(figsize=(13.2, 10.6), dpi=200)
-gs = fig.add_gridspec(5, 6, height_ratios=[0.13, 1.0, 0.30, 1.05, 0.12], width_ratios=[1.35, 0.42, 1, 1, 1, 1], left=0.06, right=0.985, top=0.965, bottom=0.04, wspace=0.34, hspace=0.30)
+fig = plt.figure(figsize=(13.2, 9.4), dpi=200)
+gs = fig.add_gridspec(5, 6, height_ratios=[0.10, 1.0, 0.30, 0.78, 0.14], width_ratios=[1.35, 0.42, 1, 1, 1, 1], left=0.06, right=0.985, top=0.965, bottom=0.04, wspace=0.34, hspace=0.22)
 LS = [("-", "k"), ("--", "k"), (":", "k")]
 def zone_arcs(ax, lw=1.4):
     for (nm, R), (ls, c) in zip(ZONES, LS): ax.add_patch(Arc((0, 0), 2 * R, 2 * R, theta1=0, theta2=90, ls=ls, color=c, lw=lw, zorder=5))
@@ -50,29 +50,33 @@ ax.set_xlabel("Time (h)"); ax.set_ylabel(r"Total biomass ($\mu$g)"); ax2 = ax.tw
 ax.legend([hb, hc, hv], ["Biomass", "Cells", "End of exponential\ngrowth (%.1f h)" % Tb], frameon=False, loc="upper left", fontsize=8.5)
 me = sio.loadmat(s.replace(".xml", "_microenvironment0.mat"))["multiscale_microenvironment"]
 names = [("oxygen", 4, "Blues", r"O$_2$ (mM)"), ("glucose", 5, glc, "D-glucose (mM)"), ("acetate", 6, "Reds", "Acetate (mM)"), ("CO2", 8, "Purples", r"CO$_2$ (mM)")]
-xs, ys = np.unique(me[0]), np.unique(me[1]); vis = (me[0] <= VIEW) & (me[1] <= VIEW); strip = fig.add_subplot(gs[0, 2:]); strip.axis("off")
+maps = []; xs, ys = np.unique(me[0]), np.unique(me[1]); vis = (me[0] <= VIEW) & (me[1] <= VIEW);
 for i, (nm, row, cm, lab) in enumerate(names):
     a = fig.add_subplot(gs[1, i + 2]); g = np.full((len(ys), len(xs)), np.nan); g[np.searchsorted(ys, me[1]), np.searchsorted(xs, me[0])] = me[row]
     im = a.imshow(g, origin="lower", extent=[xs[0] - 1, xs[-1] + 1, ys[0] - 1, ys[-1] + 1], cmap=cm, vmin=0, vmax=me[row][vis].max(), interpolation="bicubic", aspect="equal")
-    a.set_xlim(0, VIEW); a.set_ylim(0, VIEW); zone_arcs(a); a.add_patch(Rectangle((XL[0], YL[0]), XL[1] - XL[0], YL[1] - YL[0], fill=False, ec="#444444", lw=1.0, ls=(0, (1, 2)), zorder=6))
+    a.set_xlim(0, VIEW); a.set_ylim(0, VIEW); a.set_anchor("S"); zone_arcs(a); a.add_patch(Rectangle((XL[0], YL[0]), XL[1] - XL[0], YL[1] - YL[0], fill=False, ec="#444444", lw=1.0, ls=(0, (1, 2)), zorder=6))
     a.set_xlabel("x (µm)"); a.set_xticks([0, 50, 100, 150, 200]); a.set_yticks([0, 50, 100, 150, 200] if i == 0 else [0, 50, 100, 150, 200]); 
     if i == 0: a.set_ylabel("y (µm)"); a.text(-0.42, 1.04, "B", transform=a.transAxes, fontsize=20, fontweight="bold")
     else: a.set_yticklabels([])
-    ins = strip.inset_axes([(i + 0.12) / 4, 0.05, 0.76 / 4, 0.38]); cb = fig.colorbar(im, cax=ins, orientation="horizontal"); cb.set_label(lab, labelpad=2, fontsize=10); cb.ax.xaxis.set_ticks_position("top"); cb.ax.xaxis.set_label_position("top"); cb.ax.tick_params(labelsize=8, length=2)
-    cb.formatter.set_powerlimits((-9, 9)); cb.update_ticks()
+    maps.append((a, im, lab))
+fig.canvas.draw()
+for a, im, lab in maps:      # colorbar directly above its map, same width
+    a.apply_aspect(); pos = a.get_position(); cax = fig.add_axes([pos.x0, pos.y1 + 0.008, pos.width, 0.014]); cb = fig.colorbar(im, cax=cax, orientation="horizontal"); cb.set_label(lab, labelpad=2, fontsize=10)
+    cb.ax.xaxis.set_ticks_position("top"); cb.ax.xaxis.set_label_position("top"); cb.ax.tick_params(labelsize=8, length=2); cb.formatter.set_powerlimits((-9, 9)); cb.update_ticks()
+pm = maps[0][0].get_position(); pa = ax.get_position(); ax.set_position([pa.x0, pm.y0, pa.width, pm.height]); ax2.set_position(ax.get_position())     # A as high as the maps of B
 sel = (x >= XL[0]) & (x <= XL[1]) & (yv >= YL[0]) & (yv <= YL[1]); rad = np.cbrt(3 * vol / (4 * np.pi))
-vals = [("Growth rate (1/h)", gr, plt.cm.Greens), ("Glucose uptake (amol/s)", -d["R_EX_glc__D_e"] * vol * DRY / 3.6, glc), ("Acetate exchange (amol/s)", d["R_EX_ac_e"] * vol * DRY / 3.6, plt.cm.coolwarm_r)]
+vals = [("Growth rate (1/h)", gr, plt.cm.Greens), ("Glucose uptake (amol/s)", -d["R_EX_glc__D_e"] * vol * DRY / 3.6, glc), ("Acetate exchange (amol/s)", d["R_EX_ac_e"] * vol * DRY / 3.6, plt.cm.coolwarm_r), ("Oxygen uptake (amol/s)", -d["R_EX_o2_e"] * vol * DRY / 3.6, plt.cm.Blues)]
 legs = fig.add_subplot(gs[2, :]); legs.axis("off")
 h = [Line2D([], [], color="k", ls=ls, lw=1.6) for ls, c in LS] + [Line2D([], [], color="#444444", ls=(0, (1, 2)), lw=1.2), Patch(fc="saddlebrown", ec="k", lw=0.4), Patch(fc="grey", ec="k", lw=0.4)]
-lab_ = ["%s edge (%g µm)" % (nm, R) for nm, R in ZONES[:1]] + ["Stalled zone edge (%g µm)" % R_stall, "Acetate-using ring edge (%g µm)" % R_ring, "Window of C-E", "Dead cell", "Living cell with a necrosis rate > 0"]
+lab_ = ["%s edge (%g µm)" % (nm, R) for nm, R in ZONES[:1]] + ["Stalled zone edge (%g µm)" % R_stall, "Acetate-using ring edge (%g µm)" % R_ring, "Window of C-F", "Dead cell", "Living cell with a necrosis rate > 0"]
 legs.legend(h, lab_, loc="center", ncol=3, frameon=False, fontsize=10, handlelength=2.6, columnspacing=2.4)
-posn = gs[3, :].subgridspec(1, 3, wspace=0.28)
+posn = gs[3, :].subgridspec(1, 4, wspace=0.22)
 for j, (lab, v, cm) in enumerate(vals):
-    a = fig.add_subplot(posn[0, j]); a.text(-0.1, 1.03, "CDE"[j], transform=a.transAxes, fontsize=20, fontweight="bold"); vv = v[sel & alive]; lo, hi = vv.min(), vv.max()
+    a = fig.add_subplot(posn[0, j]); a.text(-0.1, 1.03, "CDEF"[j], transform=a.transAxes, fontsize=18, fontweight="bold"); vv = v[sel & alive]; lo, hi = vv.min(), vv.max()
     norm = TwoSlopeNorm(vmin=lo, vcenter=0.0, vmax=hi) if lo < 0 < hi else Normalize(lo, hi)
     idx = np.where(sel)[0]; patches = [Circle((x[i], yv[i]), rad[i]) for i in idx]; col = ["saddlebrown" if dead[i] else ("grey" if nec[i] else cm(norm(v[i]))) for i in idx]
     a.add_collection(PatchCollection(patches, facecolors=col, edgecolors="k", linewidths=0.3)); zone_arcs(a, lw=1.8)
     a.set_xlim(*XL); a.set_ylim(*YL); a.set_aspect("equal"); a.set_xticks([]); a.set_yticks([]); [sp.set_visible(True) for sp in a.spines.values()]
-    a.plot([XL[1] - 55, XL[1] - 5], [YL[1] - 8] * 2, "k-", lw=2.5); a.text(XL[1] - 30, YL[1] - 11, "50 µm", ha="center", va="top", fontsize=10)
-    cax = a.inset_axes([0.1, -0.10, 0.8, 0.04]); cb = fig.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=cm), cax=cax, orientation="horizontal"); cb.set_label(lab, labelpad=2); cb.ax.tick_params(labelsize=8, length=2)
+    a.plot([XL[1] - 55, XL[1] - 5], [YL[1] - 8] * 2, "k-", lw=2.5); a.text(XL[1] - 30, YL[1] - 11, "50 µm", ha="center", va="top", fontsize=9)
+    cax = a.inset_axes([0.1, -0.10, 0.8, 0.04]); cb = fig.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=cm), cax=cax, orientation="horizontal"); cb.set_label(lab, labelpad=2, fontsize=9); cb.ax.tick_params(labelsize=7.5, length=2)
 fig.savefig(out + ".png", bbox_inches="tight", facecolor="white"); fig.savefig(out + ".pdf", bbox_inches="tight", facecolor="white"); print("wrote", out)
