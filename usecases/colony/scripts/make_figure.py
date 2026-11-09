@@ -68,7 +68,7 @@ sel = (x >= XL[0]) & (x <= XL[1]) & (yv >= YL[0]) & (yv <= YL[1]); rad = np.cbrt
 vals = [("Growth rate (1/h)", gr, plt.cm.Greens), ("Glucose uptake (amol/s)", -d["R_EX_glc__D_e"] * vol * DRY / 3.6, glc), ("Acetate exchange (amol/s)", d["R_EX_ac_e"] * vol * DRY / 3.6, plt.cm.coolwarm_r), ("Oxygen uptake (amol/s)", -d["R_EX_o2_e"] * vol * DRY / 3.6, plt.cm.Blues)]
 legs = fig.add_subplot(gs[2, :]); legs.axis("off")
 h = [Line2D([], [], color="k", ls=ls, lw=1.6) for ls, c in LS] + [Line2D([], [], color="#444444", ls=(0, (1, 2)), lw=1.2), Patch(fc="saddlebrown", ec="k", lw=0.4), Patch(fc="grey", ec="k", lw=0.4)]
-lab_ = ["%s edge (%g µm)" % (nm, R) for nm, R in ZONES[:1]] + ["Stalled zone edge (%g µm)" % R_stall, "Acetate-using ring edge (%g µm)" % R_ring, "Window of C-F", "Dead cell", "Living cell with a necrosis rate > 0"]
+lab_ = ["%s edge (%g µm)" % (nm, R) for nm, R in ZONES[:1]] + ["Stalled zone edge (%g µm)" % R_stall, "Acetate-using ring edge (%g µm)" % R_ring, "Window of C-F", "Dead cell", "Starving cell"]
 legs.legend(h, lab_, loc="upper center", bbox_to_anchor=(0.5, 0.72), ncol=3, frameon=True, fancybox=False, edgecolor="k", framealpha=1, borderpad=0.7, fontsize=10, handlelength=2.6, columnspacing=2.4).get_frame().set_linewidth(0.6)
 posn = gs[3, :].subgridspec(1, 4, wspace=0.22)
 for j, (lab, v, cm) in enumerate(vals):
