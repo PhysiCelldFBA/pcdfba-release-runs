@@ -38,12 +38,12 @@ b = fig.add_subplot(top[2]); cc = {"glucose": SC["glucose"], "methane": SC["meth
 for k, col in cc.items(): b.plot(ts[ts >= 1 / 60], np.array([d[k] for d in conc])[ts >= 1 / 60], color=col, label={"glucose": "Glucose", "methane": "CH$_4$", "H2": "H$_2$", "acetate": "Acetate"}[k])
 b.set_ylabel("Concentration (mM)"); b.set_xlabel("Time (h)"); b.legend(frameon=False, ncol=1, fontsize=8.5, loc="center left", bbox_to_anchor=(0.02, 0.40)); LET(b, "C")
 col = {"Glucose": SC["glucose"], "H$_2$": SC["h2"], "CO$_2$": SC["co2"], "Acetate": SC["acetate"], "CH$_4$": SC["methane"]}
-YM = 1.15 * max(abs(v) for e_ in expm[3:] for v in e_.values()); print('YM', YM)
+YM = 1.15 * max(abs(v) for e_ in expm[4:] for v in e_.values()); print('YM', YM)
 xp = top[3].subgridspec(2, 2, wspace=0.06, hspace=0.30); dax = {}
 for r, (E_, yl, Lt, ylim) in enumerate(((exp, "Total net export (fmol/s)", "D", (-8, 19.5)), (expm, "Per biomass\n(mmol/gDW/h)", "E", (-YM, YM)))):
     for i, (k, names, nm_) in enumerate(((0, ["Glucose", "H$_2$", "CO$_2$", "Acetate"], "C. beijerinckii"), (1, ["H$_2$", "Acetate", "CO$_2$", "CH$_4$"], "M. barkeri"))):
         d = fig.add_subplot(xp[r, i], sharey=dax.get(r), sharex=dax.get("x%d" % i)); dax.setdefault(r, d); dax.setdefault("x%d" % i, d)
-        for nm in names: d.plot(ts, [e_[(k, nm)] for e_ in E_], color=col[nm], label=nm)
+        for nm in names: d.plot(ts[1:], [e_[(k, nm)] for e_ in E_[1:]], color=col[nm], label=nm)
         d.axhline(0, color="grey", ls="--", lw=0.8); d.set_ylim(*ylim)
         if r == 0: d.set_title(nm_, fontsize=10, style="italic"); d.legend(frameon=False, fontsize=8.5, loc="upper left", ncol=2); d.tick_params(labelbottom=False)
         else: d.set_xlabel("Time (h)")
