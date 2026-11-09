@@ -67,17 +67,17 @@ def draw_cells(ax, snaps, Gi, s):
     ax.set_xlim(*s.domain_x); ax.set_ylim(*s.domain_y); ax.set_aspect("equal", adjustable="box")
 
 fig = plt.figure(figsize=(FW, FH)); W = 0.30
-gs = fig.add_gridspec(3, 1, height_ratios=[0.95, 1.75, 0.27], left=0.14, right=0.875, bottom=0.015, top=0.945, hspace=0.34)
+gs = fig.add_gridspec(4, 1, height_ratios=[0.95, 1.75, 0.10, 0.27], left=0.14, right=0.875, bottom=0.015, top=0.945, hspace=0.20)
 top = gs[0].subgridspec(1, 2, wspace=W); mid = gs[1].subgridspec(2, 2, wspace=W, hspace=0.32)
 ax_comp = [fig.add_subplot(top[0, c]) for c in range(2)]; ax_glc = [fig.add_subplot(mid[0, c]) for c in range(2)]
-ax_pos = [fig.add_subplot(mid[1, c], sharex=ax_glc[c]) for c in range(2)]; ax_leg = fig.add_subplot(gs[2]); ax_leg.axis("off")
+ax_pos = [fig.add_subplot(mid[1, c], sharex=ax_glc[c]) for c in range(2)]; ax_leg = fig.add_subplot(gs[3]); ax_leg.axis("off")
 for c, s in enumerate(sc):
     ax = ax_comp[c]; draw_cells(ax, comp[c][0], comp[c][1], s); ax.set_xlabel("x (µm)")
     if c == 0: ax.set_ylabel("y (µm)")
     else: ax.tick_params(labelleft=False)
 cb = fig.colorbar(ScalarMappable(norm=glc_norm, cmap=glc_cmap), cax=ax_comp[1].inset_axes([1.05, 0.0, 0.03, 1.0]), orientation="vertical"); cb.set_label("Glucose (mM)"); cb.outline.set_linewidth(0.5)
 sh = [Line2D([], [], marker="o", ls="", markersize=6, markerfacecolor=col, markeredgecolor="0.15", markeredgewidth=0.3, label=lab) for col, lab in ((CMOV, "Moving cell"), (CPRO, "Proliferating cell"))]
-tmax = max(float(s.df["time_h"].max()) for s in sc); ncmax = max(float(s.df["n_cells"].max()) for s in sc); twins = []; H = {}
+ax2_top = max(ncmax_ := max(float(s.df["n_cells"].max()) for s in sc) * 1.15, 2); tmax = max(float(s.df["time_h"].max()) for s in sc); ncmax = max(float(s.df["n_cells"].max()) for s in sc); twins = []; H = {}
 for c, s in enumerate(sc):
     df, t = s.df, s.df["time_h"]; gloc = SUP[c] * (df["x_position"] - XL) / (XR - XL); ax = ax_glc[c]
     H["glc"], = ax.plot(t, gloc, color=SC["glucose"], lw=FS["lw"] * 1.3, label="Glucose at the cell"); H["g"] = ax.axhline(TH_G, color="0.25", ls="--", lw=0.8, label="Switch to growth (%.1f mM)" % TH_G); H["m"] = ax.axhline(TH_M, color="0.25", ls=":", lw=1.0, label="Return to motility (%.2f mM)" % TH_M)
@@ -86,7 +86,7 @@ for c, s in enumerate(sc):
     else: ax.tick_params(labelleft=False)
     ax = ax_pos[c]; ax2 = ax.twinx(); twins.append(ax2); ax2.spines["right"].set_visible(True)
     H["x"], = ax.plot(t, df["x_position"], color="black", label="Position of the founder cell"); H["n"], = ax2.plot(t, df["n_cells"], color=CPRO, ls="--", label="Number of cells")
-    ax.set_ylim(-150, 150); ax2.set_ylim(0, max(ncmax * 1.15, 2)); ax2.set_yticks(range(1, int(ncmax) + 1)); ax.set_xlim(0, tmax); ax.set_xlabel("Time (h)")
+    ax.set_ylim(-150, 150); ax2.set_ylim(0, max(ncmax * 1.15, 2)); ax2.set_yticks(range(1, int(ax2_top) + 1, 2)); ax.set_xlim(0, tmax); ax.set_xlabel("Time (h)")
     if c == 0: ax.set_ylabel("Position x (µm)"); ax2.tick_params(labelright=False)
     else: ax.tick_params(labelleft=False); ax2.set_ylabel("Number of cells")
 for ax, ax2 in zip(ax_pos, twins): ax2.set_position(ax.get_position())
