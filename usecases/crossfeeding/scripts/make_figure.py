@@ -6,7 +6,7 @@ The schematic of the submitted Fig. 6 is now a supplementary figure (make_schema
 import sys, glob, os, numpy as np, scipy.io as sio, xml.etree.ElementTree as ET, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels; from plot_style import SC, substrate_cmap
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels; from plot_style import SC, substrate_cmap, apply_style, FS
 run, out = sys.argv[1].rstrip("/"), sys.argv[2]
 TE = float(sys.argv[3]) if len(sys.argv) > 3 else 30.0
 files = sorted(glob.glob(f"{run}/output*[0-9].xml")); VAR = {"glucose": 4, "methane": 5, "CO2": 6, "H2": 7, "acetate": 11}
@@ -27,45 +27,46 @@ ts, vol, grm = np.array(ts), np.array(vol), np.array(grm); TE = min(snaps, key=l
 fc = sorted(glob.glob(f"{CLOSED}/output*[0-9].xml"))[-1]; rc = ET.parse(fc).getroot(); lc = labels(rc); cc_ = sio.loadmat(fc.replace(".xml", "_cells.mat"))["cells"]
 closed_mb = float(cc_[lc.index("growth_rate")][(cc_[lc.index("cell_type")] == 1) & (cc_[lc.index("dead")] == 0)].mean())
 print("cells CB/MB at the end:", [int(((snaps[TL][4] == k) & ~snaps[TL][5]).sum()) for k in (0, 1)], "t_end %.1f h" % ts[-1], "early %g late %g min" % (TE, TL), "closed-box MB growth %.4f" % closed_mb)
-plt.rcParams.update({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
-fig = plt.figure(figsize=(15.5, 10.9), dpi=200); og = fig.add_gridspec(2, 1, height_ratios=[0.90, 1.5], left=0.06, right=0.985, top=0.965, bottom=0.04, hspace=0.20)
-top = og[0].subgridspec(1, 4, wspace=0.34, width_ratios=[1, 1, 1, 2.1]); LET = lambda q, s, x=-0.2: q.text(x, 1.06, s, transform=q.transAxes, fontsize=20, fontweight="bold")
+FW, FH = 6.3, 6.8; apply_style(FW)
+fig = plt.figure(figsize=(FW, FH), dpi=200); og = fig.add_gridspec(3, 1, height_ratios=[0.62, 0.62, 1.0], left=0.115, right=0.94, top=0.975, bottom=0.015, hspace=0.30)
+LET = lambda q, s, x=-0.2, y=1.04: q.text(x, y, s, transform=q.transAxes, fontsize=FS["letter"], fontweight="bold", va="bottom")
 cb_c, mb_c = "#1f77b4", "#c0551a"
-a = fig.add_subplot(top[0]); a.plot(ts, vol[:, 0], color=cb_c, label="C. beijerinckii"); a.plot(ts, vol[:, 1], color=mb_c, label="M. barkeri"); a.set_yscale("log"); a.set_ylabel("Biomass volume (µm³)"); a.set_xlabel("Time (h)"); a.legend(frameon=False, loc="upper left", fontsize=8.5); LET(a, "A")
+top = og[0].subgridspec(1, 3, wspace=0.55)
+a = fig.add_subplot(top[0]); a.plot(ts, vol[:, 0], color=cb_c, label="C. beijerinckii"); a.plot(ts, vol[:, 1], color=mb_c, label="M. barkeri"); a.set_yscale("log"); a.set_ylabel("Biomass volume (µm³)"); a.set_xlabel("Time (h)"); a.legend(frameon=False, loc="upper left", handlelength=1.4); LET(a, "A", -0.42)
 e = fig.add_subplot(top[1]); e.plot(ts[1:], grm[1:, 0], color=cb_c, label="C. beijerinckii"); e.plot(ts[1:], grm[1:, 1], color=mb_c, label="M. barkeri")
-e.set_ylabel("Mean growth rate (1/h)"); e.set_xlabel("Time (h)"); e.set_ylim(0, None); e.legend(frameon=False, fontsize=8.5, loc="center left", bbox_to_anchor=(0.02, 0.61)); LET(e, "B", -0.24)
+e.set_ylabel("Mean growth rate (1/h)"); e.set_xlabel("Time (h)"); e.set_ylim(0, None); e.legend(frameon=False, loc="lower right", handlelength=1.4); LET(e, "B", -0.42)
 b = fig.add_subplot(top[2]); cc = {"glucose": SC["glucose"], "methane": SC["methane"], "H2": SC["h2"], "acetate": SC["acetate"]}
 for k, col in cc.items(): b.plot(ts[ts >= 1 / 60], np.array([d[k] for d in conc])[ts >= 1 / 60], color=col, label={"glucose": "Glucose", "methane": "CH$_4$", "H2": "H$_2$", "acetate": "Acetate"}[k])
-b.set_ylabel("Concentration (mM)"); b.set_xlabel("Time (h)"); b.legend(frameon=False, ncol=1, fontsize=8.5, loc="center left", bbox_to_anchor=(0.02, 0.40)); LET(b, "C")
+b.set_ylabel("Concentration (mM)"); b.set_xlabel("Time (h)"); b.legend(frameon=False, ncol=1, loc="center left", bbox_to_anchor=(0.0, 0.36), handlelength=1.4); LET(b, "C", -0.42)
 col = {"Glucose": SC["glucose"], "H$_2$": SC["h2"], "CO$_2$": SC["co2"], "Acetate": SC["acetate"], "CH$_4$": SC["methane"]}
 YM = 1.15 * max(abs(v) for e_ in expm[4:] for v in e_.values()); print('YM', YM)
-xp = top[3].subgridspec(2, 2, wspace=0.06, hspace=0.30); dax = {}
-for r, (E_, yl, Lt, ylim) in enumerate(((exp, "Total net export (fmol/s)", "D", (-8, 19.5)), (expm, "Per biomass\n(mmol/gDW/h)", "E", (-YM, YM)))):
+mid = og[1].subgridspec(1, 2, wspace=0.32)
+for r, (E_, yl, Lt, ylim) in enumerate(((exp, "Total net export\n(fmol/s)", "D", (-8, 19.5)), (expm, "Net export per biomass\n(mmol/gDW/h)", "E", (-YM, YM)))):
+    xp = mid[r].subgridspec(1, 2, wspace=0.08); dax = None
     for i, (k, names, nm_) in enumerate(((0, ["Glucose", "H$_2$", "CO$_2$", "Acetate"], "C. beijerinckii"), (1, ["H$_2$", "Acetate", "CO$_2$", "CH$_4$"], "M. barkeri"))):
-        d = fig.add_subplot(xp[r, i], sharey=dax.get(r), sharex=dax.get("x%d" % i)); dax.setdefault(r, d); dax.setdefault("x%d" % i, d)
+        d = fig.add_subplot(xp[i], sharey=dax); dax = dax or d
         for nm in names: d.plot(ts[1:], [e_[(k, nm)] for e_ in E_[1:]], color=col[nm], label=nm)
-        d.axhline(0, color="grey", ls="--", lw=0.8); d.set_ylim(*ylim)
-        if r == 0: d.set_title(nm_, fontsize=10, style="italic"); d.legend(frameon=False, fontsize=8.5, loc="upper left", ncol=2); d.tick_params(labelbottom=False)
-        else: d.set_xlabel("Time (h)")
-        if i == 0: d.set_ylabel(yl); LET(d, Lt, -0.36)
+        d.axhline(0, color="grey", ls="--", lw=0.6); d.set_ylim(*ylim); d.set_xlabel("Time (h)"); d.set_title(nm_, style="italic", pad=3)
+        if r == 0: d.legend(frameon=False, loc="upper left", ncol=1, handlelength=1.2, labelspacing=0.25, borderaxespad=0.2)
+        if i == 0: d.set_ylabel(yl); LET(d, Lt, -0.55 if r == 0 else -0.62)
         else: d.tick_params(labelleft=False)
-eg = og[1].subgridspec(2, 4, hspace=0.10, wspace=0.42); cb_ = plt.cm.Blues; mb_ = LinearSegmentedColormap.from_list("o", ["#fdf1e6", "#8b2d00"])
+eg = og[2].subgridspec(2, 4, hspace=0.12, wspace=0.62); cb_ = plt.cm.Blues; mb_ = LinearSegmentedColormap.from_list("o", ["#fdf1e6", "#8b2d00"])
 for j, T in enumerate((TE, TL)):
     me, x, y, gr, ty, dead = snaps[T]; xs, ys = np.unique(me[0]), np.unique(me[1]); ext = [xs[0] - (xs[1] - xs[0]) / 2, xs[-1] + (xs[1] - xs[0]) / 2] * 2; lim = ext[1]
-    ax = fig.add_subplot(eg[j, 0]); ax.set_ylabel("t = %.1f h" % (T / 60), fontsize=12)
+    ax = fig.add_subplot(eg[j, 0]); ax.set_ylabel("t = %.1f h" % (T / 60))
     for k, cm, vm in ((0, cb_, 0.12), (1, mb_, 0.02)):
-        s = (ty == k) & ~dead; ax.scatter(x[s], y[s], c=gr[s], cmap=cm, vmin=0, vmax=vm, s=2.5, lw=0)
+        s = (ty == k) & ~dead; ax.scatter(x[s], y[s], c=gr[s], cmap=cm, vmin=0, vmax=vm, s=0.5, lw=0)
     ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim); ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([])
     for sp in ax.spines.values(): sp.set_visible(True)
-    for q, (cm, vm, lab_, y0) in enumerate(((cb_, 0.12, "CB (1/h)", 0.53), (mb_, 0.02, "MB (1/h)", 0.0))):
-        cax = ax.inset_axes([1.04, y0, 0.05, 0.47]); cbx = fig.colorbar(plt.cm.ScalarMappable(norm=plt.Normalize(0, vm), cmap=cm), cax=cax); cbx.set_label(lab_, fontsize=8, labelpad=2); cbx.ax.tick_params(labelsize=7)
-    if j == 0: ax.text(-0.2, 1.12, "F", transform=ax.transAxes, fontsize=20, fontweight="bold"); ax.set_title("Growth rate", fontsize=11, pad=6)
+    for q, (cm, vm, lab_, y0) in enumerate(((cb_, 0.12, "CB", 0.56), (mb_, 0.02, "MB", 0.0))):
+        cax = ax.inset_axes([1.05, y0, 0.07, 0.41]); cbx = fig.colorbar(plt.cm.ScalarMappable(norm=plt.Normalize(0, vm), cmap=cm), cax=cax); cbx.ax.tick_params(labelsize=FS["annot"]); cbx.set_ticks([0, vm / 2, vm]); cbx.ax.set_title(lab_, fontsize=FS["annot"], pad=1.5)
+    if j == 0: ax.text(-0.42, 1.12, "F", transform=ax.transAxes, fontsize=FS["letter"], fontweight="bold"); ax.set_title("Growth rate (1/h)", pad=10)
     for i, (nm, row, cm, lab_) in enumerate((("H2", 7, substrate_cmap("h2"), "H$_2$ (mM)"), ("acetate", 11, substrate_cmap("acetate"), "Acetate (mM)"), ("methane", 5, substrate_cmap("methane"), "CH$_4$ (mM)"))):
         ax = fig.add_subplot(eg[j, 1 + i]); g = np.zeros((len(ys), len(xs))); g[np.searchsorted(ys, me[1]), np.searchsorted(xs, me[0])] = me[row]
         imh = ax.imshow(g, origin="lower", extent=ext, cmap=cm, vmin=0, vmax=max(g.max(), 1e-12))
-        cbx = fig.colorbar(imh, cax=ax.inset_axes([1.04, 0, 0.05, 1])); cbx.ax.tick_params(labelsize=7); cbx.formatter.set_powerlimits((-2, 3)); cbx.update_ticks(); cbx.ax.yaxis.get_offset_text().set_fontsize(7)
-        ax.contour(xs[1:-1], ys[1:-1], g[1:-1, 1:-1], levels=np.linspace(0, g.max(), 7)[1:-1], colors="k", linewidths=0.6, alpha=0.55)
+        cbx = fig.colorbar(imh, cax=ax.inset_axes([1.05, 0, 0.07, 1])); cbx.ax.tick_params(labelsize=FS["annot"]); cbx.formatter.set_powerlimits((-2, 3)); cbx.update_ticks(); cbx.ax.yaxis.get_offset_text().set_fontsize(FS["annot"])
+        ax.contour(xs[1:-1], ys[1:-1], g[1:-1, 1:-1], levels=np.linspace(0, g.max(), 7)[1:-1], colors="k", linewidths=0.4, alpha=0.55)
         ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim); ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([])
         for sp in ax.spines.values(): sp.set_visible(True)
-        if j == 0: ax.set_title(lab_, fontsize=11, pad=6)
-fig.savefig(out + ".png", bbox_inches="tight", pad_inches=0.2, facecolor="white"); fig.savefig(out + ".pdf", bbox_inches="tight", pad_inches=0.2, facecolor="white")
+        if j == 0: ax.set_title(lab_, pad=10)
+fig.savefig(out + ".png", bbox_inches="tight", pad_inches=0.03, facecolor="white"); fig.savefig(out + ".pdf", bbox_inches="tight", pad_inches=0.03, facecolor="white")
