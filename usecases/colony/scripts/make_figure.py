@@ -41,11 +41,11 @@ R_edge = float(np.percentile(rr, 99)); ZONES = [("Necrotic core", R_core), ("Sta
 print("transition at %.1f h; biomass %.4f ug, cells %d at the end; zones: core %g, stalled %g, ring %g, edge %.0f um" % (Tb, bio[-1], cnt[-1], R_core, R_stall, R_ring, R_edge))
 apply_style(6.3); glc = substrate_cmap("glucose")
 fig = plt.figure(figsize=(6.3, 5.3), dpi=200)
-gs = fig.add_gridspec(5, 6, height_ratios=[0.30, 1.15, 0.50, 1.45, 0.26], width_ratios=[1.7, 0.95, 1, 1, 1, 1], left=0.10, right=0.985, top=0.965, bottom=0.01, wspace=0.28, hspace=0.22)
+gs = fig.add_gridspec(5, 6, height_ratios=[0.30, 1.25, 0.42, 1.5, 0.26], width_ratios=[1.5, 0.85, 1.14, 1.14, 1.14, 1.14], left=0.125, right=0.985, top=0.965, bottom=0.01, wspace=0.28, hspace=0.22)
 LS = [("-", "k"), ("--", "k"), (":", "k")]
 def zone_arcs(ax, lw=0.67):
     for (nm, R), (ls, c) in zip(ZONES, LS): ax.add_patch(Arc((0, 0), 2 * R, 2 * R, theta1=0, theta2=90, ls=ls, color=c, lw=lw, zorder=5))
-ax = fig.add_subplot(gs[1, 0]); ax.text(-0.55, 1.04, "A", transform=ax.transAxes, fontsize=FS["letter"], fontweight="bold")
+ax = fig.add_subplot(gs[1, 0]); ax.text(-0.72, 1.04, "A", transform=ax.transAxes, fontsize=FS["letter"], fontweight="bold")
 hb = ax.scatter(ts, bio, c="g", edgecolors="k", s=5, label="Biomass"); hv = ax.axvline(Tb, color="k", ls="--", lw=0.48, label="End of exponential growth (%.1f h)" % Tb)
 ax.set_xlabel("Time (h)"); ax.set_ylabel(r"Total biomass ($\mu$g)"); ax2 = ax.twinx(); hc, = ax2.plot(ts, cnt / 1e5, "^-", color="grey", mec="k", ms=2.39, lw=0.72, label="Cells"); ax2.set_ylabel(r"Total cells ($\times 10^5$)"); ax2.spines["top"].set_visible(False)
 ax.legend([hb, hc], ["Biomass", "Cells"], frameon=False, loc="upper left", fontsize=FS["tick"]); ax.text(Tb, 1.02, "End of exponential\nphase", transform=ax.get_xaxis_transform(), ha="center", va="bottom", fontsize=FS["label"])
@@ -70,8 +70,8 @@ vals = [("Growth rate (1/h)", gr, plt.cm.Greens), ("Glucose uptake (amol/s)", -d
 legs = fig.add_subplot(gs[2, :]); legs.axis("off")
 h = [Line2D([], [], color="k", ls=ls, lw=0.76) for ls, c in LS] + [Line2D([], [], color="#444444", ls=(0, (1, 2)), lw=0.57), Patch(fc="saddlebrown", ec="k", lw=0.19), Patch(fc="grey", ec="k", lw=0.19)]
 lab_ = ["Core edge (%g µm)" % R_core, "Stalled-zone edge (%g µm)" % R_stall, "Acetate-ring edge (%g µm)" % R_ring, "Window of C–F", "Dead cell", "Starving cell"]
-legs.legend(h, lab_, loc="upper center", bbox_to_anchor=(0.5, 0.55), ncol=3, frameon=True, fancybox=False, edgecolor="k", framealpha=1, borderpad=0.4, fontsize=FS["legend"], handlelength=2.0, columnspacing=1.6, labelspacing=0.3, handletextpad=0.5).get_frame().set_linewidth(0.6)
-posn = gs[3, :].subgridspec(1, 4, wspace=0.22)
+legs.legend(h, lab_, loc="upper center", bbox_to_anchor=(0.5, 0.30), ncol=3, frameon=True, fancybox=False, edgecolor="k", framealpha=1, borderpad=0.4, fontsize=FS["legend"], handlelength=2.0, columnspacing=1.6, labelspacing=0.3, handletextpad=0.5).get_frame().set_linewidth(0.6)
+bb = gs[3, :].get_position(fig); posn = fig.add_gridspec(1, 4, left=0.03, right=0.985, bottom=bb.y0, top=bb.y1, wspace=0.16)
 for j, (lab, v, cm) in enumerate(vals):
     a = fig.add_subplot(posn[0, j]); a.text(-0.1, 1.03, "CDEF"[j], transform=a.transAxes, fontsize=FS["letter"], fontweight="bold"); vv = v[sel & alive]; lo, hi = vv.min(), vv.max()
     norm = TwoSlopeNorm(vmin=lo, vcenter=0.0, vmax=hi) if lo < 0 < hi else Normalize(lo, hi)

@@ -24,7 +24,7 @@ sty = dict(X_MIN=0.0, X_MAX=320.0, Y_MIN=-55.0, Y_MAX=55.0, skip_dead=False, vma
 apply_style(6.3)
 fa = plot_cells_spatial(df, time_point=t, color_config={"value_fn": lambda x: x.growth_rate, "cmap": plt.cm.Greens, "label": "Growth rate (1/h)"}, **sty)
 ba = io.BytesIO(); fa.savefig(ba, dpi=300, bbox_inches="tight", pad_inches=0.05, format="png"); plt.close(fa)
-fb = plot_exchange_profile_grid(mode="flux", time_point=t, df_cells=df, zone_x=(pe, le), solid_fraction=float(1 - df.fluid_fraction[alive].mean()), dpi=300, figsize=(6.3, 4.2), title_fontsize=FS["title"], tick_fontsize=FS["tick"], label_fontsize=FS["label"], line_width=1.0)
+fb = plot_exchange_profile_grid(mode="flux", time_point=t, df_cells=df, zone_x=(pe, le), solid_fraction=float(1 - df.fluid_fraction[alive].mean()), dpi=300, figsize=(6.3, 3.0), title_fontsize=FS["title"], tick_fontsize=FS["tick"], label_fontsize=FS["label"], line_width=1.0)
 for tx in fb.texts:
     if "export" in tx.get_text(): tx.set_text("Cell net exchange rate (fmol/min)")
 bb = io.BytesIO(); fb.savefig(bb, dpi=300, bbox_inches="tight", pad_inches=0.05, format="png"); plt.close(fb)
