@@ -70,7 +70,7 @@ vals = [("Growth rate (1/h)", gr, plt.cm.Greens), ("Glucose uptake (amol/s)", -d
 legs = fig.add_subplot(gs[2, :]); legs.axis("off")
 h = [Line2D([], [], color="k", ls=ls, lw=0.76) for ls, c in LS] + [Line2D([], [], color="#444444", ls=(0, (1, 2)), lw=0.57), Patch(fc="saddlebrown", ec="k", lw=0.19), Patch(fc="grey", ec="k", lw=0.19)]
 lab_ = ["Core edge, %g µm" % R_core, "Stalled edge, %g µm" % R_stall, "Ring edge, %g µm" % R_ring, "Window of C–F", "Dead cell", "Starving cell"]
-legs.legend(h, lab_, loc="upper center", bbox_to_anchor=(0.5, 0.40), ncol=6, frameon=True, fancybox=False, edgecolor="k", framealpha=1, borderpad=0.4, fontsize=FS["legend"], handlelength=1.5, columnspacing=0.9, labelspacing=0.3, handletextpad=0.4).get_frame().set_linewidth(0.6)
+legs.legend(h, lab_, loc="upper center", bbox_to_anchor=(0.436, 0.40), ncol=6, frameon=True, fancybox=False, edgecolor="k", framealpha=1, borderpad=0.4, fontsize=FS["legend"], handlelength=1.5, columnspacing=0.9, labelspacing=0.3, handletextpad=0.4).get_frame().set_linewidth(0.6)
 bb = gs[3, :].get_position(fig); posn = fig.add_gridspec(1, 4, left=0.03, right=0.985, bottom=bb.y0, top=bb.y1, wspace=0.16)
 for j, (lab, v, cm) in enumerate(vals):
     a = fig.add_subplot(posn[0, j]); a.text(-0.1, 1.03, "CDEF"[j], transform=a.transAxes, fontsize=FS["letter"], fontweight="bold"); vv = v[sel & alive]; lo, hi = vv.min(), vv.max()
