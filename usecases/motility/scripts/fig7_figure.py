@@ -1,7 +1,7 @@
 """Fig. 7: A-B trajectories of the cell over the glucose field (vertical glucose colorbar to the right of B), C-D glucose at the position of the colony against time with the two switching thresholds
 (0.6 mM to grow, 0.35 mM to return to motility), E-F position (left) and number of cells (right) over the 10 h; one legend box at the bottom (cell states and lines).
 Cells are drawn in two colours: moving (growth rate 0) and proliferating (growth rate > 0). FOR DISPLAY ONLY the positions of overlapping cells are pushed apart (minimum centre distance 2 x radius; the centre of mass is kept),
-because the cells of a young colony overlap in the simulation (mechanics time step); the simulation data and all curves are not changed.
+because the cells of a young colony overlap in the simulation (mechanics time step), and a cell at a wall is drawn inside the domain; the simulation data and all curves are not changed.
 usage: fig7_figure.py [--high runs/MOT4-HIGH_s51] [--low runs/MOT3-LOW_s50] [--out results/fig7/fig7]     (from the use-case directory; PYTHONPATH must contain pctk/src)
 The Km scan that was panel G is a supplementary figure (fig7_panel_g.py -> results/fig7/panel_g.png). The glucose at the cell is the linear profile between 0 at x = -150 um and the supply at x = +150 um (checked against the last snapshot).
 Type sizes: common/plot_style.py (printed sizes; the figure is drawn at its printed width, 6.3 in)."""
@@ -54,6 +54,7 @@ def draw_cells(ax, snaps, Gi, s):
     kept = []; sep = (s.domain_x[1] - s.domain_x[0]) / len(snaps) * 0.6; trans = ax.get_xaxis_transform()
     for k, sn in enumerate(snaps):
         x, y = spread(sn["x"], sn["y"], R) if k == len(snaps) - 1 else (np.asarray(sn["x"]), np.asarray(sn["y"]))
+        x = np.clip(x, s.domain_x[0] + 1.3 * R, s.domain_x[1] - 1.3 * R)   # display only: a cell at the wall is drawn inside the domain
         pro = np.asarray(sn["growth_rate"]) > 1e-6
         for i in range(len(x)):
             ax.add_patch(Circle((x[i], y[i]), R * 1.18, facecolor="white", edgecolor="none", alpha=0.92, zorder=2 + k))
@@ -71,7 +72,7 @@ top = gs[0].subgridspec(1, 2, wspace=W); mid = gs[1].subgridspec(2, 2, wspace=W,
 ax_comp = [fig.add_subplot(top[0, c]) for c in range(2)]; ax_glc = [fig.add_subplot(mid[0, c]) for c in range(2)]
 ax_pos = [fig.add_subplot(mid[1, c], sharex=ax_glc[c]) for c in range(2)]; ax_leg = fig.add_subplot(gs[2]); ax_leg.axis("off")
 for c, s in enumerate(sc):
-    ax = ax_comp[c]; draw_cells(ax, comp[c][0], comp[c][1], s); ax.set_xlabel("Position along gradient axis (µm)")
+    ax = ax_comp[c]; draw_cells(ax, comp[c][0], comp[c][1], s); ax.set_xlabel("x (µm)")
     if c == 0: ax.set_ylabel("y (µm)")
     else: ax.tick_params(labelleft=False)
 cb = fig.colorbar(ScalarMappable(norm=glc_norm, cmap=glc_cmap), cax=ax_comp[1].inset_axes([1.05, 0.0, 0.03, 1.0]), orientation="vertical"); cb.set_label("Glucose (mM)"); cb.outline.set_linewidth(0.5)
@@ -84,8 +85,8 @@ for c, s in enumerate(sc):
     if c == 0: ax.set_ylabel("Glucose (mM)")
     else: ax.tick_params(labelleft=False)
     ax = ax_pos[c]; ax2 = ax.twinx(); twins.append(ax2); ax2.spines["right"].set_visible(True)
-    H["x"], = ax.plot(t, df["x_position"], color="black", label="Position of the colony"); H["n"], = ax2.plot(t, df["n_cells"], color=CPRO, ls="--", label="Number of cells")
-    ax.set_ylim(-150, 150); ax2.set_ylim(0, max(ncmax * 1.15, 2)); ax.set_xlim(0, tmax); ax.set_xlabel("Time (h)")
+    H["x"], = ax.plot(t, df["x_position"], color="black", label="Position of the founder cell"); H["n"], = ax2.plot(t, df["n_cells"], color=CPRO, ls="--", label="Number of cells")
+    ax.set_ylim(-150, 150); ax2.set_ylim(0, max(ncmax * 1.15, 2)); ax2.set_yticks(range(1, int(ncmax) + 1)); ax.set_xlim(0, tmax); ax.set_xlabel("Time (h)")
     if c == 0: ax.set_ylabel("Position x (µm)"); ax2.tick_params(labelright=False)
     else: ax.tick_params(labelleft=False); ax2.set_ylabel("Number of cells")
 for ax, ax2 in zip(ax_pos, twins): ax2.set_position(ax.get_position())
