@@ -18,11 +18,12 @@ def draw_panel_g(ax, k=1.0, legend_loc="center left"):
         s = S[sup]; m = s[s.t.notna()]; n = s[s.t.isna()]
         ax.plot(m.Km, m.t, "-o", color=col, label=lab, ms=4 * k, lw=1.3 * k); ax.plot(n.Km, np.full(len(n), top * dy), "o", mfc="none", color=col, ms=5 * k, mew=1.0 * k)
     ax.set_xscale("log"); ax.set_ylim(0, top * 1.08); ax.set_xlabel("$K_m$ of glucose (mM)"); ax.set_ylabel("Time to reach x = 25 µm (min)")
-    ax.spines[["top", "right"]].set_visible(False); ax.legend(frameon=False, fontsize=7 * k, loc=legend_loc)
+    ax.spines[["top", "right"]].set_visible(False); ax.legend(frameon=False, loc=legend_loc, handlelength=1.6)
     return S
 if __name__ == "__main__":
     import matplotlib as mpl; mpl.use("Agg"); import matplotlib.pyplot as plt
     out = sys.argv[1] if len(sys.argv) > 1 else "results/fig7/panel_g"
-    fig, ax = plt.subplots(figsize=(3.6, 2.8)); S = draw_panel_g(ax); fig.tight_layout(); fig.savefig(out + ".png", dpi=300); fig.savefig(out + ".svg")
+    import os as _o; sys.path.insert(0, _o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "..", "..", "..", "common")); from plot_style import apply_style
+    apply_style(3.78, 3.78); fig, ax = plt.subplots(figsize=(3.78, 2.7)); S = draw_panel_g(ax); fig.tight_layout(); fig.savefig(out + ".png", dpi=300, bbox_inches="tight", pad_inches=0.03); fig.savefig(out + ".svg")
     for k, v in S.items(): print(k, v.to_dict("list"))
     print("wrote", out)

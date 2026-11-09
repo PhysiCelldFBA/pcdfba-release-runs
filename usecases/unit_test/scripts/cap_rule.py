@@ -42,10 +42,12 @@ b = res[(res.exp == "UT-CONV-BOX")]
 print("\nUT-CONV-BOX against the plateau, worst of the volume deviations over t = 30, 60, 90 min:")
 w = b.groupby(["dx", "dt"]).agg(R=("R", "first"), worst_vol=("d_vol", lambda x: x.abs().max()), worst_n=("d_n", lambda x: x.abs().max())).reset_index()
 print(w.round(3).to_string(index=False))
-fig, ax = plt.subplots(1, 2, figsize=(9, 3.6))
+import sys as _s, os as _o; _s.path.insert(0, _o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "..", "..", "..", "common")); from plot_style import apply_style, FS
+apply_style(6.3)
+fig, ax = plt.subplots(1, 2, figsize=(6.3, 2.7), gridspec_kw=dict(wspace=0.38))
 for exp, col, lab, tol in (("UT-DXDT-A", "d_vol", "1 cell, volume at 120 min", 0.5), ("UT-CONV-BOX", "d_vol", "8 cells, volume (worst of 30-90 min)", 5)):
     s = (a if exp == "UT-DXDT-A" else b.groupby(["dx", "dt"]).agg(R=("R", "first"), d_vol=("d_vol", lambda x: x.abs().max())).reset_index())
     s = s.assign(y=s[col].abs().clip(lower=1e-4)); i = 0 if exp == "UT-DXDT-A" else 1
-    for dx, m in zip((0.5, 1, 2, 4), "svo^"): z = s[s.dx == dx]; ax[i].scatter(z.R, z.y, marker=m, label=f"dx {dx}")
-    ax[i].axhline(tol, color="k", ls="--", lw=.8); ax[i].set_xscale("log"); ax[i].set_yscale("log"); ax[i].set_xlabel("cap number R"); ax[i].set_ylabel("|deviation from plateau| (%)"); ax[i].set_title(lab, fontsize=9)
-ax[0].legend(fontsize=7); fig.tight_layout(); fig.savefig("results/fig_cap_rule.png", dpi=150)
+    for dx, m in zip((0.5, 1, 2, 4), "svo^"): z = s[s.dx == dx]; ax[i].scatter(z.R, z.y, marker=m, s=14, label=f"dx {dx}")
+    ax[i].axhline(tol, color="k", ls="--", lw=.8); ax[i].set_xscale("log"); ax[i].set_yscale("log"); ax[i].set_xlabel("cap number R"); ax[i].set_ylabel("|deviation from plateau| (%)"); ax[i].set_title(lab)
+ax[0].legend(frameon=False); fig.tight_layout(); fig.savefig("results/fig_cap_rule.png", dpi=300, bbox_inches="tight", pad_inches=0.03)

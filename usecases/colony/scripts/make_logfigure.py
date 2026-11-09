@@ -19,11 +19,12 @@ print("breakpoint %.1f h; doubling time %.2f h before, %.2f h after; biomass %.4
 mu = np.gradient(y, t); sel = lambda a, b: mu[(t >= a) & (t <= b)]
 print("specific growth rate (1/h): 1-3 h %.3f, 3-5 h %.3f, 5-6 h %.3f, 6-8 h %.3f, 8-10 h %.3f" % (sel(1, 3).mean(), sel(3, 5).mean(), sel(5, 6).mean(), sel(6, 8).mean(), sel(8, 10).mean()))
 print("exponential-phase growth rate from the first line %.3f 1/h; at the end %.3f 1/h" % (c1[0], mu[-1]))
-plt.rcParams.update({"font.size": 12}); fig, ax = plt.subplots(figsize=(6.2, 4.6), dpi=200)
-ax.semilogy(ts[ok], bio[ok], "o", c="g", mec="k", ms=5, label="Biomass")
-ax.semilogy(t[:k + 1], np.exp(np.polyval(c1, t[:k + 1])), "-", c="#1f77b4", lw=2, label=f"Early fit (doubling {np.log(2) / c1[0]:.2f} h)")
-ax.semilogy(t[k:], np.exp(np.polyval(c2, t[k:])), "-", c="#d62728", lw=2, label=f"Late fit (doubling {np.log(2) / c2[0]:.2f} h)")
-ax.axvline(Tb, c="k", ls="--", lw=1.2); ax.text(Tb + 0.12, ax.get_ylim()[0] * 1.6, r"$t^*\approx$%.1f h" % Tb, fontsize=11, ha="left")
-ax.set_xlabel("Time (h)"); ax.set_ylabel(r"Total biomass ($\mu$g)"); ax.legend(frameon=False, loc="upper left", fontsize=10)
+import sys as _s, os as _o; _s.path.insert(0, _o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "..", "..", "..", "common")); from plot_style import apply_style, FS
+apply_style(5.35, 5.35); fig, ax = plt.subplots(figsize=(5.35, 3.4), dpi=300)
+ax.semilogy(ts[ok], bio[ok], "o", c="g", mec="k", ms=3.5, label="Biomass")
+ax.semilogy(t[:k + 1], np.exp(np.polyval(c1, t[:k + 1])), "-", c="#1f77b4", label=f"Early fit (doubling {np.log(2) / c1[0]:.2f} h)")
+ax.semilogy(t[k:], np.exp(np.polyval(c2, t[k:])), "-", c="#d62728", label=f"Late fit (doubling {np.log(2) / c2[0]:.2f} h)")
+ax.axvline(Tb, c="k", ls="--", lw=0.9); ax.text(Tb + 0.12, ax.get_ylim()[0] * 1.6, r"$t^*\approx$%.1f h" % Tb, fontsize=FS["label"], ha="left")
+ax.set_xlabel("Time (h)"); ax.set_ylabel(r"Total biomass ($\mu$g)"); ax.legend(frameon=False, loc="upper left")
 for a in ("top", "right"): ax.spines[a].set_visible(False)
 fig.savefig(out + ".png", bbox_inches="tight", facecolor="white"); fig.savefig(out + ".pdf", bbox_inches="tight", facecolor="white"); print("wrote", out)
