@@ -2,7 +2,7 @@
 original main figure. Two figures: main (5 mM O2 pulse at 210 min, the original protocol, 6 h) and supplementary (10 mM pulse, 7 h)."""
 import sys, os, glob, numpy as np, scipy.io as sio, xml.etree.ElementTree as ET, matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels; from plot_style import SC, substrate_cmap
 HERE = os.path.dirname(os.path.abspath(__file__)); UC = os.path.join(HERE, ".."); R = UC + "/runs"; OUT = UC + "/results"
 EDGE_UM = 36.0; V_L = EDGE_UM ** 3 * 1e-15; DRY = 0.25 * 1.04e-12   # g per um^3 of cell volume (fluid fraction 0.75, 1.04 g/mL)
 def series(run):
@@ -17,7 +17,7 @@ def series(run):
         me = sio.loadmat(s.replace(".xml", "_microenvironment0.mat"))["multiscale_microenvironment"]
         C.append([me[4 + i].mean() for i in range(4)])
     return np.array(T), np.array(C), np.array(B), np.array(J)
-COL = dict(Glucose="#f0b800", Acetate="#cc0000", Oxygen="#3b82f6", CO2="#8e44ad")
+COL = dict(Glucose=SC["glucose"], Acetate=SC["acetate"], Oxygen=SC["oxygen"], CO2=SC["co2"])
 def panel(ax, runs, tmax_h, mark):
     S = [series(r) for r in runs]; T = S[0][0]
     C = np.stack([s[1] for s in S]); B = np.stack([s[2] for s in S]); J = np.stack([s[3] for s in S])

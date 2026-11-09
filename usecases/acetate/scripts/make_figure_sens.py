@@ -5,6 +5,7 @@ usage: make_figure_sens.py   -> results/fig_acetate_sens.{png,pdf}, results/ace_
 import os, numpy as np, pandas as pd, matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.colors import TwoSlopeNorm
+import sys; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from plot_style import SC
 UC = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."); R = UC + "/results"
 S = pd.read_csv(f"{R}/ace_series.csv"); Q = pd.read_csv(f"{R}/ace_summary.csv").set_index("run")
 OBS = [("ferm_start", "Fermentation\nstart"), ("ferm_end", "Fermentation\nend"), ("reuse_start", "Acetate-reuse\nstart"), ("ac_peak", "Peak\nacetate"), ("biomass_end_gL", "Final\nbiomass"), ("ac_floor", "Acetate\nfloor")]
@@ -16,7 +17,7 @@ rel = pd.DataFrame({(p, i): (Q.loc[rid(p, f), [o for o, _ in OBS]] / ref - 1) * 
 rel.index = [f"{p}_{i}" for p, i in rel.index]; rel.to_csv(f"{R}/ace_sens_rel.csv", float_format="%.3f")
 ok = {p: bool((rel.loc[f"{p}_lo"].abs() <= 5).all() and (rel.loc[f"{p}_hi"].abs() <= 5).all()) for p, _ in PAR}
 print("parameters within 5% on all six observables (both factors):", [p for p, v in ok.items() if v], "-> runs", 2 * sum(ok.values()))
-COL = dict(glc="#e0a800", ace="#cc0000", ref="#9a9a9a", fg="#222222", ok="#2e8b57")
+COL = dict(glc=SC["glucose"], ace=SC["acetate"], ref="#9a9a9a", fg="#222222", ok="#2e8b57")
 def get(run): d = S[S.run == run].sort_values("t"); return d.t.values / 60, d.glucose_mean.values, d.acetate_mean.values
 fig = plt.figure(figsize=(11, 17)); gs = GridSpec(2, 1, height_ratios=[4.1, 3.3], hspace=0.27, figure=fig)
 ga = gs[0].subgridspec(4, 4, hspace=0.45, wspace=0.28); t0, g0, a0 = get("ACE-REF_s50"); ymax = 17.0

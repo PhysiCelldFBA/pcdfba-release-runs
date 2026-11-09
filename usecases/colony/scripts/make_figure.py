@@ -9,7 +9,7 @@ from matplotlib.collections import PatchCollection
 from matplotlib.patches import Circle, Arc, Rectangle, Patch
 from matplotlib.lines import Line2D
 from matplotlib.colors import LinearSegmentedColormap, Normalize, TwoSlopeNorm
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels; from plot_style import SC, substrate_cmap
 run, out = sys.argv[1].rstrip("/"), sys.argv[2]; T = float(sys.argv[3]) if len(sys.argv) > 3 else 540.0
 XL = YL = (80, 180); FULL = 4; DRY = 0.75 * 1.04; VIEW = 210.0; AN = 10.0
 def load(s):
@@ -38,7 +38,7 @@ i_stall = next(i for i in range(i_core, nb) if fgrow[i] >= 0.5); R_stall = edges
 i_ring = next(i for i in range(i_stall, nb) if fac[i] < 0.5); R_ring = edges[i_ring]              # end of the acetate-using ring
 R_edge = float(np.percentile(rr, 99)); ZONES = [("Necrotic core", R_core), ("Stalled zone", R_stall), ("Acetate-using ring", R_ring)]
 print("transition at %.1f h; biomass %.4f ug, cells %d at the end; zones: core %g, stalled %g, ring %g, edge %.0f um" % (Tb, bio[-1], cnt[-1], R_core, R_stall, R_ring, R_edge))
-plt.rcParams.update({"font.size": 10, "axes.labelsize": 11, "axes.spines.top": False, "axes.spines.right": False}); glc = LinearSegmentedColormap.from_list("y", ["#ffffff", "#f1c232"])
+plt.rcParams.update({"font.size": 10, "axes.labelsize": 11, "axes.spines.top": False, "axes.spines.right": False}); glc = substrate_cmap("glucose")
 fig = plt.figure(figsize=(13.2, 9.4), dpi=200)
 gs = fig.add_gridspec(5, 6, height_ratios=[0.22, 1.0, 0.30, 0.78, 0.14], width_ratios=[1.35, 0.42, 1, 1, 1, 1], left=0.06, right=0.985, top=0.965, bottom=0.04, wspace=0.34, hspace=0.22)
 LS = [("-", "k"), ("--", "k"), (":", "k")]
