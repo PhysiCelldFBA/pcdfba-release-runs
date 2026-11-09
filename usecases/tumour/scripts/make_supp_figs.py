@@ -20,7 +20,7 @@ print(f"t={t:.0f} h cells {len(df)} prolif edge {pe:.1f} living edge {le:.1f} dr
 # S9: patch the module constants and the O2 row
 P._SOLID = dry; P._o2_uptake = lambda row: -float(row.R_EX_o2_e) * float(row.total_volume) * P._RHO * P._SOLID / P._MIN_PER_H
 specs = {s["stem"]: s for s in P._figure_specs()}; specs["oxygen_uptake"]["required"] = ["R_EX_o2_e", "total_volume"]
-sty = dict(P._DEFAULT_STYLE); sty["zone_x"] = (pe, le)
+sty = dict(P._DEFAULT_STYLE); sty["zone_x"] = (pe, le); sty["fontsize"] = 27; sty["annotation_fontsize"] = 28   # S9 is drawn on a 20 in canvas (about 17.9 in after trimming) and printed at 4.7 in (0.75 text width): about 7 pt ticks and 7.4 pt labels as printed; the colorbar labels are long and set the limit
 fr = _render_uptake_stack(df, [t], [specs[s] for s in P._DEFAULT_STACK_STEMS], sty, show_colorbar=True)
 Image.fromarray(fr[0]).save(f"{out}/supp_fig_S9_uptake_stack_{int(H)}h.png")
 # values for the caption
@@ -33,5 +33,5 @@ mm = sio.loadmat(xf.replace(".xml", "_microenvironment0.mat"))["multiscale_micro
 names = {v.get("name"): int(v.get("ID")) for v in r.iter("variable") if v.get("ID") is not None and v.get("name")}
 dm = pd.DataFrame({"x": mm[0], "y": mm[1]})
 for n, i in names.items(): dm[n] = mm[4 + i]
-fb = plot_exchange_profile_grid(mode="concentration", time_point=t, df_micro=dm, zone_x=(pe, le), dpi=200)
-fb.savefig(f"{out}/supp_fig_S8_concentration_grid_{int(H)}h.png", dpi=200, bbox_inches="tight"); print("wrote", out)
+fb = plot_exchange_profile_grid(mode="concentration", time_point=t, df_micro=dm, zone_x=(pe, le), dpi=300, figsize=(6.0, 4.2), title_fontsize=8, tick_fontsize=7, label_fontsize=8, line_width=1.0)   # S8 printed at 0.95 text width (6.0 in)
+fb.savefig(f"{out}/supp_fig_S8_concentration_grid_{int(H)}h.png", dpi=300, bbox_inches="tight"); print("wrote", out)
