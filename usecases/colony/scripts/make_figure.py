@@ -40,8 +40,8 @@ i_ring = next(i for i in range(i_stall, nb) if fac[i] < 0.5); R_ring = edges[i_r
 R_edge = float(np.percentile(rr, 99)); ZONES = [("Necrotic core", R_core), ("Stalled zone", R_stall), ("Acetate-using ring", R_ring)]
 print("transition at %.1f h; biomass %.4f ug, cells %d at the end; zones: core %g, stalled %g, ring %g, edge %.0f um" % (Tb, bio[-1], cnt[-1], R_core, R_stall, R_ring, R_edge))
 apply_style(6.3); glc = substrate_cmap("glucose")
-fig = plt.figure(figsize=(6.3, 5.3), dpi=200)
-gs = fig.add_gridspec(5, 6, height_ratios=[0.30, 1.25, 0.42, 1.5, 0.26], width_ratios=[1.5, 0.85, 1.14, 1.14, 1.14, 1.14], left=0.125, right=0.985, top=0.965, bottom=0.01, wspace=0.28, hspace=0.22)
+fig = plt.figure(figsize=(6.3, 4.9), dpi=200)
+gs = fig.add_gridspec(5, 6, height_ratios=[0.30, 1.25, 0.30, 1.5, 0.26], width_ratios=[1.5, 0.85, 1.14, 1.14, 1.14, 1.14], left=0.125, right=0.985, top=0.965, bottom=0.01, wspace=0.28, hspace=0.22)
 LS = [("-", "k"), ("--", "k"), (":", "k")]
 def zone_arcs(ax, lw=0.67):
     for (nm, R), (ls, c) in zip(ZONES, LS): ax.add_patch(Arc((0, 0), 2 * R, 2 * R, theta1=0, theta2=90, ls=ls, color=c, lw=lw, zorder=5))
@@ -69,8 +69,8 @@ sel = (x >= XL[0]) & (x <= XL[1]) & (yv >= YL[0]) & (yv <= YL[1]); rad = np.cbrt
 vals = [("Growth rate (1/h)", gr, plt.cm.Greens), ("Glucose uptake (amol/s)", -d["R_EX_glc__D_e"] * vol * DRY / 3.6, glc), ("Acetate exchange (amol/s)", d["R_EX_ac_e"] * vol * DRY / 3.6, plt.cm.coolwarm_r), ("Oxygen uptake (amol/s)", -d["R_EX_o2_e"] * vol * DRY / 3.6, plt.cm.Blues)]
 legs = fig.add_subplot(gs[2, :]); legs.axis("off")
 h = [Line2D([], [], color="k", ls=ls, lw=0.76) for ls, c in LS] + [Line2D([], [], color="#444444", ls=(0, (1, 2)), lw=0.57), Patch(fc="saddlebrown", ec="k", lw=0.19), Patch(fc="grey", ec="k", lw=0.19)]
-lab_ = ["Core edge (%g µm)" % R_core, "Stalled-zone edge (%g µm)" % R_stall, "Acetate-ring edge (%g µm)" % R_ring, "Window of C–F", "Dead cell", "Starving cell"]
-legs.legend(h, lab_, loc="upper center", bbox_to_anchor=(0.5, 0.30), ncol=3, frameon=True, fancybox=False, edgecolor="k", framealpha=1, borderpad=0.4, fontsize=FS["legend"], handlelength=2.0, columnspacing=1.6, labelspacing=0.3, handletextpad=0.5).get_frame().set_linewidth(0.6)
+lab_ = ["Core edge, %g µm" % R_core, "Stalled edge, %g µm" % R_stall, "Ring edge, %g µm" % R_ring, "Window of C–F", "Dead cell", "Starving cell"]
+legs.legend(h, lab_, loc="upper center", bbox_to_anchor=(0.5, 0.40), ncol=6, frameon=True, fancybox=False, edgecolor="k", framealpha=1, borderpad=0.4, fontsize=FS["legend"], handlelength=1.5, columnspacing=0.9, labelspacing=0.3, handletextpad=0.4).get_frame().set_linewidth(0.6)
 bb = gs[3, :].get_position(fig); posn = fig.add_gridspec(1, 4, left=0.03, right=0.985, bottom=bb.y0, top=bb.y1, wspace=0.16)
 for j, (lab, v, cm) in enumerate(vals):
     a = fig.add_subplot(posn[0, j]); a.text(-0.1, 1.03, "CDEF"[j], transform=a.transAxes, fontsize=FS["letter"], fontweight="bold"); vv = v[sel & alive]; lo, hi = vv.min(), vv.max()
