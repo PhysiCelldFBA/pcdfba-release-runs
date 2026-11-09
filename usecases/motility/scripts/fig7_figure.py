@@ -67,7 +67,7 @@ def draw_cells(ax, snaps, Gi, s):
     ax.set_xlim(*s.domain_x); ax.set_ylim(*s.domain_y); ax.set_aspect("equal", adjustable="box")
 
 fig = plt.figure(figsize=(FW, FH)); W = 0.30
-gs = fig.add_gridspec(4, 1, height_ratios=[0.95, 1.75, 0.10, 0.27], left=0.14, right=0.875, bottom=0.015, top=0.945, hspace=0.20)
+gs = fig.add_gridspec(4, 1, height_ratios=[0.95, 1.75, 0.10, 0.27], left=0.14, right=0.875, bottom=0.05, top=0.99, hspace=0.20)
 top = gs[0].subgridspec(1, 2, wspace=W); mid = gs[1].subgridspec(2, 2, wspace=W, hspace=0.32)
 ax_comp = [fig.add_subplot(top[0, c]) for c in range(2)]; ax_glc = [fig.add_subplot(mid[0, c]) for c in range(2)]
 ax_pos = [fig.add_subplot(mid[1, c], sharex=ax_glc[c]) for c in range(2)]; ax_leg = fig.add_subplot(gs[3]); ax_leg.axis("off")
