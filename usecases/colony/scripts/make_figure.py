@@ -47,7 +47,7 @@ def zone_arcs(ax, lw=1.4):
 ax = fig.add_subplot(gs[1, 0]); ax.text(-0.27, 1.04, "A", transform=ax.transAxes, fontsize=20, fontweight="bold")
 hb = ax.scatter(ts, bio, c="g", edgecolors="k", s=26, label="Biomass"); hv = ax.axvline(Tb, color="k", ls="--", lw=1, label="End of exponential growth (%.1f h)" % Tb)
 ax.set_xlabel("Time (h)"); ax.set_ylabel(r"Total biomass ($\mu$g)"); ax2 = ax.twinx(); hc, = ax2.plot(ts, cnt / 1e5, "^-", color="grey", mec="k", ms=5, lw=1.5, label="Cells"); ax2.set_ylabel(r"Total cells ($\times 10^5$)"); ax2.spines["top"].set_visible(False)
-ax.legend([hb, hc, hv], ["Biomass", "Cells", "End of exponential\ngrowth (%.1f h)" % Tb], frameon=False, loc="upper left", fontsize=8.5)
+ax.legend([hb, hc], ["Biomass", "Cells"], frameon=False, loc="upper left", fontsize=8.5); ax.text(Tb, 1.02, "End of exponential phase", transform=ax.get_xaxis_transform(), ha="center", va="bottom", fontsize=9)
 me = sio.loadmat(s.replace(".xml", "_microenvironment0.mat"))["multiscale_microenvironment"]
 names = [("oxygen", 4, "Blues", r"O$_2$ (mM)"), ("glucose", 5, glc, "D-glucose (mM)"), ("acetate", 6, "Reds", "Acetate (mM)"), ("CO2", 8, "Purples", r"CO$_2$ (mM)")]
 maps = []; xs, ys = np.unique(me[0]), np.unique(me[1]); vis = (me[0] <= VIEW) & (me[1] <= VIEW);
