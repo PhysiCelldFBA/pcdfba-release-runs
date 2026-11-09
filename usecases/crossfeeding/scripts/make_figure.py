@@ -1,5 +1,5 @@
 """Cross-feeding figure (manuscript Fig. 6) from one run (open box, no caps, 50 h: CF3-NC50_s50): A biomass volume per species, B box-mean concentrations, C and D net export of each species (fmol/s) of C. beijerinckii and M. barkeri,
-E mean growth rate of the living cells of each species (dashed: M. barkeri in the closed box, CF3-NF_s50 at its last snapshot), F growth rate and H2, acetate and CH4 fields at an early and a late time (colours of the substrates from common/plot_style.py).
+E mean growth rate of the living cells of each species (dashed: M. barkeri in the closed box, CF3-NF_s50 at its last snapshot), F growth rate and H2, acetate and CH4 fields at an early and a late time (colours of the substrates from common/plot_style.py; five contour lines at equal steps of the maximum, without the outer voxel layer (the boundary value)).
 usage: make_figure.py RUNDIR OUT_PREFIX [T_EARLY_MIN=30] [T_LATE_MIN=last snapshot] [CLOSED_RUNDIR=runs/CF3-NF_s50]
 Net export = sum over living cells of flux (mmol/gDW/h) x dry weight (volume x (1 - fluid fraction) x 1.04e-12 g/um3) x 1e12 fmol/mmol / 3600 s/h; positive = export.
 The schematic of the submitted Fig. 6 is now a supplementary figure (make_schematic.py)."""
@@ -57,6 +57,7 @@ for j, T in enumerate((TE, TL)):
         ax = fig.add_subplot(eg[j, 1 + i]); g = np.zeros((len(ys), len(xs))); g[np.searchsorted(ys, me[1]), np.searchsorted(xs, me[0])] = me[row]
         imh = ax.imshow(g, origin="lower", extent=ext, cmap=cm, vmin=0, vmax=max(g.max(), 1e-12))
         cbx = fig.colorbar(imh, cax=ax.inset_axes([1.04, 0, 0.05, 1])); cbx.ax.tick_params(labelsize=7); cbx.formatter.set_powerlimits((-2, 3)); cbx.update_ticks(); cbx.ax.yaxis.get_offset_text().set_fontsize(7)
+        ax.contour(xs[1:-1], ys[1:-1], g[1:-1, 1:-1], levels=np.linspace(0, g.max(), 7)[1:-1], colors="k", linewidths=0.6, alpha=0.55)
         ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim); ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([])
         for sp in ax.spines.values(): sp.set_visible(True)
         if j == 0: ax.set_title(lab_, fontsize=11, pad=6)
