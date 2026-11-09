@@ -20,11 +20,11 @@ for s in sc:
     snaps = fc.load_cell_snapshots(s.reader, n_frames=7, color_col=color_col, frame_spacing="linear"); Gi, vals, _, _ = fc.glucose_grid(s.reader, "last", s.domain_x, s.domain_y)
     comp.append((snaps, Gi)); gv.append(vals); cv.append(np.concatenate([sn[color_col] for sn in snaps]))
 glc_norm = Normalize(float(np.nanmin(np.concatenate(gv))), float(np.nanmax(np.concatenate(gv)))); cell_norm = Normalize(0.0, max(float(np.nanmax(np.concatenate(cv))), 1e-9))
-fig = plt.figure(figsize=(7.6 * S, 7.0 * S)); W = 0.30
-gs = fig.add_gridspec(4, 1, height_ratios=[0.16, 0.95, 2.5, 0.20], left=0.125, right=0.915, bottom=0.03, top=0.975, hspace=0.34)
+fig = plt.figure(figsize=(7.6 * S, 5.6 * S)); W = 0.30
+gs = fig.add_gridspec(4, 1, height_ratios=[0.20, 0.95, 1.55, 0.24], left=0.125, right=0.915, bottom=0.03, top=0.975, hspace=0.34)
 cb_gs = gs[0].subgridspec(1, 5, width_ratios=[1.1, 1.7, 0.5, 1.7, 1.1], wspace=0.0)
 cax_g, cax_c = fig.add_subplot(cb_gs[0, 1]), fig.add_subplot(cb_gs[0, 3])
-top = gs[1].subgridspec(1, 2, wspace=W); mid = gs[2].subgridspec(2, 2, wspace=W, hspace=0.10)
+top = gs[1].subgridspec(1, 2, wspace=W); mid = gs[2].subgridspec(2, 2, wspace=W, hspace=0.16)
 ax_comp = [fig.add_subplot(top[0, c]) for c in range(2)]; ax_line = [fig.add_subplot(mid[0, c]) for c in range(2)]
 ax_flux = [fig.add_subplot(mid[1, c], sharex=ax_line[c]) for c in range(2)]; ax_leg = fig.add_subplot(gs[3]); ax_leg.axis("off")
 for c, s in enumerate(sc):
@@ -41,12 +41,12 @@ for c, s in enumerate(sc):
     df, t = s.df, s.df["time_h"]; ax = ax_line[c]; ax2 = ax.twinx(); twins.append(ax2)
     l1, = ax.plot(t, df["migration_speed"], color="black", ls="-", label="Migration speed"); l2, = ax2.plot(t, df["growth_rate"], color="black", ls="--", label="Growth rate")
     ax.set_ylim(0, max(0.05, ms * 1.08)); ax2.set_ylim(0, max(0.05, mg * 1.12)); ax.set_xlim(0, mt); ax.tick_params(labelbottom=False)
-    if c == 0: ax.set_ylabel("Migration speed\n(µm/min)", labelpad=6 * S); ax2.tick_params(labelright=False)
-    else: ax.tick_params(labelleft=False); ax2.set_ylabel("Growth rate\n(h$^{-1}$)", labelpad=10 * S)
+    if c == 0: ax.set_ylabel("Migration speed (µm/min)", labelpad=6 * S, fontsize=6 * S); ax2.tick_params(labelright=False)
+    else: ax.tick_params(labelleft=False); ax2.set_ylabel("Growth rate (h$^{-1}$)", labelpad=8 * S, fontsize=6 * S)
     ax.spines["top"].set_visible(False); ax2.spines["top"].set_visible(False); h1 = h1 or [l1, l2]
     ax = ax_flux[c]; f1, = ax.plot(t, df["atp_flux"], color=fcol["atp"], label="Total ATP flux"); f2, = ax.plot(t, df["motility_atp_flux"], color=fcol["mot"], label="Motility ATP flux"); f3, = ax.plot(t, df["glucose_flux"].abs(), color=fcol["glc"], ls="--", label="|Glucose flux|"); hf = hf or [f1, f2, f3]
     ax.set_ylim(0, max(1.0, mf * 1.12)); ax.set_xlim(0, mt); ax.set_xlabel("Time (h)"); ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
-    if c == 0: ax.set_ylabel("Flux\n(mmol·gDW$^{-1}$·h$^{-1}$)", labelpad=6 * S)
+    if c == 0: ax.set_ylabel("Flux (mmol·gDW$^{-1}$·h$^{-1}$)", labelpad=6 * S, fontsize=5.4 * S)
     else: ax.tick_params(labelleft=False)
 for ax, ax2 in zip(ax_line, twins): ax2.set_position(ax.get_position())
 for cx in (cax_g, cax_c): q = cx.get_position(); cx.set_position([q.x0, q.y0 - 0.045, q.width, q.height])
