@@ -3,6 +3,7 @@ usage: make_figure.py RUNDIR OUT_PREFIX [TIME_MIN=540]      (run COL-QTRB_qtr_s5
 Conventions of the original notebook (bacterial_colony_figures.ipynb): dry weight = volume x 0.75 x 1.04 pg/um3; radius from the volume as a sphere; brown = dead, grey = living cell with a necrosis rate > 0; uptake and exchange in amol/s = flux (mmol/gDW/h) x volume x 0.75 x 1.04 / 3.6.
 Zones (10 um annuli of the distance to the centre, living cells for the fractions of growth and acetate): necrotic core = out to the edge of the inner region where at least 50% of the cells are dead; stalled zone = beyond it, until at least 50% of the living cells grow (rate > 0.05 1/h);
 acetate-using ring = beyond it, until fewer than 50% of the living cells take up acetate; proliferating rim = beyond it, out to the edge of the colony (99th percentile of the distance)."""
+import matplotlib.ticker
 import sys, glob, os, numpy as np, scipy.io as sio, xml.etree.ElementTree as ET, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from matplotlib.collections import PatchCollection
@@ -40,7 +41,7 @@ R_edge = float(np.percentile(rr, 99)); ZONES = [("Necrotic core", R_core), ("Sta
 print("transition at %.1f h; biomass %.4f ug, cells %d at the end; zones: core %g, stalled %g, ring %g, edge %.0f um" % (Tb, bio[-1], cnt[-1], R_core, R_stall, R_ring, R_edge))
 apply_style(6.3); glc = substrate_cmap("glucose")
 fig = plt.figure(figsize=(6.3, 5.3), dpi=200)
-gs = fig.add_gridspec(5, 6, height_ratios=[0.30, 1.15, 0.62, 1.45, 0.26], width_ratios=[1.7, 0.95, 1, 1, 1, 1], left=0.10, right=0.985, top=0.965, bottom=0.01, wspace=0.28, hspace=0.30)
+gs = fig.add_gridspec(5, 6, height_ratios=[0.30, 1.15, 0.50, 1.45, 0.26], width_ratios=[1.7, 0.95, 1, 1, 1, 1], left=0.10, right=0.985, top=0.965, bottom=0.01, wspace=0.28, hspace=0.22)
 LS = [("-", "k"), ("--", "k"), (":", "k")]
 def zone_arcs(ax, lw=0.67):
     for (nm, R), (ls, c) in zip(ZONES, LS): ax.add_patch(Arc((0, 0), 2 * R, 2 * R, theta1=0, theta2=90, ls=ls, color=c, lw=lw, zorder=5))
@@ -55,21 +56,21 @@ for i, (nm, row, cm, lab) in enumerate(names):
     a = fig.add_subplot(gs[1, i + 2]); g = np.full((len(ys), len(xs)), np.nan); g[np.searchsorted(ys, me[1]), np.searchsorted(xs, me[0])] = me[row]
     im = a.imshow(g, origin="lower", extent=[xs[0] - 1, xs[-1] + 1, ys[0] - 1, ys[-1] + 1], cmap=cm, vmin=0, vmax=me[row][vis].max(), interpolation="bicubic", aspect="equal")
     a.set_xlim(0, VIEW); a.set_ylim(0, VIEW); a.set_anchor("S"); zone_arcs(a); a.add_patch(Rectangle((XL[0], YL[0]), XL[1] - XL[0], YL[1] - YL[0], fill=False, ec="#444444", lw=0.48, ls=(0, (1, 2)), zorder=6))
-    a.set_xlabel("x (µm)"); a.set_xticks([0, 50, 100, 150, 200]); a.set_yticks([0, 50, 100, 150, 200] if i == 0 else [0, 50, 100, 150, 200]); 
+    a.set_xlabel("x (µm)"); a.set_xticks([0, 100, 200]); a.set_yticks([0, 100, 200]); 
     if i == 0: a.set_ylabel("y (µm)"); a.text(-0.42, 1.04, "B", transform=a.transAxes, fontsize=FS["letter"], fontweight="bold")
     else: a.set_yticklabels([])
     maps.append((a, im, lab))
 fig.canvas.draw()
 for a, im, lab in maps:      # colorbar directly above its map, same width
     a.apply_aspect(); pos = a.get_position(); cax = fig.add_axes([pos.x0, pos.y1 + 0.008, pos.width, 0.014]); cb = fig.colorbar(im, cax=cax, orientation="horizontal"); cb.set_label(lab, labelpad=7, fontsize=FS["label"])
-    cb.ax.xaxis.set_ticks_position("top"); cb.ax.xaxis.set_label_position("top"); cb.ax.tick_params(labelsize=FS["tick"], length=2); cb.formatter.set_powerlimits((-9, 9)); cb.update_ticks()
+    cb.ax.xaxis.set_ticks_position("top"); cb.ax.xaxis.set_label_position("top"); cb.ax.tick_params(labelsize=FS["tick"], length=2); cb.formatter.set_powerlimits((-9, 9)); cb.locator = matplotlib.ticker.MaxNLocator(2); cb.update_ticks()
 pm = maps[0][0].get_position(); pa = ax.get_position(); ax.set_position([pa.x0, pm.y0, pa.width, pm.height]); ax2.set_position(ax.get_position())     # A as high as the maps of B
 sel = (x >= XL[0]) & (x <= XL[1]) & (yv >= YL[0]) & (yv <= YL[1]); rad = np.cbrt(3 * vol / (4 * np.pi))
 vals = [("Growth rate (1/h)", gr, plt.cm.Greens), ("Glucose uptake (amol/s)", -d["R_EX_glc__D_e"] * vol * DRY / 3.6, glc), ("Acetate exchange (amol/s)", d["R_EX_ac_e"] * vol * DRY / 3.6, plt.cm.coolwarm_r), ("Oxygen uptake (amol/s)", -d["R_EX_o2_e"] * vol * DRY / 3.6, plt.cm.Blues)]
 legs = fig.add_subplot(gs[2, :]); legs.axis("off")
 h = [Line2D([], [], color="k", ls=ls, lw=0.76) for ls, c in LS] + [Line2D([], [], color="#444444", ls=(0, (1, 2)), lw=0.57), Patch(fc="saddlebrown", ec="k", lw=0.19), Patch(fc="grey", ec="k", lw=0.19)]
-lab_ = ["%s edge (%g µm)" % (nm, R) for nm, R in ZONES[:1]] + ["Stalled zone edge (%g µm)" % R_stall, "Acetate-using ring edge (%g µm)" % R_ring, "Window of C-F", "Dead cell", "Starving cell"]
-legs.legend(h, lab_, loc="upper center", bbox_to_anchor=(0.5, 0.72), ncol=3, frameon=True, fancybox=False, edgecolor="k", framealpha=1, borderpad=0.7, fontsize=FS["label"], handlelength=2.6, columnspacing=2.4).get_frame().set_linewidth(0.6)
+lab_ = ["Core edge (%g µm)" % R_core, "Stalled-zone edge (%g µm)" % R_stall, "Acetate-ring edge (%g µm)" % R_ring, "Window of C–F", "Dead cell", "Starving cell"]
+legs.legend(h, lab_, loc="upper center", bbox_to_anchor=(0.5, 0.55), ncol=3, frameon=True, fancybox=False, edgecolor="k", framealpha=1, borderpad=0.4, fontsize=FS["legend"], handlelength=2.0, columnspacing=1.6, labelspacing=0.3, handletextpad=0.5).get_frame().set_linewidth(0.6)
 posn = gs[3, :].subgridspec(1, 4, wspace=0.22)
 for j, (lab, v, cm) in enumerate(vals):
     a = fig.add_subplot(posn[0, j]); a.text(-0.1, 1.03, "CDEF"[j], transform=a.transAxes, fontsize=FS["letter"], fontweight="bold"); vv = v[sel & alive]; lo, hi = vv.min(), vv.max()
