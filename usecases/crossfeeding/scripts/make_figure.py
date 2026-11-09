@@ -1,4 +1,4 @@
-"""Cross-feeding figure (manuscript Fig. 6) from one run (open box, no caps, 50 h: CF3-NC50_s50): A biomass volume per species, B box-mean concentrations, D mean net export rate per living cell (amol/s) of C. beijerinckii and M. barkeri (shared y-axis),
+"""Cross-feeding figure (manuscript Fig. 6) from one run (open box, no caps, 50 h: CF3-NC50_s50): A biomass volume per species, B box-mean concentrations, D total net export (fmol/s) and E net export per unit of dry weight (mmol/gDW/h, biomass-weighted mean flux) of C. beijerinckii and M. barkeri (shared y-axis),
 B mean growth rate of the living cells of each species (the closed-box value of M. barkeri, CF3-NF_s50, is only printed), E growth rate and H2, acetate and CH4 fields at an early and a late time (colours of the substrates from common/plot_style.py; five contour lines at equal steps of the maximum, without the outer voxel layer (the boundary value)).
 usage: make_figure.py RUNDIR OUT_PREFIX [T_EARLY_MIN=30] [T_LATE_MIN=last snapshot] [CLOSED_RUNDIR=runs/CF3-NF_s50]
 Net export per cell = mean over living cells of flux (mmol/gDW/h) x dry weight (volume x (1 - fluid fraction) x 1.04e-12 g/um3) x 1e15 amol/mmol / 3600 s/h; positive = export.
@@ -20,7 +20,7 @@ for f in files:
     c = sio.loadmat(f.replace(".xml", "_cells.mat"))["cells"]; g = lambda k: c[lab.index(k)]
     ty, v, ff, dead = g("cell_type"), g("total_volume"), g("fluid_fraction"), g("dead") > 0; dw = v * (1 - ff) * 1.04e-12; alive = ~dead
     ts.append(t / 60); vol.append([v[(ty == k) & alive].sum() for k in (0, 1)]); grm.append([g("growth_rate")[(ty == k) & alive].mean() for k in (0, 1)])
-    exp.append({(k, nm): (g(col) * dw * 1e12 / 3600)[(ty == k) & alive].sum() for k in (0, 1) for nm, col in EXP.items()}); expm.append({(k, nm): (g(col) * dw * 1e15 / 3600)[(ty == k) & alive].mean() for k in (0, 1) for nm, col in EXP.items()})
+    exp.append({(k, nm): (g(col) * dw * 1e12 / 3600)[(ty == k) & alive].sum() for k in (0, 1) for nm, col in EXP.items()}); expm.append({(k, nm): (g(col) * dw)[(ty == k) & alive].sum() / dw[(ty == k) & alive].sum() for k in (0, 1) for nm, col in EXP.items()})
     me = sio.loadmat(f.replace(".xml", "_microenvironment0.mat"))["multiscale_microenvironment"]; conc.append({k: me[r].mean() for k, r in VAR.items()})
     if abs(t - TE) < 1 or abs(t - TL) < 1: snaps[t] = (me, g("position[0]"), g("position[1]"), g("growth_rate"), ty, dead)
 ts, vol, grm = np.array(ts), np.array(vol), np.array(grm); TE = min(snaps, key=lambda t: abs(t - TE)); TL = min(snaps, key=lambda t: abs(t - TL))
@@ -38,8 +38,9 @@ b = fig.add_subplot(top[2]); cc = {"glucose": SC["glucose"], "methane": SC["meth
 for k, col in cc.items(): b.plot(ts[ts >= 1 / 60], np.array([d[k] for d in conc])[ts >= 1 / 60], color=col, label={"glucose": "Glucose", "methane": "CH$_4$", "H2": "H$_2$", "acetate": "Acetate"}[k])
 b.set_ylabel("Concentration (mM)"); b.set_xlabel("Time (h)"); b.legend(frameon=False, ncol=1, fontsize=8.5, loc="center left", bbox_to_anchor=(0.02, 0.40)); LET(b, "C")
 col = {"Glucose": SC["glucose"], "H$_2$": SC["h2"], "CO$_2$": SC["co2"], "Acetate": SC["acetate"], "CH$_4$": SC["methane"]}
+YM = 1.15 * max(abs(v) for e_ in expm[3:] for v in e_.values()); print('YM', YM)
 xp = top[3].subgridspec(2, 2, wspace=0.06, hspace=0.30); dax = {}
-for r, (E_, yl, Lt, ylim) in enumerate(((exp, "Total net export (fmol/s)", "D", (-8, 19.5)), (expm, "Net export per cell (amol/s)", "E", (-3.4, 3.9)))):
+for r, (E_, yl, Lt, ylim) in enumerate(((exp, "Total net export (fmol/s)", "D", (-8, 19.5)), (expm, "Per biomass\n(mmol/gDW/h)", "E", (-YM, YM)))):
     for i, (k, names, nm_) in enumerate(((0, ["Glucose", "H$_2$", "CO$_2$", "Acetate"], "C. beijerinckii"), (1, ["H$_2$", "Acetate", "CO$_2$", "CH$_4$"], "M. barkeri"))):
         d = fig.add_subplot(xp[r, i], sharey=dax.get(r), sharex=dax.get("x%d" % i)); dax.setdefault(r, d); dax.setdefault("x%d" % i, d)
         for nm in names: d.plot(ts, [e_[(k, nm)] for e_ in E_], color=col[nm], label=nm)
