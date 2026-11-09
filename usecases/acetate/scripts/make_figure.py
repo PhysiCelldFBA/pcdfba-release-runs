@@ -36,7 +36,7 @@ def panel(ax, runs, tmax_h, mark):
 def figure(runs, tmax_h, title, name, size=(6.3, 3.1)):
     apply_style(size[0], size[0]); fig, ax = plt.subplots(1, 1, figsize=size); a2, info = panel(ax, runs, tmax_h, "")
     h, l = ax.get_legend_handles_labels(); h2, l2 = a2.get_legend_handles_labels()
-    fig.legend(h + h2, l + l2, ncol=5, loc="upper center", frameon=False, handlelength=1.6, columnspacing=1.2)
+    fig.legend(h + h2, l + l2, ncol=5, loc="upper center", frameon=True, fancybox=False, edgecolor="black", borderpad=0.5, handlelength=1.6, columnspacing=1.2).get_frame().set_linewidth(0.5)
     if title: ax.set_title(title, loc="left")
     fig.tight_layout(rect=(0, 0, 1, 0.92)); fig.savefig(f"{OUT}/{name}.png", dpi=300); fig.savefig(f"{OUT}/{name}.pdf"); plt.close(fig)
     print(name, {k: round(float(v), 3) for k, v in info.items()})
