@@ -1,5 +1,5 @@
-"""Fig. 7: A-B trajectories of the cell over the glucose field (glucose colorbar and the legend of the two cell states above them), C-D glucose at the position of the colony against time with the two switching thresholds
-(0.6 mM to grow, 0.35 mM to return to motility), E-F position (left) and number of cells (right) over the 10 h; one legend box at the bottom.
+"""Fig. 7: A-B trajectories of the cell over the glucose field (vertical glucose colorbar to the right of B), C-D glucose at the position of the colony against time with the two switching thresholds
+(0.6 mM to grow, 0.35 mM to return to motility), E-F position (left) and number of cells (right) over the 10 h; one legend box at the bottom (cell states and lines).
 Cells are drawn in two colours: moving (growth rate 0) and proliferating (growth rate > 0). FOR DISPLAY ONLY the positions of overlapping cells are pushed apart (minimum centre distance 2 x radius; the centre of mass is kept),
 because the cells of a young colony overlap in the simulation (mechanics time step); the simulation data and all curves are not changed.
 usage: fig7_figure.py [--high runs/MOT4-HIGH_s51] [--low runs/MOT3-LOW_s50] [--out results/fig7/fig7]     (from the use-case directory; PYTHONPATH must contain pctk/src)
@@ -17,7 +17,7 @@ from matplotlib.patches import Circle
 import fig7_composite as fc
 from plot_style import apply_style, FS, SC
 ap = argparse.ArgumentParser(); ap.add_argument("--high", default="runs/MOT4-HIGH_s51"); ap.add_argument("--low", default="runs/MOT3-LOW_s50"); ap.add_argument("--out", default="results/fig7/fig7"); a = ap.parse_args()
-FW, FH = 6.3, 5.7; apply_style(FW); CMOV, CPRO = "#0072B2", "#1b7837"; R = 4.0
+FW, FH = 6.3, 4.6; apply_style(FW); CMOV, CPRO = "#D62728", "#1b7837"; R = 4.0
 sc = [fc.make_scenario(Path(a.high), "1.0 mM at the right wall", 1e-3, 1e-3), fc.make_scenario(Path(a.low), "0.325 mM at the right wall", 1e-3, 1e-3)]
 glc_cmap = fc.resolve_glucose_cmap("yellow"); comp, gv = [], []
 for s in sc:
@@ -66,19 +66,16 @@ def draw_cells(ax, snaps, Gi, s):
     ax.set_xlim(*s.domain_x); ax.set_ylim(*s.domain_y); ax.set_aspect("equal", adjustable="box")
 
 fig = plt.figure(figsize=(FW, FH)); W = 0.30
-gs = fig.add_gridspec(4, 1, height_ratios=[0.16, 0.95, 1.75, 0.34], left=0.14, right=0.90, bottom=0.02, top=0.935, hspace=0.42)
-cb_gs = gs[0].subgridspec(1, 3, width_ratios=[1.0, 1.0, 1.0], wspace=0.25)
-cax_g = fig.add_subplot(cb_gs[0, 0]); ax_st = fig.add_subplot(cb_gs[0, 1:]); ax_st.axis("off")
-top = gs[1].subgridspec(1, 2, wspace=W); mid = gs[2].subgridspec(2, 2, wspace=W, hspace=0.32)
+gs = fig.add_gridspec(3, 1, height_ratios=[0.95, 1.75, 0.27], left=0.14, right=0.875, bottom=0.015, top=0.945, hspace=0.34)
+top = gs[0].subgridspec(1, 2, wspace=W); mid = gs[1].subgridspec(2, 2, wspace=W, hspace=0.32)
 ax_comp = [fig.add_subplot(top[0, c]) for c in range(2)]; ax_glc = [fig.add_subplot(mid[0, c]) for c in range(2)]
-ax_pos = [fig.add_subplot(mid[1, c], sharex=ax_glc[c]) for c in range(2)]; ax_leg = fig.add_subplot(gs[3]); ax_leg.axis("off")
+ax_pos = [fig.add_subplot(mid[1, c], sharex=ax_glc[c]) for c in range(2)]; ax_leg = fig.add_subplot(gs[2]); ax_leg.axis("off")
 for c, s in enumerate(sc):
     ax = ax_comp[c]; draw_cells(ax, comp[c][0], comp[c][1], s); ax.set_xlabel("Position along gradient axis (µm)")
     if c == 0: ax.set_ylabel("y (µm)")
     else: ax.tick_params(labelleft=False)
-cb = fig.colorbar(ScalarMappable(norm=glc_norm, cmap=glc_cmap), cax=cax_g, orientation="horizontal"); cb.set_label("Glucose (mM)"); cb.ax.xaxis.set_ticks_position("top"); cb.ax.xaxis.set_label_position("top"); cb.outline.set_linewidth(0.5)
+cb = fig.colorbar(ScalarMappable(norm=glc_norm, cmap=glc_cmap), cax=ax_comp[1].inset_axes([1.05, 0.0, 0.03, 1.0]), orientation="vertical"); cb.set_label("Glucose (mM)"); cb.outline.set_linewidth(0.5)
 sh = [Line2D([], [], marker="o", ls="", markersize=6, markerfacecolor=col, markeredgecolor="0.15", markeredgewidth=0.3, label=lab) for col, lab in ((CMOV, "Moving cell"), (CPRO, "Proliferating cell"))]
-ax_st.legend(handles=sh, loc="center left", ncol=2, frameon=False, handletextpad=0.2, columnspacing=1.2)
 tmax = max(float(s.df["time_h"].max()) for s in sc); ncmax = max(float(s.df["n_cells"].max()) for s in sc); twins = []; H = {}
 for c, s in enumerate(sc):
     df, t = s.df, s.df["time_h"]; gloc = SUP[c] * (df["x_position"] - XL) / (XR - XL); ax = ax_glc[c]
@@ -92,6 +89,6 @@ for c, s in enumerate(sc):
     if c == 0: ax.set_ylabel("Position x (µm)"); ax2.tick_params(labelright=False)
     else: ax.tick_params(labelleft=False); ax2.set_ylabel("Number of cells")
 for ax, ax2 in zip(ax_pos, twins): ax2.set_position(ax.get_position())
-hh = [H["glc"], H["x"], H["g"], H["n"], H["m"]]; leg = ax_leg.legend(hh, [h.get_label() for h in hh], loc="center", ncol=3, frameon=True, fancybox=False, edgecolor="black", handlelength=1.8, handletextpad=0.5, columnspacing=1.6, borderpad=0.6); leg.get_frame().set_linewidth(0.5)
-for ax, L_ in ((ax_comp[0], "A"), (ax_comp[1], "B"), (ax_glc[0], "C"), (ax_glc[1], "D"), (ax_pos[0], "E"), (ax_pos[1], "F")): ax.text({"A": -0.17, "C": -0.17, "E": -0.17}.get(L_, -0.07), 1.28 if L_ in "AB" else 1.10, L_, transform=ax.transAxes, fontsize=FS["letter"], fontweight="bold", va="bottom")
+hh = sh + [H["glc"], H["x"], H["g"], H["n"], H["m"]]; leg = ax_leg.legend(hh, [h.get_label() for h in hh], loc="upper center", ncol=4, frameon=True, fancybox=False, edgecolor="black", handlelength=1.8, handletextpad=0.5, columnspacing=1.4, borderpad=0.5); leg.get_frame().set_linewidth(0.5)
+for ax, L_ in ((ax_comp[0], "A"), (ax_comp[1], "B"), (ax_glc[0], "C"), (ax_glc[1], "D"), (ax_pos[0], "E"), (ax_pos[1], "F")): ax.text(-0.31 if L_ in "ACE" else -0.12, 1.04, L_, transform=ax.transAxes, fontsize=FS["letter"], fontweight="bold", va="top", ha="left")
 Path(a.out).parent.mkdir(parents=True, exist_ok=True); fig.savefig(a.out + ".png", dpi=600); fig.savefig(a.out + ".svg"); print("wrote", a.out)
