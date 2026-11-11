@@ -1,10 +1,10 @@
 """Tumour main figure (Fig. 5) from one run. usage: make_figure.py RUNDIR OUTPREFIX [HOURS=72]
 Panel A: cells at HOURS coloured by growth rate (dead cells dark, cells with a positive necrosis rate grey); the dashed lines are the proliferative edge and the edge of the living cells of the run (analyse_tum.py definitions: 95th percentiles of x).
 Panel B: net exchange rate of 15 metabolites per cell (fmol/min) against distance to the vessel, mean +- SD of the cells in 20 bins of 16 um (3-bin running mean), the same panels as the submitted figure.
-Uses the plotting modules of the sample project (PhysiCelldFBA/scripts: plot_cells_spatial.py, plot_exchange_profiles.py); the cell table is built from the *_cells.mat file because pctk is not needed for that."""
+Uses the plotting modules of the sample project (plot_cells_spatial.py and plot_exchange_profiles.py in this folder); the cell table is built from the *_cells.mat file because pctk is not needed for that."""
 import sys, os, glob, io, numpy as np, pandas as pd, scipy.io as sio, xml.etree.ElementTree as ET
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels; from plot_style import apply_style, FS
-SC = "/home/mponce/projects/devel/PhysiCelldFBA/scripts"; sys.path.insert(0, SC)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # plot_cells_spatial.py and plot_exchange_profiles.py are in this folder (copies of the PhysiCelldFBA scripts/ modules with the font-size options used here)
 import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from matplotlib.image import imread
 from plot_cells_spatial import plot_cells_spatial

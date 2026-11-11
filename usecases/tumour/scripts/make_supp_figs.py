@@ -2,7 +2,7 @@
 Same plotting modules as make_figure.py. Corrections against the submitted S9: per-cell rates use dry mass = (1 - mean fluid fraction of the living cells) = 0.30 of the volume instead of 0.75, and the O2 row is multiplied by the cell volume like the other rows (the submitted O2 row omitted it). Zone lines = proliferative and living edges of the run."""
 import sys, os, numpy as np, pandas as pd, scipy.io as sio, xml.etree.ElementTree as ET
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels
-SC = "/home/mponce/projects/devel/PhysiCelldFBA/scripts"; sys.path.insert(0, SC)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # plot_cells_spatial.py and plot_exchange_profiles.py are in this folder (copies of the PhysiCelldFBA scripts/ modules with the font-size options used here)
 import types, matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from PIL import Image
 sys.modules["pctk"] = types.ModuleType("pctk"); sys.modules["pctk"].multicellds = types.SimpleNamespace()   # not needed: no reader is used
