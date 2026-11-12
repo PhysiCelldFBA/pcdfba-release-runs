@@ -1,0 +1,45 @@
+== t = 0.50 h (output00000001.xml)
+   living cells CB 62, MB 49; dead 0; all 111
+   mean growth rate CB 0.1645, MB 0.0173 /h
+   box means (mM): glucose 0.998, methane 0.002, H2 0.002, acetate 0.002
+   CB total export (fmol/s): glucose -0.02, H2 0.05, CO2 0.02, acetate 0.02, CH4 0.00   | per biomass (mmol/gDW/h): glucose -3.71, H2 9.59, CO2 5.16, acetate 5.06, CH4 0.00
+   MB total export (fmol/s): glucose 0.00, H2 -0.00, CO2 -0.02, acetate -0.00, CH4 0.02   | per biomass (mmol/gDW/h): glucose 0.00, H2 -0.45, CO2 -5.07, acetate -0.52, CH4 4.87
+   maxima H2 0.005, acetate 0.008, CH4 0.007 (all voxels); without the outer layer: 0.005, 0.008, 0.007
+   H2 at the centre voxel 0.004, mean over 5x5 centre 0.004; H2 in the voxels of MB cells: mean 0.004; of CB cells: mean 0.005; CH4 in the voxels of MB cells: mean 0.007, max 0.007; CH4 at centre 0.006
+   cells outside +-100 um: 0; max |position| 16.3
+== t = 20.00 h (output00000040.xml)
+   living cells CB 964, MB 56; dead 0; all 1020
+   mean growth rate CB 0.1516, MB 0.0449 /h
+   box means (mM): glucose 0.954, methane 0.006, H2 0.044, acetate 0.041
+   CB total export (fmol/s): glucose -0.37, H2 0.95, CO2 0.51, acetate 0.50, CH4 0.00   | per biomass (mmol/gDW/h): glucose -3.41, H2 8.84, CO2 4.75, acetate 4.66, CH4 0.00
+   MB total export (fmol/s): glucose 0.00, H2 -0.07, CO2 -0.07, acetate -0.03, CH4 0.08   | per biomass (mmol/gDW/h): glucose 0.00, H2 -8.30, CO2 -8.65, acetate -3.00, CH4 9.81
+   maxima H2 0.087, acetate 0.129, CH4 0.025 (all voxels); without the outer layer: 0.087, 0.129, 0.025
+   H2 at the centre voxel 0.081, mean over 5x5 centre 0.081; H2 in the voxels of MB cells: mean 0.068; of CB cells: mean 0.081; CH4 in the voxels of MB cells: mean 0.024, max 0.025; CH4 at centre 0.019
+   cells outside +-100 um: 0; max |position| 32.0
+== t = 40.00 h (output00000080.xml)
+   living cells CB 13297, MB 179; dead 0; all 13476
+   mean growth rate CB 0.1004, MB 0.0652 /h
+   box means (mM): glucose 0.662, methane 0.026, H2 0.362, acetate 0.323
+   CB total export (fmol/s): glucose -3.12, H2 8.08, CO2 4.35, acetate 4.27, CH4 0.00   | per biomass (mmol/gDW/h): glucose -2.26, H2 5.86, CO2 3.15, acetate 3.09, CH4 0.00
+   MB total export (fmol/s): glucose 0.00, H2 -0.53, CO2 -0.37, acetate -0.08, CH4 0.38   | per biomass (mmol/gDW/h): glucose 0.00, H2 -19.28, CO2 -13.61, acetate -3.00, CH4 13.93
+   maxima H2 0.506, acetate 0.590, CH4 0.099 (all voxels); without the outer layer: 0.506, 0.590, 0.099
+   H2 at the centre voxel 0.496, mean over 5x5 centre 0.495; H2 in the voxels of MB cells: mean 0.370; of CB cells: mean 0.455; CH4 in the voxels of MB cells: mean 0.091, max 0.099; CH4 at centre 0.040
+   cells outside +-100 um: 0; max |position| 81.6
+== t = 45.00 h (output00000090.xml)
+   living cells CB 20800, MB 276; dead 0; all 21076
+   mean growth rate CB 0.0909, MB 0.0655 /h
+   box means (mM): glucose 0.560, methane 0.033, H2 0.507, acetate 0.431
+   CB total export (fmol/s): glucose -4.51, H2 11.66, CO2 6.27, acetate 6.15, CH4 0.00   | per biomass (mmol/gDW/h): glucose -2.03, H2 5.26, CO2 2.83, acetate 2.77, CH4 0.00
+   MB total export (fmol/s): glucose 0.00, H2 -0.74, CO2 -0.52, acetate -0.11, CH4 0.53   | per biomass (mmol/gDW/h): glucose 0.00, H2 -19.47, CO2 -13.66, acetate -3.00, CH4 13.97
+   maxima H2 0.660, acetate 0.699, CH4 0.128 (all voxels); without the outer layer: 0.660, 0.699, 0.128
+   H2 at the centre voxel 0.646, mean over 5x5 centre 0.646; H2 in the voxels of MB cells: mean 0.466; of CB cells: mean 0.589; CH4 in the voxels of MB cells: mean 0.116, max 0.128; CH4 at centre 0.045
+   cells outside +-100 um: 0; max |position| 98.5
+== t = 50.00 h (output00000100.xml)
+   living cells CB 31846, MB 343; dead 0; all 32189
+   mean growth rate CB 0.0841, MB 0.0656 /h
+   box means (mM): glucose 0.462, methane 0.041, H2 0.682, acetate 0.547
+   CB total export (fmol/s): glucose -6.51, H2 16.85, CO2 9.06, acetate 8.89, CH4 0.00   | per biomass (mmol/gDW/h): glucose -1.90, H2 4.93, CO2 2.65, acetate 2.60, CH4 0.00
+   MB total export (fmol/s): glucose 0.00, H2 -1.03, CO2 -0.72, acetate -0.16, CH4 0.74   | per biomass (mmol/gDW/h): glucose 0.00, H2 -19.59, CO2 -13.69, acetate -3.00, CH4 14.00
+   maxima H2 0.837, acetate 0.794, CH4 0.166 (all voxels); without the outer layer: 0.837, 0.794, 0.166
+   H2 at the centre voxel 0.818, mean over 5x5 centre 0.818; H2 in the voxels of MB cells: mean 0.578; of CB cells: mean 0.740; CH4 in the voxels of MB cells: mean 0.148, max 0.166; CH4 at centre 0.051
+   cells outside +-100 um: 289; max |position| 101.0

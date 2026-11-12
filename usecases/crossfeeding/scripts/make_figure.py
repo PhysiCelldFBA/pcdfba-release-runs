@@ -1,6 +1,6 @@
-"""Cross-feeding figure (manuscript Fig. 6) from one run (open box, no caps, 50 h: CF3-NC50_s50): A biomass volume per species, B box-mean concentrations, D total net export (fmol/s) and E net export per unit of dry weight (mmol/gDW/h, biomass-weighted mean flux) of C. beijerinckii and M. barkeri (shared y-axis),
+"""Cross-feeding figure (manuscript Fig. 6) from one run (open box, no caps, simulated to 50 h, analysed to 45 h: CF3-NC50_s50): A biomass volume per species, B box-mean concentrations, D total net export (fmol/s) and E net export per unit of dry weight (mmol/gDW/h, biomass-weighted mean flux) of C. beijerinckii and M. barkeri (shared y-axis),
 B mean growth rate of the living cells of each species (the closed-box value of M. barkeri, CF3-NF_s50, is only printed), E growth rate and H2, acetate and CH4 fields at an early and a late time (colours of the substrates from common/plot_style.py; five contour lines at equal steps of the maximum, without the outer voxel layer (the boundary value)).
-usage: make_figure.py RUNDIR OUT_PREFIX [T_EARLY_MIN=30] [T_LATE_MIN=last snapshot] [CLOSED_RUNDIR=runs/CF3-NF_s50]
+usage: make_figure.py RUNDIR OUT_PREFIX [T_EARLY_MIN=30] [T_LATE_MIN=last snapshot; the series stop there] [CLOSED_RUNDIR=runs/CF3-NF_s50]
 Net export per cell = mean over living cells of flux (mmol/gDW/h) x dry weight (volume x (1 - fluid fraction) x 1.04e-12 g/um3) x 1e15 amol/mmol / 3600 s/h; positive = export.
 The schematic of the submitted Fig. 6 is now a supplementary figure (make_schematic.py)."""
 import sys, glob, os, numpy as np, scipy.io as sio, xml.etree.ElementTree as ET, matplotlib
@@ -12,7 +12,9 @@ TE = float(sys.argv[3]) if len(sys.argv) > 3 else 30.0
 files = sorted(glob.glob(f"{run}/output*[0-9].xml")); VAR = {"glucose": 4, "methane": 5, "CO2": 6, "H2": 7, "acetate": 11}
 EXP = {"Glucose": "R_EX_glc_D_e", "H$_2$": "R_EX_h2_e", "CO$_2$": "R_EX_co2_e", "Acetate": "R_EX_ac_e", "CH$_4$": "R_EX_ch4_e"}
 def tof(f): return float(ET.parse(f).getroot().find(".//current_time").text)
-tl = [tof(files[0]), tof(files[-1])]; TL = float(sys.argv[4]) if len(sys.argv) > 4 else tl[1]
+TL = float(sys.argv[4]) if len(sys.argv) > 4 else None
+if TL is not None: files = [f for f in files if tof(f) <= TL + 1e-6]   # the series and the late snapshot end at T_LATE
+tl = [tof(files[0]), tof(files[-1])]; TL = TL if TL is not None else tl[1]
 CLOSED = sys.argv[5] if len(sys.argv) > 5 else os.path.join(os.path.dirname(run), "CF3-NF_s50")
 ts, vol, conc, exp, expm, grm, snaps = [], [], [], [], [], [], {}
 for f in files:

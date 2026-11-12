@@ -1,12 +1,12 @@
-"""Supplementary Figures S10 (growth rate of the cells) and S11 (glucose, CH4, H2 and acetate fields) of the cross-feeding use case from one run (CF3-NC50_s50: open box, no caps, 50 h)
-at 0.5, 12.5, 25, 37.5 and 50 h. Colours from common/plot_style.py; the colour scale of each field is the same at all times (zero to the maximum over the five times).
+"""Supplementary Figures S10 (growth rate of the cells) and S11 (glucose, CH4, H2 and acetate fields) of the cross-feeding use case from one run (CF3-NC50_s50: open box, no caps, analysed to 45 h)
+at 0.5, 11.5, 23, 34 and 45 h. Colours from common/plot_style.py; the colour scale of each field is the same at all times (zero to the maximum over the five times).
 usage: make_supp_snapshots.py RUNDIR OUT_PREFIX    ->  OUT_PREFIX_growth_rate.png, OUT_PREFIX_fields.png"""
 import sys, glob, os, numpy as np, scipy.io as sio, xml.etree.ElementTree as ET, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "common")); from pcxml import labels; from plot_style import substrate_cmap, apply_style, FS
 run, out = sys.argv[1].rstrip("/"), sys.argv[2]
-TIMES = (30, 750, 1500, 2250, 3000); VAR = {"glucose": 4, "methane": 5, "H2": 7, "acetate": 11}
+TIMES = (30, 690, 1380, 2040, 2700); VAR = {"glucose": 4, "methane": 5, "H2": 7, "acetate": 11}
 files = sorted(glob.glob(f"{run}/output*[0-9].xml")); tof = lambda f: float(ET.parse(f).getroot().find(".//current_time").text); tt = np.array([tof(f) for f in files])
 snaps = {}
 for T in TIMES:
