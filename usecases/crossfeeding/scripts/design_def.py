@@ -82,6 +82,9 @@ for sub, v in (("H2", 0.024), ("acetate", 0.013)):
     V = P + f"/microenvironment_setup/variable[@name='{sub}']"
     put("CF3-BR_s50", V + "/initial_condition", v); put("CF3-BR_s50", V + "/Dirichlet_boundary_condition", v)
     for f in ("xmin", "xmax", "ymin", "ymax", "zmin", "zmax"): put("CF3-BR_s50", V + f"/Dirichlet_options/boundary_value[@ID='{f}']", v)
+# CF3-NC-AC8 (2026-11-13): CF3-NC (same seed, 1800 min) with the acetate Vmax of M. barkeri 8 instead of 3 mmol/gDW/h (iAF692 maximum acetate uptake, Feist et al. 2006; the replay of CF3-NC50 cells found every living M. barkeri cell at the 3.0 bound).
+cf3("CF3-NC-AC8_s50", "CF3-NC-AC8"); nocaps("CF3-NC-AC8_s50")
+put("CF3-NC-AC8_s50", P + "/cell_definitions/cell_definition[@name='m_barkeri']/phenotype/intracellular/transport_model/exchange[@substrate='acetate']/Vmax", 8.0)
 with open(f"{UC}/runs_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["run_id", "experiment_id", "seed"]); w.writerows(runs)
 with open(f"{UC}/overrides_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["scope", "xpath", "value"]); w.writerows(ov)
 print(len(runs), "runs,", len(ov), "override rows")
