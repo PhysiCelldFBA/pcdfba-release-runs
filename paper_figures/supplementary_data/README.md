@@ -2,7 +2,7 @@
 
 `build_workbook.py` builds `Supplementary_Data.xlsx` (the numerical tables of the convergence, sensitivity and cost
 analyses) from the LaTeX source of the tables in `tables_source.tex` (taken from the supplement of the manuscript).
-`table_map.py` maps each supplementary table (number before the workbook, LaTeX label) to its workbook sheet and its
+`table_map.py` maps each supplementary table (number before the workbook, LaTeX label) to its workbook sheet (D1–D12) and its
 number in the PDF.
 
     python build_workbook.py            # reads tables_source.tex, writes Supplementary_Data.xlsx

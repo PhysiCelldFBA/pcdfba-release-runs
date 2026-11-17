@@ -120,9 +120,10 @@ def to_num(t):
     if re.fullmatch(r'-?\d*\.\d+', t): return float(t)
     return t
 
-SECTION = {'UnitTest_design':'S4','UnitTest_volume_deviation':'S4','UnitTest_voxel_vs_cell':'S4','Tumour_dt_dx':'S7',
-           'Consortium_dt_dx':'S7','Consortium_nocaps_dt':'S7','Motility_dt_dx':'S7','Cap_number':'S7',
-           'Tumour_supply_grid':'S10','Consortium_sensitivity':'S10','Cost_scaling':'S11','Cost_24h_estimate':'S11'}
+NAMES = {'D1': 'UnitTest_design', 'D2': 'UnitTest_volume_deviation', 'D3': 'UnitTest_voxel_vs_cell', 'D4': 'Tumour_dt_dx', 'D5': 'Consortium_dt_dx', 'D6': 'Consortium_nocaps_dt', 'D7': 'Motility_dt_dx', 'D8': 'Cap_number', 'D9': 'Tumour_supply_grid', 'D10': 'Consortium_sensitivity', 'D11': 'Cost_scaling', 'D12': 'Cost_24h_estimate'}
+SECTION = {'D1':'S4','D2':'S4','D3':'S4','D4':'S7',
+           'D5':'S7','D6':'S7','D7':'S7','D8':'S7',
+           'D9':'S10','D10':'S10','D11':'S11','D12':'S11'}
 
 def main():
     src = open(SRC).read()
@@ -135,7 +136,7 @@ def main():
         env = src[a:b]
         cap, rows = parse_table(env)
         ws = wb.create_sheet(sheet)
-        ws.append([cap]); ws['A1'].font = Font(bold=True)
+        ws.append([sheet + '. ' + cap]); ws['A1'].font = Font(bold=True)
         ws.append([])
         r0 = 3
         ncol = 1
@@ -157,13 +158,13 @@ def main():
         if r:
             hs = re.findall(r'\\subsection\*\{(?:\\chadded\[id=mpdl\]\{)?(S\d+(?:\.\d+)?)\.', src[:r.start()])
             sec = hs[-1] if hs else ''
-        index.append((sheet, cap, SECTION[sheet]))
-    idx.append(['Sheet', 'Contents', 'Supplementary Methods section']); 
+        index.append((sheet, NAMES[sheet], cap, SECTION[sheet]))
+    idx.append(['Sheet', 'Short name', 'Contents', 'Supplementary Methods section']); 
     for c in idx[1]: c.font = Font(bold=True)
-    for s_, c, sec in index: idx.append([s_, c, sec])
-    idx.column_dimensions['A'].width = 30; idx.column_dimensions['B'].width = 120; idx.column_dimensions['C'].width = 18
+    for s_, nm, c, sec in index: idx.append([s_, nm, c, sec])
+    idx.column_dimensions['A'].width = 8; idx.column_dimensions['B'].width = 28; idx.column_dimensions['C'].width = 120; idx.column_dimensions['D'].width = 18
     for row in idx.iter_rows(min_row=2):
-        row[1].alignment = Alignment(wrap_text=True, vertical='top')
+        row[2].alignment = Alignment(wrap_text=True, vertical='top')
     wb.save(OUT)
     print('wrote', OUT, [x[0] for x in index])
 
