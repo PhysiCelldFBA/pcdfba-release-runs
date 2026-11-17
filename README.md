@@ -90,3 +90,11 @@ Output goes to `runs/<run_id>/` (not tracked, never delete it). Each use case ha
 
 Each use case is run from a directory that holds `tree/` (the exported pinned code with the sample copied over and the vendored `addons/dFBA/ext` linked in) and `uc/` (a copy of the use-case directory with the generated `config/`, `scripts/` and an empty `runs/`).
 Submit from that directory: `sbatch uc/scripts/<name>.sbatch`. The scripts take that directory from `PCDFBA_MN5_DIR`, or from where the job was submitted. The account `bsc08` is the project group code.
+
+## Licence
+
+The scripts and code in this repository are distributed under the BSD 3-Clause licence (`LICENSE`). Data, figures and tables
+(the run outputs, provenance tables and figure files) are distributed under the Creative Commons Attribution 4.0 licence
+(CC-BY-4.0). The PhysiCelldFBA source in `code/` keeps its own licence (BSD 3-Clause; PhysiCell and BioFVM notices in its
+`licenses/` folder), and the metabolic model files keep the terms of their sources (see `licenses/THIRD_PARTY.md` of
+PhysiCelldFBA).
