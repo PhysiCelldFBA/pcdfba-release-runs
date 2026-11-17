@@ -1,0 +1,243 @@
+% LaTeX source of the tables that are in Supplementary_Data.xlsx (taken from 06_supporting_material.tex before the tables were moved to the workbook, 2026-11-17).
+
+\begin{table}[!htbp]
+\chcolor
+\centering
+\caption{\chadded[id=mpdl]{Experiments of the voxel-size and time step test (48 runs).}}
+\label{tab:ut_design}
+\small
+\begin{tabular}{p{3.0cm}p{5.6cm}cp{4.6cm}}
+\toprule
+Experiment & Set-up & Runs & Criterion\\
+\midrule
+Single cell, cap inactive & 1 founder cell (grows to 4), 10~mM glucose, oxygen unlimited & 16 & volume and glucose taken within 0.5\% of the reference\\
+Single cell, cap active & as above, glucose diffusion off, 1~mM glucose & 16 & voxel of the cell emptied; no concentration below $-2\mu_{max}\Delta t\,c_0$\\
+Eight cells & 8 founder cells (grow to 32), 50~mM glucose & 16 & volume and cell number within 5\% of the reference at 30, 60 and 90~min\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\chcolor
+\centering
+\caption{\chadded[id=mpdl]{Deviation of the total cell volume from the reference ($\Delta x = 4$~$\mu$m, $\Delta t = 0.001$~min), in percent, with the initial cap number $R$ for glucose in parentheses. Single cell at 120~min (upper block) and eight cells, worst of 30, 60 and 90~min (lower block). Values above the criterion (0.5\% and 5\%) are in bold.}}
+\label{tab:ut_dxdt}
+\small
+\begin{tabular}{lcccc}
+\toprule
+ & \multicolumn{4}{c}{$\Delta t$ (min)}\\
+\cmidrule(lr){2-5}
+$\Delta x$ ($\mu$m) & 0.001 & 0.005 & 0.01 & 0.02\\
+\midrule
+\multicolumn{5}{l}{\textit{One cell, cap inactive (criterion 0.5\%)}}\\
+0.5 & 0.018 (0.036) & 0.122 (0.18) & \textbf{12.3} (0.36) & \textbf{48.7} (0.72)\\
+1   & 0.002 (0.004) & 0.016 (0.022) & 0.033 (0.045) & 0.072 (0.090)\\
+2   & $<$0.001 (0.001) & 0.006 (0.003) & 0.014 (0.006) & 0.029 (0.011)\\
+4   & reference & 0.005 ($<$0.001) & 0.011 (0.001) & 0.024 (0.001)\\
+\midrule
+\multicolumn{5}{l}{\textit{Eight cells, growing (criterion 5\%)}}\\
+0.5 & 0.002 (0.058) & 0.044 (0.29) & \textbf{24.4} (0.58) & \textbf{51.3} (1.15)\\
+1   & $<$0.001 (0.007) & 0.006 (0.036) & 0.014 (0.072) & 0.029 (0.144)\\
+2   & $<$0.001 (0.001) & 0.005 (0.005) & 0.011 (0.009) & 0.024 (0.018)\\
+4   & reference & 0.005 (0.001) & 0.011 (0.001) & 0.023 (0.002)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\chcolor
+\centering
+\caption{\chadded[id=mpdl]{Voxel volume against the largest living cell. Cell volumes are the maxima measured in the pinned runs; the configured starting volume of the \textit{E. coli} cell is 1.3~$\mu$m$^3$.}}
+\label{tab:ut_voxel_cell}
+\small
+\begin{tabular}{p{6.2cm}ccc}
+\toprule
+Setting & Voxel volume ($\mu$m$^3$) & Largest living cell ($\mu$m$^3$) & Voxel / cell\\
+\midrule
+Unit test, $\Delta x = 4$~$\mu$m & 64 & 2.29 & 28\\
+Unit test, $\Delta x = 2$~$\mu$m (default) & 8 & 2.29 & 3.5\\
+Unit test, $\Delta x = 1$~$\mu$m & 1 & 1.95 & 0.5\\
+Unit test, $\Delta x = 0.5$~$\mu$m & 0.125 & 1.95 & 0.06\\
+Colony ($\Delta x = 2$~$\mu$m) & 8 & 1.49 & 5.4\\
+Acetate switch ($\Delta x = 4$~$\mu$m) & 64 & 2.18 & 29\\
+Syntrophic consortium ($1.6 \times 1.6 \times 1.25$~$\mu$m) & 3.2 & 3.01 & 1.1\\
+Tumour ($\Delta x = 15$~$\mu$m) & 3,375 & 4,487 & 0.75\\
+Motility ($5 \times 5 \times 10$~$\mu$m) & 250 & 17.7 & 14\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{\chadded[id=mpdl]{Tumour at 72~h: proliferative edge, edge of the living cells, dead fraction and number of cells for the time step (voxel 15~$\mu$m) and voxel size ($\Delta t = 0.005$~min), seed 50 unless stated. The bold rows are the references.}}
+\label{tab:tum_dt_dx}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Setting & Proliferative edge ($\mu$m) & Living edge ($\mu$m) & Dead (\%) & Cells\\
+\midrule
+{\chcolor $\Delta t = 0.02$~min} & {\chcolor 70} & {\chcolor 177} & {\chcolor 48.3} & {\chcolor 319}\\
+{\chcolor $\Delta t = 0.01$~min (shipped)} & {\chcolor \textbf{100}} & {\chcolor \textbf{183}} & {\chcolor \textbf{48.3}} & {\chcolor \textbf{354}}\\
+{\chcolor $\Delta t = 0.005$~min} & {\chcolor \textbf{122}} & {\chcolor \textbf{191}} & {\chcolor \textbf{47.0}} & {\chcolor \textbf{368}}\\
+{\chcolor $\Delta t = 0.0025$~min} & {\chcolor 127} & {\chcolor 185} & {\chcolor 48.0} & {\chcolor 375}\\
+\midrule
+{\chcolor $\Delta x = 10$~$\mu$m} & {\chcolor 110} & {\chcolor 186} & {\chcolor 47.2} & {\chcolor 360}\\
+{\chcolor $\Delta x = 20$~$\mu$m} & {\chcolor 133} & {\chcolor 192} & {\chcolor 46.3} & {\chcolor 369}\\
+{\chcolor $\Delta x = 30$~$\mu$m} & {\chcolor 141} & {\chcolor 204} & {\chcolor 44.0} & {\chcolor 377}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{\chadded[id=mpdl]{Consortium at 1800~min for the voxel size and the time step (seed 50 unless stated; the last row is the first reference design, voxel 1.25~$\mu$m). Percentages are differences with the run at 0.0005~min.}}
+\label{tab:cf_dt_dx}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Setting & \textit{C.~b.} cells & \textit{M.~b.} cells & \textit{M.~b.} growth 1800~min (h$^{-1}$) & \textit{M.~b.} growth 600~min (h$^{-1}$)\\
+\midrule
+{\chcolor $\Delta t = 0.0005$~min (finest)} & {\chcolor 3,932} & {\chcolor 74} & {\chcolor 0.0412} & {\chcolor 0.0199}\\
+{\chcolor $\Delta t = 0.001$~min (reference)} & {\chcolor 3,870 ($-1.6$\%)} & {\chcolor 64 ($-13.5$\%)} & {\chcolor 0.0400 ($-2.8$\%)} & {\chcolor 0.0155 ($-22$\%)}\\
+{\chcolor $\Delta t = 0.001$~min, seed 51} & {\chcolor 3,795 ($-3.5$\%)} & {\chcolor 59 ($-20.3$\%)} & {\chcolor 0.0394 ($-4.4$\%)} & {\chcolor 0.0149 ($-25$\%)}\\
+{\chcolor $\Delta t = 0.002$~min} & {\chcolor 3,772 ($-4.1$\%)} & {\chcolor 55 ($-25.7$\%)} & {\chcolor 0.0363 ($-11.8$\%)} & {\chcolor 0.0115 ($-42$\%)}\\
+{\chcolor $\Delta x = 2.0$~$\mu$m} & {\chcolor 3,893 ($-1.0$\%)} & {\chcolor 66 ($-10.8$\%)} & {\chcolor 0.0402 ($-2.3$\%)} & {\chcolor 0.0155 ($-22$\%)}\\
+{\chcolor $\Delta x = 1.25$~$\mu$m} & {\chcolor 3,864 ($-1.7$\%)} & {\chcolor 63 ($-14.9$\%)} & {\chcolor 0.0399 ($-3.2$\%)} & {\chcolor 0.0145 ($-27$\%)}\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{\chadded[id=mpdl]{Consortium without the flux caps at 1800~min for the time step and the boundary value (seed 50, voxel 1.6~$\mu$m). Percentages are differences with the run at 0.0005~min. The last row has hydrogen and acetate fixed at 0.024 and 0.013~mM at the boundary and at the start.}}
+\label{tab:cf_nc_dt}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Setting & \textit{C.~b.} cells & \textit{M.~b.} cells & \textit{M.~b.} growth 1800~min (h$^{-1}$) & \textit{M.~b.} growth 600~min (h$^{-1}$) & First new cell (h)\\
+\midrule
+{\chcolor $\Delta t = 0.0005$~min (finest)} & {\chcolor 3,942} & {\chcolor 103} & {\chcolor 0.0634} & {\chcolor 0.0320} & {\chcolor 16.0}\\
+{\chcolor $\Delta t = 0.001$~min (reference)} & {\chcolor 3,869 ($-1.9$\%)} & {\chcolor 94 ($-8.7$\%)} & {\chcolor 0.0603 ($-4.9$\%)} & {\chcolor 0.0274 ($-14$\%)} & {\chcolor 17.5}\\
+{\chcolor $\Delta t = 0.002$~min} & {\chcolor 3,774 ($-4.3$\%)} & {\chcolor 87 ($-15.5$\%)} & {\chcolor 0.0554 ($-12.6$\%)} & {\chcolor 0.0236 ($-26$\%)} & {\chcolor 19.0}\\
+{\chcolor Boundary 0.024 / 0.013~mM, $\Delta t = 0.001$~min} & {\chcolor 3,871} & {\chcolor 118} & {\chcolor 0.0622} & {\chcolor 0.0352} & {\chcolor 14.0}\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[!htbp]
+\chcolor
+\centering
+\caption{\chadded[id=mpdl]{Motility use case at 10~h for the time step and the voxel size (seed 50). High supply (1.0~mM at the right wall): position of the founder cell at 250~min (Stop: where it stops, before the first division), time of the first division, number of cells, and position of the founder at 10~h. Low supply (0.325~mM): time at which the founder reaches the wall (Arrival, $x \geq 145$~$\mu$m) and its position at 10~h; the cell does not divide in any of these runs.}}
+\label{tab:mot_conv}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \multicolumn{4}{c}{High supply (1.0~mM)} & \multicolumn{2}{c}{Low supply (0.325~mM)}\\
+\cmidrule(lr){2-5}\cmidrule(lr){6-7}
+Setting & Stop ($\mu$m) & Division (min) & Cells & 10~h ($\mu$m) & Arrival (min) & 10~h ($\mu$m)\\
+\midrule
+Reference ($\Delta t = 0.001$~min, $\Delta x = 5$~$\mu$m) & 31.1 & 290 & 8 & 37.6 & 285 & 148.9\\
+$\Delta t = 0.0005$~min & 30.9 & 290 & 8 & 35.2 & 285 & 149.0\\
+$\Delta t = 0.002$~min & 35.3 & 295 & 8 & 40.0 & 285 & 149.0\\
+$\Delta x = 2.5$~$\mu$m & 36.7 & 305 & 8 & 42.7 & 285 & 148.9\\
+$\Delta x = 10$~$\mu$m & 30.8 & 290 & 8 & 31.4 & 285 & 149.0\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\chcolor
+\centering
+\caption{\chadded[id=mpdl]{Cap number $R$ (largest over cells and snapshots) and largest fraction of cells below the Michaelis--Menten bound in the reference run of each use case. Substrates not listed have $R < 0.1$ and no capped cell. The values of the colony at 360, 480 and 600~min (S7.3) are lower than the largest over the run.}}
+\label{tab:cap_summary}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{4.3cm}}
+\toprule
+Use case (reference) & Substrate & $R$ (largest) & Cells below the bound (largest)\\
+\midrule
+Acetate switch ($\Delta x$ 4~$\mu$m, $\Delta t$ 0.01~min) & oxygen, glucose & 0.25, 0.064 & none while the substrate is present (S7.2)\\
+Colony, quarter ($\Delta x$ 2~$\mu$m, $\Delta t$ 0.0005~min, 600~min) & acetate, glucose; CO$_2$, oxygen & 2.3, 2.2; 0.09, 0.02 & 17\%, 9\%; below 2\%\\
+Tumour ($\Delta x$ 15~$\mu$m, $\Delta t$ 0.005~min) & all & 0.08 & none (S7.4)\\
+Consortium, main figure ($\Delta x$ 1.6~$\mu$m, $\Delta t$ 0.001~min, 50~h) & \textit{M.~barkeri}: H$_2$, acetate, CO$_2$; \textit{C.~beijerinckii}: glucose & 9.9, 5.0, 1.2; 0.10 & H$_2$: all cells until about 24~h, 1\% at 48~h; acetate: all cells at 0.5~h, 39\% at 12.5~h, none at 18.5~h; CO$_2$: 6\%\\
+Motility, high supply ($\Delta x$ 5~$\mu$m, $\Delta t$ 0.001~min) & oxygen; glucose, acetate & 6.9; 0.010, 0.002 & oxygen: all 8 cells from 585~min (50\% at 580~min), none before\\
+Motility, low supply & all & 0.019 & none\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{\chadded[id=mpdl]{Proliferative edge (distance from the vessel, $\mu$m) and dead fraction (\%) at 24~h for the oxygen and glucose supplied at the vessel; $-$ is no proliferating cell. The central value (0.5, 0.5~mM) is the reference.}}
+\label{tab:tum_grid}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Oxygen (mM) $\backslash$ glucose (mM) & 0.1 & 0.25 & 0.5 & 1.0 & 5.0\\
+\midrule
+{\chcolor 0.05} & {\chcolor $-$ (100)} & {\chcolor $-$ (100)} & {\chcolor $-$ (100)} & {\chcolor $-$ (100)} & {\chcolor 13 (69)}\\
+{\chcolor 0.10} & {\chcolor $-$ (100)} & {\chcolor $-$ (100)} & {\chcolor $-$ (100)} & {\chcolor $-$ (95)} & {\chcolor 43 (55)}\\
+{\chcolor 0.25} & {\chcolor 25 (65)} & {\chcolor 28 (60)} & {\chcolor 41 (61)} & {\chcolor 56 (55)} & {\chcolor 111 (39)}\\
+{\chcolor 0.50} & {\chcolor 114 (34)} & {\chcolor 120 (35)} & {\chcolor 129 (34)} & {\chcolor 131 (30)} & {\chcolor 182 (20)}\\
+{\chcolor 1.00} & {\chcolor 114 (14)} & {\chcolor 186 (8)} & {\chcolor 202 (8)} & {\chcolor 214 (8)} & {\chcolor 213 (3)}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{\chadded[id=mpdl]{Sensitivity of the consortium (30~h, seed 50, 200~$\mu$m box, voxel 1.6~$\mu$m, $\Delta t = 0.001$~min). Growth rate is the mean of the living cells of \textit{M.~barkeri} at 10, 20 and 30~h. $c_{\mathrm{H_2}}$ is the mean of the box at 30~h.}}
+\label{tab:cf_sens}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \textit{C.~beij.} cells & \textit{M.~barkeri} cells & Growth rate (1/h) & First new cell (h) & $c_{\mathrm{H_2}}$ (mM) & $c_{\mathrm{acetate}}$ (mM)\\
+\midrule
+Shipped models, open at 0~mM & 3,870 & 64 & 0.016 / 0.028 / 0.040 & 24.5 & 0.16 & 0.14\\
+No caps, open at 0~mM (reference) & 3,869 & 94 & 0.027 / 0.045 / 0.060 & 17.5 & 0.15 & 0.14\\
+No caps, fixed at 0.001~mM & 3,869 & 94 & 0.028 / 0.046 / 0.060 & 17.0 & 0.15 & 0.14\\
+No caps, fixed at 0.024 / 0.013~mM & 3,871 & 118 & 0.035 / 0.049 / 0.062 & 14.0 & 0.17 & 0.16\\
+No caps, open at 0~mM, acetate $V_{\max}$ of \textit{M.~barkeri} 8 & 3,871 & 134 & 0.028 / 0.060 / 0.083 & 16.5 & 0.15 & 0.13\\
+No caps, closed box & 3,869 & 202 & 0.066 / 0.066 / 0.066 & 8.5 & 1,245 & 875\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[!htbp]
+\chcolor
+\centering
+\caption{\chadded[id=mpdl]{Cost and scaling of the lattice workload (median of three repeats). The time is the simulation loop, 10 simulated minutes at a diffusion step of 0.01~min.}}
+\label{tab:cost_scaling}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrr}
+\toprule
+Model & \parbox[b]{3.4cm}{\centering $\mu$s per cell update, 1 thread (100 / 1,000 / 10,000 cells)} & \parbox[b]{2cm}{\centering Loop, 1,000 cells, 1 thread} & \parbox[b]{2.6cm}{\centering Speed-up, 56 / 112 threads (1,000 cells)} & \parbox[b]{2cm}{\centering Peak memory, 10,000 cells} & \parbox[b]{1.6cm}{\centering $\mu$s per warm solve}\\
+\midrule
+\textit{E.~coli} core & 35 / 46 / 55 & 45.6~s & 21.3 / 19.9 & 1.2~GB & 35.7\\
+MCF7 core & 242 / 257 / 272 & 257~s & 40.6 / 59.3 & 4.0~GB & 210.9\\
+iML1515 & 1,578 / 1,673 / 1,849 & 1,675~s & 38.0 / 42.5 & 23.4~GB & 1,518\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+\chcolor
+\centering
+\caption{\chadded[id=mpdl]{Estimated wall time of a 24-hour simulation (one node, diffusion step 0.01~min, intracellular step equal).}}
+\label{tab:cost_feasible}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Model & Threads & 1,000 cells & 10,000 cells & 100,000 cells\\
+\midrule
+\textit{E.~coli} core & 1 / 56 & 2.2~h / 0.09~h & 22~h / 0.9~h & 9.2~days / 9.3~h\\
+MCF7 core & 1 / 56 & 11~h / 0.35~h & 4.5~days / 3.5~h & 45~days / 35~h\\
+iML1515 & 1 / 56 & 74~h / 2.2~h & 31~days / 22~h & 308~days / 9.1~days\\
+\bottomrule
+\end{tabular}
+\end{table}
