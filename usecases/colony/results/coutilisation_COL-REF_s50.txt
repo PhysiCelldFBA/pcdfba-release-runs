@@ -1,0 +1,1 @@
+output00000027.xml, t = 9.00 h, living 9118, glucose uptake 7628, acetate uptake 4546 (49.9%), both 4546, acetate without glucose 0

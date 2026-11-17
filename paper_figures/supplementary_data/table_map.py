@@ -29,7 +29,7 @@ TABLES = [
  (19,'cf_dt_dx','workbook','D5'),
  (20,'cf_nc_dt','workbook','D6'),
  (21,'mot_conv','workbook','D7'),
- (22,'cap_summary','both','D8'),
+ (22,'cap_summary','workbook','D8'),
  (23,'tum_grid','workbook','D9'),
  (24,'cf_sens','workbook','D10'),
  (25,'cost_usecases','pdf',None),

@@ -1,0 +1,176 @@
+{
+ "tab:zs": {
+  "old_number": "S28",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S1"
+ },
+ "tab:unit_test": {
+  "old_number": "S1",
+  "where": "text",
+  "sheet": null,
+  "new_pdf_number": null
+ },
+ "tab:ut_design": {
+  "old_number": "S2",
+  "where": "workbook",
+  "sheet": "D1",
+  "new_pdf_number": null
+ },
+ "tab:ut_dxdt": {
+  "old_number": "S3",
+  "where": "workbook",
+  "sheet": "D2",
+  "new_pdf_number": null
+ },
+ "tab:ut_voxel_cell": {
+  "old_number": "S4",
+  "where": "workbook",
+  "sheet": "D3",
+  "new_pdf_number": null
+ },
+ "tab:ledger": {
+  "old_number": "S5",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S2"
+ },
+ "tab:dfba_unit_test_simulation": {
+  "old_number": "S6",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S3"
+ },
+ "tab:ecoli_acetic_switch_simulation": {
+  "old_number": "S7",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S4"
+ },
+ "tab:bacterial_colony_simulation": {
+  "old_number": "S8",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S5"
+ },
+ "tab:cancer_metabolism_simulation": {
+  "old_number": "S9",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S6"
+ },
+ "tab:crossfeeding_simulation": {
+  "old_number": "S10",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S7"
+ },
+ "tab:metabolic_driven_motility_simulation": {
+  "old_number": "S11",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S8"
+ },
+ "tab:ecoli_transport_summary": {
+  "old_number": "S12",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S9"
+ },
+ "tab:mcf7_cancer_summary": {
+  "old_number": "S13",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S10"
+ },
+ "tab:crossfeeding_transport_summary": {
+  "old_number": "S14",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S11"
+ },
+ "tab:substrate_diffusion_summary": {
+  "old_number": "S15",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S12"
+ },
+ "tab:param_provenance": {
+  "old_number": "S16",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S13"
+ },
+ "tab:free_uptake": {
+  "old_number": "S17",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S14"
+ },
+ "tab:tum_dt_dx": {
+  "old_number": "S18",
+  "where": "workbook",
+  "sheet": "D4",
+  "new_pdf_number": null
+ },
+ "tab:cf_dt_dx": {
+  "old_number": "S19",
+  "where": "workbook",
+  "sheet": "D5",
+  "new_pdf_number": null
+ },
+ "tab:cf_nc_dt": {
+  "old_number": "S20",
+  "where": "workbook",
+  "sheet": "D6",
+  "new_pdf_number": null
+ },
+ "tab:mot_conv": {
+  "old_number": "S21",
+  "where": "workbook",
+  "sheet": "D7",
+  "new_pdf_number": null
+ },
+ "tab:cap_summary": {
+  "old_number": "S22",
+  "where": "workbook",
+  "sheet": "D8",
+  "new_pdf_number": null
+ },
+ "tab:tum_grid": {
+  "old_number": "S23",
+  "where": "workbook",
+  "sheet": "D9",
+  "new_pdf_number": null
+ },
+ "tab:cf_sens": {
+  "old_number": "S24",
+  "where": "workbook",
+  "sheet": "D10",
+  "new_pdf_number": null
+ },
+ "tab:cost_usecases": {
+  "old_number": "S25",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S15"
+ },
+ "tab:cost_scaling": {
+  "old_number": "S26",
+  "where": "workbook",
+  "sheet": "D11",
+  "new_pdf_number": null
+ },
+ "tab:cost_feasible": {
+  "old_number": "S27",
+  "where": "workbook",
+  "sheet": "D12",
+  "new_pdf_number": null
+ },
+ "tab:use_case_map": {
+  "old_number": "S29",
+  "where": "pdf",
+  "sheet": null,
+  "new_pdf_number": "S16"
+ }
+}
