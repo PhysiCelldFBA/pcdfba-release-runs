@@ -7,6 +7,7 @@ The new PDF numbers are computed from the order, skipping tables that left the P
 """
 # (old number, label, where, sheet name)
 TABLES = [
+ (28,'zs','pdf',None),
  (1,'unit_test','pdf',None),
  (2,'ut_design','workbook','D1'),
  (3,'ut_dxdt','workbook','D2'),
@@ -34,7 +35,6 @@ TABLES = [
  (25,'cost_usecases','pdf',None),
  (26,'cost_scaling','workbook','D11'),
  (27,'cost_feasible','workbook','D12'),
- (28,'zs','pdf',None),
  (29,'use_case_map','pdf',None),
 ]
 def mapping():
