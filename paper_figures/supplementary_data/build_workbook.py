@@ -130,7 +130,7 @@ def main():
     wb = Workbook(); idx = wb.active; idx.title = 'Index'
     index = []
     for old, label, where, sheet in TABLES:
-        if where == 'pdf': continue
+        if where in ('pdf', 'text'): continue
         i = src.index('\\label{tab:%s}' % label)
         a = src.rfind('\\begin{table', 0, i); b = src.index('\\end{table', i)
         env = src[a:b]

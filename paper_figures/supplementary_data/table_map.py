@@ -8,7 +8,7 @@ The new PDF numbers are computed from the order, skipping tables that left the P
 # (old number, label, where, sheet name)
 TABLES = [
  (28,'zs','pdf',None),
- (1,'unit_test','pdf',None),
+ (1,'unit_test','text',None),
  (2,'ut_design','workbook','D1'),
  (3,'ut_dxdt','workbook','D2'),
  (4,'ut_voxel_cell','workbook','D3'),
