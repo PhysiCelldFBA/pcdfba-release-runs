@@ -5,7 +5,7 @@ Per snapshot and substrate with Vmax > 0, for each living cell:
   lb_MM  = -Vmax*c/(Km+c)   (mmol/gDW/h, the bound before the voxel cap)       lb = recorded R_EX_*_lb (the bound the LP used)
   ratio  = lb/lb_MM         (1 = Michaelis-Menten limited, < 1 = the cap acted)
   R      = q(c) * X * dt / c with q = Vmax/60 * c/(Km+c) mmol/gDW/min and X the dry biomass of the living cells in that voxel per voxel volume (g/L)
-Reports the fraction of cells with ratio < 0.99, the median ratio, and the median ratio in bins of R.  Writes results/cap_check_<LABEL>.csv"""
+Reports the fraction of cells with ratio < 0.99, the median ratio, the median and the largest R, and the median ratio in bins of R.  Writes results/cap_check_<LABEL>.csv"""
 import sys, glob, os, numpy as np, pandas as pd, scipy.io as sio, xml.etree.ElementTree as ET
 d = sys.argv[1].rstrip("/"); label = sys.argv[2] if len(sys.argv) > 2 else os.path.basename(d)
 cfg = ET.parse(f"{d}/PhysiCell_settings.xml").getroot()
@@ -37,7 +37,7 @@ for xf in sorted(glob.glob(f"{d}/output*[0-9].xml")):
         sel = c > 1e-9
         if sel.sum() == 0: continue
         lbmm = -V * c[sel] / (K + c[sel]); ratio = lb[sel] / lbmm; R = (V / 60 * c[sel] / (K + c[sel])) * X[sel] * dt / c[sel]
-        rows.append(dict(t=t, substrate=s, n=int(sel.sum()), frac_capped_pct=100 * float((ratio < 0.99).mean()), median_ratio=float(np.median(ratio)), median_R=float(np.median(R))))
+        rows.append(dict(t=t, substrate=s, n=int(sel.sum()), frac_capped_pct=100 * float((ratio < 0.99).mean()), median_ratio=float(np.median(ratio)), median_R=float(np.median(R)), max_R=float(R.max())))
         edges = [0, 0.01, 0.05, 0.2, 1, 5, np.inf]
         for a, b in zip(edges[:-1], edges[1:]):
             q = (R >= a) & (R < b)
