@@ -1,9 +1,9 @@
 item,value
 use case,crossfeeding
-generated,2026-11-08 by common/make_provenance_workbooks.py
+generated,2026-11-19 by common/make_provenance_workbooks.py (CF3-NC-CTL / ACVMAX / ACKM / DIFF added from their saved settings on MN5; the other runs as generated 2026-11-08)
 pinned code commit (submodule code/),7f2b1d0a52782918ea4319c2ef94563bf719f253
-runs in provenance.csv,22
-runs with a configuration read,22
-parameters (all / varying between runs),551 / 46
+runs in provenance.csv,28
+runs with a configuration read,28
+parameters (all / varying between runs),551 / 50
 run folders without a planned run,none
 sheets,"experiments: what each experiment asks and its pass criterion; runs: what happened to each run (commit, binary, config hash, machine, times, rc, status); overrides: the changes on top of the base configuration; binaries: binary hash to commit; parameters_varying / parameters_full: the configuration each run used (see the script docstring)"

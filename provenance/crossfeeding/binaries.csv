@@ -1,3 +1,4 @@
 binary_sha,commit,note
 1f60748dc4ee2e45,7f2b1d0a52782918ea4319c2ef94563bf719f253,"MN5-built crossfeeding on the pin (tree crossfeed_pin_mn5): CF-REF, CF-SEED, CF-REP, CF-DX, CF-DT and later series runs"
 7f4412de56929182,7f2b1d0a52782918ea4319c2ef94563bf719f253,MN5-built crossfeeding on the pin in a separate build directory (crossfeed_dbg_mn5): CF-FIG only (a different sha from the same commit; the build was repeated)
+f9c90c60aec019bd,7f2b1d0a52782918ea4319c2ef94563bf719f253,"MN5-built crossfeeding on the pin (tree pcdfba-review-runs-cf, built with gcc 13.2.0 on an MN5 compute node by scripts/mn5_cf.sh at the start of its first job; vendored ext copied from the local PhysiCelldFBA clone), copied unchanged to pcdfba-review-runs-cfnc: CF3-NC-CTL, CF3-NC-ACVMAX, CF3-NC-ACKM, CF3-NC-DIFF (job 49212823)"
