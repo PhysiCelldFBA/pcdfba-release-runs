@@ -1,0 +1,48 @@
+case,tool,quantity,value,unit,note
+ACE,PhysiCelldFBA,biomass fold change 0-10 h,3.3079061491782276,x,
+ACE,PhysiCelldFBA,biomass at 0 / max / 10 h,6.76 / 22.4 / 22.4,pg,
+ACE,PhysiCelldFBA,peak acetate,4.931823411323961,mM,
+ACE,PhysiCelldFBA,time of peak acetate,190.0,min,
+ACE,PhysiCelldFBA,acetate at 10 h,1.7248364771977285,mM,
+ACE,PhysiCelldFBA,glucose below 0.01 mM from,215.0,min,
+ACE,PhysiCelldFBA,glucose at 10 h,3.144329069102719e-90,mM,
+ACE,PhysiCelldFBA,cells or individuals at 0 / 10 h,20 / 80,,
+ACE,PhysiCelldFBA,wall time,114.0,s,"10 thread(s), bsclife006"
+ACE,COMETS,biomass fold change 0-10 h,3.310142906508876,x,
+ACE,COMETS,biomass at 0 / max / 10 h,6.76 / 22.4 / 22.4,pg,
+ACE,COMETS,peak acetate,5.022546042309671,mM,
+ACE,COMETS,time of peak acetate,187.0,min,
+ACE,COMETS,acetate at 10 h,1.7941856766332305,mM,
+ACE,COMETS,glucose below 0.01 mM from,187.0,min,
+ACE,COMETS,glucose at 10 h,0.0,mM,
+ACE,COMETS,wall time,3.39877986907959,s,"1 thread(s), bsclife006"
+ACE,BacArena,biomass fold change 0-10 h,2.3619996900763622,x,
+ACE,BacArena,biomass at 0 / max / 10 h,9.57 / 22.6 / 22.6,pg,
+ACE,BacArena,initial biomass,9.56572931702588,pg,BacArena default cell weight x 20 founders (PhysiCelldFBA / COMETS 6.76 pg)
+ACE,BacArena,peak acetate,5.51361705693365,mM,
+ACE,BacArena,time of peak acetate,90.0,min,
+ACE,BacArena,acetate at 10 h,2.28439700675846,mM,
+ACE,BacArena,glucose below 0.01 mM from,227.4,min,
+ACE,BacArena,glucose at 10 h,1.21510060855542e-05,mM,
+ACE,BacArena,cells or individuals at 0 / 10 h,20 / 31,,
+ACE,BacArena,wall time,257.7651,s,"1 thread(s), mpws"
+CF-Fig6,PhysiCelldFBA,C. beijerinckii fold change 0-50 h (cells),513.6451612903226,x,
+CF-Fig6,PhysiCelldFBA,"C. beijerinckii fold change 0-50 h (biomass, from integrated mean growth rate)",756.2075735291847,x,
+CF-Fig6,PhysiCelldFBA,C. beijerinckii cells or individuals at 0 / 50 h,62 / 31846,,
+CF-Fig6,PhysiCelldFBA,M. barkeri fold change 0-50 h (cells),7.0,x,
+CF-Fig6,PhysiCelldFBA,"M. barkeri fold change 0-50 h (biomass, from integrated mean growth rate)",10.866095895313897,x,
+CF-Fig6,PhysiCelldFBA,M. barkeri cells or individuals at 0 / 50 h,49 / 343,,
+CF-Fig6,PhysiCelldFBA,wall time,158567.0,s,"56 thread(s), gs11r1b66, dx 1.6 um, dt 0.001 min"
+CF-Fig6,"COMETS, convection",C. beijerinckii fold change 0-50 h (biomass),558.1609371065089,x,
+CF-Fig6,"COMETS, convection",C. beijerinckii fold change 0-50 h (biomass incl. ring outside the domain),677.6256718362283,x,
+CF-Fig6,"COMETS, convection",colony reaches the domain edge,37.0,h,first biomass in the ring
+CF-Fig6,"COMETS, convection",C. beijerinckii fold change at the edge time,256.52881939202933,x,37 h
+CF-Fig6,"COMETS, convection",M. barkeri fold change 0-50 h (biomass),8.804631599910648,x,
+CF-Fig6,"COMETS, convection",M. barkeri fold change 0-50 h (biomass incl. ring outside the domain),9.584164441828014,x,
+CF-Fig6,"COMETS, convection",M. barkeri fold change at the edge time,4.076009360836386,x,37 h
+CF-Fig6,"COMETS, convection",wall time,16682.208512306213,s,"1 thread(s), bsclife006, 10 um boxes, dt 0.25 min"
+CF-Fig6,BacArena,C. beijerinckii fold change 0-50 h (biomass),387.2515359363125,x,
+CF-Fig6,BacArena,C. beijerinckii cells or individuals at 0 / 50 h,62 / 6319,,
+CF-Fig6,BacArena,M. barkeri fold change 0-50 h (biomass),6.262728139841816,x,
+CF-Fig6,BacArena,M. barkeri cells or individuals at 0 / 50 h,49 / 81,,
+CF-Fig6,BacArena,wall time,5683.344,s,"1 thread(s), bsclife006, 2.5 um sites, dt 1 h"

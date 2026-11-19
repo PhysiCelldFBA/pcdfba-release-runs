@@ -1,0 +1,17 @@
+tool,criterion,value,passed
+PhysiCelldFBA,"1 both species grow (fold 0-50 h, C.b. / M.b.)",756 / 10.9,True
+PhysiCelldFBA,2 C. beijerinckii exchange signs at 10/20/30/40/50 h,glucose -3.6/-3.4/-2.9/-2.3/-1.9; acetate +5/+4.7/+4/+3.1/+2.5; H2 +9.4/+8.8/+7.5/+5.8/+4.8; CO2 +5.1/+4.7/+4/+3.1/+2.6,True
+PhysiCelldFBA,3 M. barkeri exchange signs at 10/20/30/40/50 h,H2 -1.7/-7.9/-18/-19/-20; acetate -2.1/-3/-3/-3/-3; methane +6.2/+9.6/+14/+14/+14,True
+PhysiCelldFBA,4a M. barkeri rate 50 h > 5 h (1/h),0.0211 -> 0.0656 (at 50 h),True
+PhysiCelldFBA,"4b Spearman rho(M. barkeri rate, H2 at its locations)",1.00 (n=100),True
+"COMETS, convection","1 both species grow (fold 0-50 h, C.b. / M.b.)",558 / 8.8,True
+"COMETS, convection",2 C. beijerinckii exchange signs at 10/20/30/40/50 h,glucose -2.6e-10/-1.7e-09/-6.5e-09/-1.3e-08/-1.3e-08; acetate +3.6e-10/+2.3e-09/+8.9e-09/+1.8e-08/+1.8e-08; H2 +6.8e-10/+4.3e-09/+1.7e-08/+3.3e-08/+3.4e-08; CO2 +3.7e-10/+2.3e-09/+9.1e-09/+1.8e-08/+1.8e-08,True
+"COMETS, convection",3 M. barkeri exchange signs at 10/20/30/40/50 h,H2 -3.6e-11/-1.5e-10/-3.6e-10/-1.4e-09/-4.1e-09; acetate -1.9e-11/-3.5e-11/-5.5e-11/-2.2e-10/-6.1e-10; methane +6.6e-11/+1.4e-10/+2.6e-10/+1e-09/+2.9e-09,True
+"COMETS, convection",4a M. barkeri rate 50 h > 5 h (1/h),0.0181 -> 0.0639 (at 49 h),True
+"COMETS, convection","4b Spearman rho(M. barkeri rate, H2 at its locations)",0.98 (n=98),True
+BacArena,"1 both species grow (fold 0-50 h, C.b. / M.b.)",387 / 6.26,True
+BacArena,2 C. beijerinckii exchange signs at 10/20/30/40/50 h,glucose -1.8e+03/-9.1e+03/-1.7e+04/-7.2e+04/-1.1; acetate +2.4e+03/+1.3e+04/+2.5e+04/+1.7e+05/+1; H2 +4.6e+03/+2.3e+04/+4.3e+04/+1.8e+05/+2.4; CO2 +2.5e+03/+1.3e+04/+2.3e+04/+9.1e+04/+1.4,True
+BacArena,3 M. barkeri exchange signs at 10/20/30/40/50 h,H2 -1.1e+02/-1.1e+03/-4e+03/-5.6e+03/-5.9e+03; acetate -59/-2.9e+02/-6.5e+02/-8.7e+02/-9e+02; methane +3.3e+02/+1.1e+03/+2.7e+03/+3.5e+03/+3.6e+03,True
+BacArena,4a M. barkeri rate 50 h > 5 h (1/h),0.0196 -> 1e-06 (at 49 h),False
+BacArena,"4b Spearman rho(M. barkeri rate, H2 at its locations)",-0.45 (n=49),False
+BacArena,"(descriptive, post hoc) lattice 50% full at (h); rho while < 50% full",25 h; 0.99 (n=24),
