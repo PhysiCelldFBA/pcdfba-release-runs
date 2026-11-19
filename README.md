@@ -16,7 +16,7 @@ Definitive experiments for the PhysiCelldFBA revision. The plan and the settled 
 | `binaries.tsv` | binary hash to commit |
 
 `scripts/design_def.py` writes `runs_def.csv` and `overrides_def.csv`; nothing is edited by hand in a generated config.
-The six use cases are `unit_test`, `colony`, `acetate`, `crossfeeding`, `motility` and `tumour` (`motility` has no tables yet: it builds, but there is nothing to generate).
+The six use cases are `unit_test`, `colony`, `acetate`, `crossfeeding`, `motility` and `tumour`.
 
 ## Reproducing a run from a fresh clone
 
@@ -85,6 +85,18 @@ Output goes to `runs/<run_id>/` (not tracked, never delete it). Each use case ha
     python3 usecases/<uc>/scripts/analyse_*.py ...      # per use case; see usecases/<uc>/RESULTS.md and the docstring of each script
 
 `RESULTS.md` of a use case lists the experiments, the numbers and the open items; each script starts with a docstring that gives its usage.
+
+### Step 7. Redraw the figures of the manuscript
+
+`paper_figures_manifest.csv` has one row per figure of the manuscript (main and supplementary): the manuscript file name, the use case, the runs it is drawn from (`source_runs`), the command that draws it (`command`, run from `usecases/<use_case>/`) and the file it writes (`source_file`). For example, Figure 2:
+
+    cd usecases/unit_test && python3 scripts/make_figure.py runs/UT-BASE_s50 results/fig_unit_test_biomass
+
+The runs it names must be in `runs/` (Step 5, or the simulation outputs archived on Zenodo). Then, from the repository root,
+
+    python3 common/make_paper_figures.py --paper-figures <folder of the manuscript figures>
+
+copies every figure under its manuscript name into `paper_figures/` and writes `paper_figures/MANIFEST.csv` with the SHA-256 of each file and whether it differs from the manuscript's copy. Rows with status `external` (the phase plane of the MCF7 model, the PhysiCell-Studio screenshot, the workflow drawing and the graphical abstract) are not produced by a simulation and have no command.
 
 ## Running on MareNostrum 5
 
