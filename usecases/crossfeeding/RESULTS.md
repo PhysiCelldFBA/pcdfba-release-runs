@@ -180,4 +180,6 @@ Main scenario (CF3-NC: no caps, open at 0 mM, dx 1.6, dt 0.001, seed 50, 1800 mi
 4. **The cap acts early, as in CF3-NC.** M. barkeri H2 uptake is capped by the voxel in 100% of its cells at 600 min in every run (median ratio 0.12-0.16) and in 21-55% at 1800 min; acetate is Michaelis-Menten limited from 1200 min on in every run (ratio >= 0.97).
 5. **Control.** CF3-NC-CTL (binary f9c90c60) against CF3-NC_s50 (binary 1f60748, same commit and config apart from the output folder): M. barkeri 94 against 94 cells, first new cell 1020 against 1050 min, growth 0.0605 against 0.0603; C. beijerinckii 3,868 against 3,869. The binaries give the same result within one snapshot.
 
+Box means at 10, 20 and 30 h (`fig6_numbers.py`, MN5 debug job 49240146; `results/fig6_numbers_cf3ncsens.txt`), for Supplementary Data D10: H2 / acetate at 30 h 0.152 / 0.143 mM in the control (0.15 / 0.14 in CF3-NC_s50), 0.154 / 0.146 Vmax 0.75, 0.153 / 0.143 Km 0.01, 0.154 / 0.145 Km 0.3, 0.187 / 0.219 D x0.5, 0.134 / 0.104 D x2.
+
 Limits: one seed (the seed spread used, 8% for M. barkeri, comes from CF3-SEED on the first-version models); M. barkeri numbers are not converged in dt at dt 0.001 (CF3-NC-DT, -7% / +10%), so they are compared within this setting; the D arm changes H2 and acetate together; 30 h.
