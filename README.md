@@ -96,7 +96,7 @@ The runs it names must be in `runs/` (Step 5, or the simulation outputs archived
 
     python3 common/make_paper_figures.py --paper-figures <folder of the manuscript figures>
 
-copies every figure under its manuscript name into `paper_figures/` and writes `paper_figures/MANIFEST.csv` with the SHA-256 of each file and whether it differs from the manuscript's copy. Rows with status `external` (the PhysiCell-Studio screenshot, the workflow drawing and the graphical abstract) are not produced by a simulation and have no command.
+copies every figure under its manuscript name into `paper_figures/` and writes `paper_figures/MANIFEST.csv` with the SHA-256 of each file and whether it differs from the manuscript's copy. Rows with status `external` (Figure 1, the PhysiCell-Studio screenshot, the workflow drawing and the graphical abstract) are not produced by a simulation and have no command.
 
 ## Running on MareNostrum 5
 
