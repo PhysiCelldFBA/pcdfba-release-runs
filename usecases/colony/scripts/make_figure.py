@@ -45,10 +45,10 @@ gs = fig.add_gridspec(5, 6, height_ratios=[0.30, 1.25, 0.30, 1.5, 0.26], width_r
 LS = [("-", "k"), ("--", "k"), (":", "k")]
 def zone_arcs(ax, lw=0.67):
     for (nm, R), (ls, c) in zip(ZONES, LS): ax.add_patch(Arc((0, 0), 2 * R, 2 * R, theta1=0, theta2=90, ls=ls, color=c, lw=lw, zorder=5))
-ax = fig.add_subplot(gs[1, 0]); ax.text(-0.72, 1.04, "A", transform=ax.transAxes, fontsize=FS["letter"], fontweight="bold")
-hb = ax.scatter(ts, bio, c="g", edgecolors="k", s=5, label="Biomass"); hv = ax.axvline(Tb, color="k", ls="--", lw=0.48, label="End of exponential growth (%.1f h)" % Tb)
-ax.set_xlabel("Time (h)"); ax.set_ylabel(r"Total biomass ($\mu$g)"); ax2 = ax.twinx(); hc, = ax2.plot(ts, cnt / 1e5, "^-", color="grey", mec="k", ms=2.39, lw=0.72, label="Cells"); ax2.set_ylabel(r"Total cells ($\times 10^5$)"); ax2.spines["top"].set_visible(False)
-ax.legend([hb, hc], ["Biomass", "Cells"], frameon=False, loc="upper left", fontsize=FS["tick"]); ax.text(Tb, 1.02, "End of exponential\nphase", transform=ax.get_xaxis_transform(), ha="center", va="bottom", fontsize=FS["label"])
+ax = fig.add_subplot(gs[1, 0]); ax.text(-0.72, 1.17, "A", transform=ax.transAxes, fontsize=FS["letter"], fontweight="bold")
+hb, = ax.plot(ts, bio, "o-", color="g", ms=2.2, mew=0, lw=0.9, markevery=(0, 4), label="Biomass"); hv = ax.axvline(Tb, color="k", ls="--", lw=0.48, label="End of exponential growth (%.1f h)" % Tb)
+ax.set_xlabel("Time (h)"); ax.set_ylabel(r"Total biomass ($\mu$g)"); ax2 = ax.twinx(); hc, = ax2.plot(ts, cnt / 1e5, "^-", color="0.45", mec="none", ms=2.4, lw=0.72, markevery=(2, 4), label="Cells"); ax2.set_ylabel(r"Total cells ($\times 10^5$)"); ax2.spines["top"].set_visible(False)
+ax.legend([hb, hc], ["Biomass", "Cells"], frameon=False, loc="upper left", fontsize=FS["tick"])
 me = sio.loadmat(s.replace(".xml", "_microenvironment0.mat"))["multiscale_microenvironment"]
 names = [("oxygen", 4, "Blues", r"O$_2$ (mM)"), ("glucose", 5, glc, "D-glucose (mM)"), ("acetate", 6, "Reds", "Acetate (mM)"), ("CO2", 8, "Purples", r"CO$_2$ (mM)")]
 maps = []; xs, ys = np.unique(me[0]), np.unique(me[1]); vis = (me[0] <= VIEW) & (me[1] <= VIEW);
@@ -57,7 +57,7 @@ for i, (nm, row, cm, lab) in enumerate(names):
     im = a.imshow(g, origin="lower", extent=[xs[0] - 1, xs[-1] + 1, ys[0] - 1, ys[-1] + 1], cmap=cm, vmin=0, vmax=me[row][vis].max(), interpolation="bicubic", aspect="equal")
     a.set_xlim(0, VIEW); a.set_ylim(0, VIEW); a.set_anchor("S"); zone_arcs(a); a.add_patch(Rectangle((XL[0], YL[0]), XL[1] - XL[0], YL[1] - YL[0], fill=False, ec="#444444", lw=0.48, ls=(0, (1, 2)), zorder=6))
     a.set_xlabel("x (µm)"); a.set_xticks([0, 100, 200]); a.set_yticks([0, 100, 200]); 
-    if i == 0: a.set_ylabel("y (µm)"); a.text(-0.42, 1.04, "B", transform=a.transAxes, fontsize=FS["letter"], fontweight="bold")
+    if i == 0: a.set_ylabel("y (µm)"); a.text(-0.42, 1.17, "B", transform=a.transAxes, fontsize=FS["letter"], fontweight="bold")
     else: a.set_yticklabels([])
     maps.append((a, im, lab))
 fig.canvas.draw()
