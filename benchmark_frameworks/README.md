@@ -10,7 +10,7 @@ PhysiCelldFBA runs they are compared with (models, uptake kinetics, medium, boun
 | BM-CF-COMETS | COMETS 2.12.5 (Convection 2D) | consortium of Fig. 6 | CF3-NC50_s50 | 4.6 h |
 | BM-CF-BACARENA | BacArena 1.8.2 (closed arena) | consortium of Fig. 6 | CF3-NC50_s50 | 1.6 h |
 
-These four runs are the ones in the two figures (S23, S24) and the three tables (S24 to S26) of S12. The trial runs that
+These four runs are the ones in the three figures (S23 to S25) and the three tables (S24 to S26) of S12. The trial runs that
 led to them are not part of this branch; what they taught (how each scenario had to be adapted to each tool) is in S12.1 and in the
 header comment of each script. All four ran on the workstation mpws (bsclife006, Ubuntu 24.04.5, 8 cores), one thread
 each. Settings, inputs, end time and wall time of each run: `runs.csv`.
@@ -25,11 +25,14 @@ each. Settings, inputs, end time and wall time of each run: `runs.csv`.
       run_bacarena_fig6_80x80.R, extract_bacarena_fig6_qual.R   BM-CF-BACARENA
       rerun_mpws.sh                     reruns one of the four on mpws (below)
       make_benchmark.py                 tables and figures from data/ and the PhysiCelldFBA results of usecases/
+      extract_comets_fields.py, extract_bacarena_fields.R, extract_physicelldfba_fields.py
+                                        snapshot fields and cells of the three consortium runs (added 2026-11-20)
+      make_microenv.py                  Supplementary Figure S25 (fields and cells, 10-30 h) from those snapshots
     config/                  inputs that are not elsewhere in the repository, and SHA256SUMS of every input
     env/                     the software environment on mpws, captured 2026-11-19
     data/<run folder>/       the small outputs of each run that make_benchmark.py reads
     results/                 benchmark_summary.csv (every number of S12), benchmark_fig6_criteria.csv, the criteria fixed
-                             before the consortium runs (cf_fig6_qualitative_criteria.md) and the two figures
+                             before the consortium runs (cf_fig6_qualitative_criteria.md) and the three figures
     runs/                    raw outputs of a rerun (not tracked)
 
 Raw outputs are not stored in the repository or on Zenodo: the BacArena consortium state (`.rds`, 134 MB), the COMETS
@@ -41,10 +44,32 @@ Raw outputs are not stored in the repository or on Zenodo: the BacArena consorti
 From `benchmark_frameworks/`:
 
     python3 scripts/make_benchmark.py
+    python3 scripts/make_microenv.py
 
 It reads `data/` and, for PhysiCelldFBA, `usecases/acetate/results/ace_series.csv`, `usecases/crossfeeding/results/cf3nc50_series.csv`
 and the two `provenance.csv` (all tracked), and writes `results/`. On 2026-11-19 the two PNGs it wrote were byte-identical
 to `figures/supp_fig_benchmark_{aceref,crossfeeding}.png` of the manuscript, and the two CSVs to the ones S12 was written from.
+
+### Microenvironment figure (S25, 2026-11-20)
+
+`make_microenv.py` reads the snapshot fields extracted from the raw outputs (in `data/`, about 5 MB):
+
+- `data/fig6_comets/comets_fig6_conv_fields.npz`: `extract_comets_fields.py` on the BM-CF-COMETS run folder. COMETS writes
+  `media_out` with 1-based coordinates (the static ring at 1 and N) and `biomass` with 0-based ones; the script shifts the
+  media by one. `extract_comets_cf_qual.py`, as it ran, does not; checked on 2026-11-20 that this changes none of the numbers
+  of S12 (the H2 at M. barkeri is identical, acetate within 0.05%); only the COMETS box means of
+  `comets_cfref_fig6_conv_media_means.csv`, which S12 does not use, include the ring and are about 11% low.
+- `data/fig6_bacarena/bacarena_fig6_closed_nopool_{media,cells}.csv.gz`: `extract_bacarena_fields.R` on the saved state of
+  BM-CF-BACARENA (every hourly step).
+- `data/fig6_physicelldfba/physicelldfba_CF3-NC-CTL_s50_fields.npz`: `extract_physicelldfba_fields.py` on CF3-NC-CTL_s50
+  (MN5, snapshots at 600, 1200 and 1800 min): the configuration of Fig. 6 run to 30 h. The raw output of CF3-NC50_s50 is
+  not available, so the figure stops at 30 h.
+
+In COMETS the static ring is restored only once per step, after the diffusion substeps (`applyStaticMedia` after
+`diffuseMediaFick`; the `dirichlet` mask of `Utility.diffuseFick` is never set by the loader of 2.12.5), and at 10 um boxes
+and 0.25 min the whole domain mixes within a step. The ring therefore exchanges at most 84/484 of the mixed volume per step
+(test on a 7 x 7 grid, 2026-11-20), the fields in the domain are uniform and H2 is higher than in PhysiCelldFBA. S12.1
+describes this.
 
 ## Rerun on mpws
 
