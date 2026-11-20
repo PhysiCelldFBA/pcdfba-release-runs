@@ -1,4 +1,4 @@
-# pcdfba-review-runs
+# pcdfba-release-runs
 
 Definitive experiments for the PhysiCelldFBA revision. The plan and the settled decisions are in `docs/plan.md`.
 
@@ -35,8 +35,8 @@ The addon links libSBML and Clp statically (step 2 downloads them) and needs a f
 
 ### Step 1. Clone and fetch the pinned code
 
-    git clone git@github.com:PhysiCelldFBA/pcdfba-review-runs.git
-    cd pcdfba-review-runs
+    git clone git@github.com:PhysiCelldFBA/pcdfba-release-runs.git
+    cd pcdfba-release-runs
     git submodule update --init
 
 `code/` is not part of this repository: it is a pointer to one commit of PhysiCelldFBA. The first command gives an empty `code/` folder, the second downloads that commit into it (`git submodule status` must show `7f2b1d0a...` without a `+` or `-` in front). Stay on `main`: a branch of this repository that predates the use cases has most of the folders empty or missing.

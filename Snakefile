@@ -1,4 +1,4 @@
-# Reproducibility workflow of pcdfba-review-runs (work in progress: the figure-collection step is the first one written).
+# Reproducibility workflow of pcdfba-release-runs (work in progress: the figure-collection step is the first one written).
 # Planned order (a later rule feeds the earlier ones): configs (common/build_configs.py) -> runs (usecases/<uc>/scripts/run_task.sh, MN5 launchers) -> analysis -> figures -> paper_figures -> provenance workbooks -> Zenodo package.
 # Existing outputs are inputs: no rule deletes or regenerates a run output.
 # usage: snakemake -c1 paper_figures            (PAPER_FIGURES=<manuscript figures folder> for the figures that are not outputs of the runs)
