@@ -8,7 +8,7 @@ Fig. 6 run with Convection 2D. Only the runs shown in the two figures are read.
 Writes results/benchmark_summary.csv (every number used in the text), results/benchmark_fig6_criteria.csv (criteria in
 results/cf_fig6_qualitative_criteria.md) and the figures results/supp_fig_benchmark_{aceref,crossfeeding}.{png,pdf}.
 
-Run from benchmark_frameworks/:  python scripts/make_benchmark.py
+Run from framework_comparison/:  python scripts/make_benchmark.py
 """
 import json
 from pathlib import Path

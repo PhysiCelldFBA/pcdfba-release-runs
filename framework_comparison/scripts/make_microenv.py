@@ -10,7 +10,7 @@ Inputs (all in data/):
       raw output of CF3-NC50_s50 is not available (PC_FIELDS overrides the path)
   fig6_comets/comets_fig6_conv_fields.npz                       extract_comets_fields.py on BM-CF-COMETS
   fig6_bacarena/bacarena_fig6_closed_nopool_{media,cells}.csv.gz extract_bacarena_fields.R on BM-CF-BACARENA
-Run from benchmark_frameworks/:  python3 scripts/make_microenv.py
+Run from framework_comparison/:  python3 scripts/make_microenv.py
 """
 import os, sys
 from pathlib import Path

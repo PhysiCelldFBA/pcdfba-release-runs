@@ -41,7 +41,7 @@ Raw outputs are not stored in the repository or on Zenodo: the BacArena consorti
 
 ## Redraw the tables and the figures
 
-From `benchmark_frameworks/`:
+From `framework_comparison/`:
 
     python3 scripts/make_benchmark.py
     python3 scripts/make_microenv.py
@@ -85,7 +85,7 @@ Environment (`env/`):
 
 `BENCHMARK_TOOLS` defaults to `/home/ohayoun/benchmark_tools`. With Steps 3 and 4 of the top README done (they provide
 `usecases/acetate/config/shipped/Ecoli_core.xml`, `usecases/crossfeeding/config/cells_CF3-REF_s50.csv`), from
-`benchmark_frameworks/`:
+`framework_comparison/`:
 
     bash scripts/rerun_mpws.sh BM-CF-BACARENA runs/BM-CF-BACARENA
 

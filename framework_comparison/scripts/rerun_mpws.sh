@@ -1,6 +1,6 @@
 #!/bin/bash
 # Rerun one of the four benchmark runs on mpws (bsclife006) with the environment of env/.
-# usage, from benchmark_frameworks/ of a checkout on mpws (Steps 3 and 4 of the top README done, so that the shipped
+# usage, from framework_comparison/ of a checkout on mpws (Steps 3 and 4 of the top README done, so that the shipped
 # models and cells_CF3-REF_s50.csv exist):
 #     bash scripts/rerun_mpws.sh <run_id> runs/<run_id>
 # run_id: BM-ACE-COMETS | BM-ACE-BACARENA | BM-CF-COMETS | BM-CF-BACARENA (runs.csv). The output folder must not exist.
