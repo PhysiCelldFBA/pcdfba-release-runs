@@ -68,7 +68,7 @@ pm = maps[0][0].get_position(); pa = ax.get_position(); ax.set_position([pa.x0, 
 sel = (x >= XL[0]) & (x <= XL[1]) & (yv >= YL[0]) & (yv <= YL[1]); rad = np.cbrt(3 * vol / (4 * np.pi))
 vals = [("Growth rate (1/h)", gr, plt.cm.Greens), ("Glucose uptake (amol/s)", -d["R_EX_glc__D_e"] * vol * DRY / 3.6, glc), ("Acetate exchange (amol/s)", d["R_EX_ac_e"] * vol * DRY / 3.6, plt.cm.coolwarm_r), ("Oxygen uptake (amol/s)", -d["R_EX_o2_e"] * vol * DRY / 3.6, plt.cm.Blues)]
 legs = fig.add_subplot(gs[2, :]); legs.axis("off")
-h = [Line2D([], [], color="k", ls=ls, lw=0.76) for ls, c in LS] + [Line2D([], [], color="#444444", ls=(0, (1, 2)), lw=0.57), Patch(fc="saddlebrown", ec="k", lw=0.19), Patch(fc="grey", ec="k", lw=0.19)]
+h = [Line2D([], [], color="k", ls=ls, lw=0.76) for ls, c in LS] + [Line2D([], [], color="#444444", ls=(0, (1, 2)), lw=0.57), Line2D([], [], marker="o", ls="none", mfc="saddlebrown", mec="k", mew=0.3, ms=5), Line2D([], [], marker="o", ls="none", mfc="grey", mec="k", mew=0.3, ms=5)]
 lab_ = ["Core edge, %g µm" % R_core, "Stalled edge, %g µm" % R_stall, "Ring edge, %g µm" % R_ring, "Window of C–F", "Dead cell", "Starving cell"]
 legs.legend(h, lab_, loc="upper center", bbox_to_anchor=(0.436, 0.40), ncol=6, frameon=True, fancybox=False, edgecolor="k", framealpha=1, borderpad=0.4, fontsize=FS["legend"], handlelength=1.5, columnspacing=0.9, labelspacing=0.3, handletextpad=0.4).get_frame().set_linewidth(0.6)
 bb = gs[3, :].get_position(fig); posn = fig.add_gridspec(1, 4, left=0.03, right=0.985, bottom=bb.y0, top=bb.y1, wspace=0.16)
