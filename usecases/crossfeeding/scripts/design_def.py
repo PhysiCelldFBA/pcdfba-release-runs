@@ -85,6 +85,18 @@ for sub, v in (("H2", 0.024), ("acetate", 0.013)):
 # CF3-NC-AC8 (2026-11-13): CF3-NC (same seed, 1800 min) with the acetate Vmax of M. barkeri 8 instead of 3 mmol/gDW/h (iAF692 maximum acetate uptake, Feist et al. 2006; the replay of CF3-NC50 cells found every living M. barkeri cell at the 3.0 bound).
 cf3("CF3-NC-AC8_s50", "CF3-NC-AC8"); nocaps("CF3-NC-AC8_s50")
 put("CF3-NC-AC8_s50", P + "/cell_definitions/cell_definition[@name='m_barkeri']/phenotype/intracellular/transport_model/exchange[@substrate='acetate']/Vmax", 8.0)
+# CF3-NC-ACVMAX, CF3-NC-ACKM, CF3-NC-DIFF (2026-11-18): sensitivity of the main scenario (CF3-NC: no caps, open at 0 mM, dx 1.6, dt 0.001, seed 50, 1800 min) for R2.M3 / R3.M3.
+# CF3-NC-ACVMAX: acetate Vmax of M. barkeri 3 -> 0.75 (x0.25; CF3-NC-AC8 is the upward arm). CF3-NC-ACKM: acetate Km of M. barkeri 0.0001 -> 0.01 and 0.3 mM.
+# CF3-NC-DIFF: diffusion coefficients of H2 (270000 um2/min) and acetate (72000) together x0.5 and x2; glucose, CO2, methane and the minerals as shipped.
+AC = P + "/cell_definitions/cell_definition[@name='m_barkeri']/phenotype/intracellular/transport_model/exchange[@substrate='acetate']/"
+# CF3-NC-CTL: same-config rerun of CF3-NC in the same job (the binary of CF3-NC_s50, 1f60748dc4ee2e45, is no longer on MN5; this job uses f9c90c60aec019bd), own run id as CF-REP.
+cf3("CF3-NC-CTL_s50", "CF3-NC-CTL"); nocaps("CF3-NC-CTL_s50")
+rid = "CF3-NC-ACVMAX_0.75_s50"; cf3(rid, "CF3-NC-ACVMAX"); nocaps(rid); put(rid, AC + "Vmax", 0.75)
+for km in (0.01, 0.3): rid = f"CF3-NC-ACKM_{km}_s50"; cf3(rid, "CF3-NC-ACKM"); nocaps(rid); put(rid, AC + "Km", km)
+DIF = lambda s: P + f"/microenvironment_setup/variable[@name='{s}']/physical_parameter_set/diffusion_coefficient"
+for tag, f in (("x0.5", 0.5), ("x2", 2)):
+    rid = f"CF3-NC-DIFF_{tag}_s50"; cf3(rid, "CF3-NC-DIFF"); nocaps(rid)
+    for s, d in (("H2", 270000), ("acetate", 72000)): put(rid, DIF(s), int(d * f))
 with open(f"{UC}/runs_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["run_id", "experiment_id", "seed"]); w.writerows(runs)
 with open(f"{UC}/overrides_def.csv", "w", newline="") as f: w = csv.writer(f, lineterminator="\n"); w.writerow(["scope", "xpath", "value"]); w.writerows(ov)
 print(len(runs), "runs,", len(ov), "override rows")

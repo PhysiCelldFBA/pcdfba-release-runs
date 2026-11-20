@@ -15,3 +15,5 @@ usecases/*/runs_*/
 /local_archive/
 usecases/*/config/shipped/
 usecases/*/models/*.xml
+# raw outputs of the COMETS / BacArena benchmark reruns (kept on mpws, see framework_comparison/runs.csv)
+framework_comparison/runs/
